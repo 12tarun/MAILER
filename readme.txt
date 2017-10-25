@@ -1,1 +1,0 @@
-Mialer sample project
