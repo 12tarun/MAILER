@@ -18,6 +18,14 @@ public partial class Registration : System.Web.UI.Page
     {
         ValidationSettings.UnobtrusiveValidationMode = UnobtrusiveValidationMode.None;
 
+        if (!IsPostBack)
+        {
+            fillCaptcha();
+            Session["UsernameAlreadyExists"] = false;
+            Session["EmailAlreadyExists"] = false;
+        }
+
+
         DateTime dtCreate;
         int userId = 0;
         string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
@@ -40,6 +48,27 @@ public partial class Registration : System.Web.UI.Page
                 }
             }
         }
+    }
+
+    void fillCaptcha()
+    {
+        try
+        {
+            Random random = new Random();
+            string combination = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+            StringBuilder captcha = new StringBuilder();
+            for (int i = 0; i < 6; i++)
+            {
+                captcha.Append(combination[random.Next(combination.Length)]);
+                Session["captcha"] = captcha.ToString();
+                imgCaptcha.ImageUrl = "GenerateCaptcha.aspx?" + DateTime.Now.Ticks.ToString();
+            }
+        }
+        catch
+        {
+            throw;
+        }
+
     }
 
     private void deleteExpiredRegistrations(DateTime dtCreate,int userId)
@@ -69,29 +98,47 @@ public partial class Registration : System.Web.UI.Page
     protected void btnSubmit_Click(object sender, EventArgs e)
     {
         int userId = 0;
-        string hashedPass = getHash(tbxPassword.Text.Trim());
-        string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
-        using (SqlConnection con = new SqlConnection(constr))
+
+        if (tbxCaptcha.Text == "")
         {
-            using (SqlCommand cmd = new SqlCommand("Insert_User"))
+            lblIncorrectCaptcha.Visible = false;
+        }
+
+        string captcha = Session["captcha"].ToString();
+        if ( captcha != tbxCaptcha.Text.Trim())
+        {
+            lblIncorrectCaptcha.Visible = true;
+            lblIncorrectCaptcha.Text = "Invalid Captcha Code";
+        }
+        else
+        {
+            string hashedPass = getHash(tbxPassword.Text.Trim());
+            string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+            using (SqlConnection con = new SqlConnection(constr))
             {
-                using (SqlDataAdapter sda = new SqlDataAdapter())
+                using (SqlCommand cmd = new SqlCommand("Insert_User"))
                 {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@Fullname", tbxFullname.Text.Trim());
-                    cmd.Parameters.AddWithValue("@Username", tbxUsername.Text.Trim());
-                    cmd.Parameters.AddWithValue("@Password", hashedPass);
-                    cmd.Parameters.AddWithValue("@Email", tbxEmail.Text.Trim());
-                    cmd.Parameters.AddWithValue("@Verification", 0);
-                    cmd.Connection = con;
-                    con.Open();
-                    userId = Convert.ToInt32(cmd.ExecuteScalar());
+                    using (SqlDataAdapter sda = new SqlDataAdapter())
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@Fullname", tbxFullname.Text.Trim());
+                        cmd.Parameters.AddWithValue("@Username", tbxUsername.Text.Trim());
+                        cmd.Parameters.AddWithValue("@Password", hashedPass);
+                        cmd.Parameters.AddWithValue("@Email", tbxEmail.Text.Trim());
+                        cmd.Parameters.AddWithValue("@Verification", 0);
+                        cmd.Connection = con;
+                        con.Open();
+                        userId = Convert.ToInt32(cmd.ExecuteScalar());
+                    }
                 }
+                string message = string.Empty;
+                message = "Registration successful! Activation email has been sent.";
+                SendActivationEmail(userId);
+                tbxFullname.Text = tbxUsername.Text = tbxPassword.Text = tbxComfrimPassword.Text = tbxEmail.Text = "";
+                lblIncorrectCaptcha.Visible = false;
+                ClientScript.RegisterStartupScript(GetType(), "alert", "alert('" + message + "');", true);
+                fillCaptcha();
             }
-            string message = string.Empty;
-            message = "Registration successful! Activation email has been sent.";
-            SendActivationEmail(userId);
-            ClientScript.RegisterStartupScript(GetType(), "alert", "alert('" + message + "');", true);
         }
     }
 
@@ -106,7 +153,7 @@ public partial class Registration : System.Web.UI.Page
 
     private void SendActivationEmail(int userId)
     {
-        int c = 0;
+        
         string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
         string activationCode = Guid.NewGuid().ToString();
         using (SqlConnection con = new SqlConnection(constr))
@@ -142,26 +189,6 @@ public partial class Registration : System.Web.UI.Page
             smtp.Credentials = NetworkCred;
             smtp.Port = 587;
             smtp.Send(mm);
-            c = 1;
-        }
-
-        if(c!=1)
-        {
-            string constr3 = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
-            using (SqlConnection con = new SqlConnection(constr3))
-            {
-                using (SqlCommand cmd = new SqlCommand("DELETE FROM tblUsers WHERE UserId ='" + userId + "'"))
-                {
-                    using (SqlDataAdapter sda = new SqlDataAdapter())
-                    {
-                        cmd.CommandType = CommandType.Text;
-                        cmd.Connection = con;
-                        con.Open();
-                        cmd.ExecuteNonQuery();
-                        con.Close();
-                    }
-                }
-            }
         }
     }
 
@@ -177,10 +204,15 @@ public partial class Registration : System.Web.UI.Page
                 btnSubmit.Enabled = false;
                 lblInvalidUsername.Visible = true;
                 lblInvalidUsername.Text = "Username is already used.";
+                Session["UsernameAlreadyExists"] = true;
             }
             else
             {
-                btnSubmit.Enabled = true;
+                Session["UsernameAlreadyExists"] = false;
+                if ((bool)Session["EmailAlreadyExists"] == false)
+                {
+                    btnSubmit.Enabled = true;
+                }
                 lblInvalidUsername.Visible = false;
             }
         }
@@ -198,12 +230,22 @@ public partial class Registration : System.Web.UI.Page
                 btnSubmit.Enabled = false;
                 lblInvalidEmail.Visible = true;
                 lblInvalidEmail.Text = "EmailId is already used.";
+                Session["EmailAlreadyExists"] = true;
             }
             else
             {
-                btnSubmit.Enabled = true;
+                Session["EmailAlreadyExists"] = false;
+                if ((bool)Session["UsernameAlreadyExists"] == false)
+                {
+                    btnSubmit.Enabled = true;
+                }
                 lblInvalidEmail.Visible = false;
             }
         }
+    }
+
+    protected void btnRefresh_Click(object sender, EventArgs e)
+    {
+        fillCaptcha();
     }
 }
