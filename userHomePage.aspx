@@ -17,7 +17,7 @@
                     <td>
                         <asp:TextBox ValidationGroup="Category" runat="server" ID="tbxCategoryName" placeholder="Enter Category Name"></asp:TextBox></td>
                     <td>
-                        <asp:RequiredFieldValidator runat="server" ID="RFVCategoryName" ControlToValidate="tbxCategoryName" ErrorMessage="*Mandatory Field" ForeColor="Red"></asp:RequiredFieldValidator></td>
+                        <asp:RequiredFieldValidator ValidationGroup="Category" runat="server" ID="RFVCategoryName" ControlToValidate="tbxCategoryName" ErrorMessage="*Mandatory Field" ForeColor="Red"></asp:RequiredFieldValidator></td>
                 </tr>
                 <tr>
                     <td colspan="2">
@@ -31,13 +31,15 @@
                         <asp:Label ID="lblRecipeintName" runat="server" Text="Recipient Name"></asp:Label></td>
                     <td>
                         <asp:TextBox ID="tbxRecipientName" ValidationGroup="Recipeint" runat="server" placeholder="Enter Recipient Name"></asp:TextBox></td>
-                    <td><asp:RequiredFieldValidator runat="server" ID="RFVRecipientName" ControlToValidate="tbxRecipientName" ErrorMessage="*Mandatory Field" ForeColor="Red"></asp:RequiredFieldValidator></td>
+                    <td><asp:RequiredFieldValidator runat="server" ValidationGroup="Recipient" ID="RFVRecipientName" ControlToValidate="tbxRecipientName" ErrorMessage="*Mandatory Field" ForeColor="Red"></asp:RequiredFieldValidator></td>
+                    
                 </tr>
                 <tr>
                     <td>
-                        <asp:Label ID="lblRecipeintEmail" runat="server" Text="RecipientEmail"></asp:Label></td>
-                    <td><asp:TextBox ID="tbxRecipientEmail" runat="server" ValidationGroup="Recipient" placeholder="Enter Recipeint Email"></asp:TextBox></td>    
-                    <td><asp:RequiredFieldValidator runat="server" ID="RFVRecipientEmail" ControlToValidate="tbxRecipientEmail" ErrorMessage="*Mandatory Field" ForeColor="Red"></asp:RequiredFieldValidator> </td>
+                        <asp:Label ID="lblRecipeintEmail" runat="server" Text="RecipientEmail" ></asp:Label></td>
+                    <td><asp:TextBox ID="tbxRecipientEmail" runat="server" ValidationGroup="Recipient" AutoPostBack="true" OnTextChanged="tbxRecipientEmail_TextChanged"  placeholder="Enter Recipeint Email"></asp:TextBox></td>    
+                    <td><asp:RequiredFieldValidator runat="server" ID="RFVRecipientEmail" ValidationGroup="Recipient" ControlToValidate="tbxRecipientEmail" ErrorMessage="*Mandatory Field" ForeColor="Red"></asp:RequiredFieldValidator> </td>
+                    <td><asp:Label runat="server" ID="lblInvalidEmail" ></asp:Label></td>
                 </tr>
                 <tr>
                 <td >
@@ -49,10 +51,11 @@
 
                 <tr>
                     <td>
-                        <asp:Button ID="btnRecipientAdder" runat="server" Text="Submit" />
+                        <asp:Button ID="btnRecipientAdder" runat="server" Text="Submit" Height="24px" OnClick="btnRecipientAdder_Click1" />
                     </td>
                 </tr>
             </table>
+            <asp:Button runat="server" Text="Logout" ID="btnLogout" OnClick="btnLogout_Click" />
 
         </div>
     </form>
