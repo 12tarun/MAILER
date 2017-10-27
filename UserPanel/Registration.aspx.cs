@@ -17,7 +17,7 @@ public partial class Registration : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         ValidationSettings.UnobtrusiveValidationMode = UnobtrusiveValidationMode.None;
-
+        
         if (!IsPostBack)
         {
             fillCaptcha();
@@ -148,7 +148,7 @@ public partial class Registration : System.Web.UI.Page
                 string message = string.Empty;
                 message = "Registration successful! Activation email has been sent.";
                 SendActivationEmail(userId);
-                tbxFullname.Text = tbxUsername.Text = tbxPassword.Text = tbxComfrimPassword.Text = tbxEmail.Text = "";
+                tbxFullname.Text = tbxUsername.Text = tbxPassword.Text = tbxComfirmPassword.Text = tbxEmail.Text = "";
                 lblIncorrectCaptcha.Visible = false;
                 ClientScript.RegisterStartupScript(GetType(), "alert", "alert('" + message + "');", true);
                 fillCaptcha();
@@ -279,7 +279,7 @@ public partial class Registration : System.Web.UI.Page
             using (SqlCommand cmd = new SqlCommand("Validate_User"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@EmailId", tbxLoginEmail.Text.Trim());
+                cmd.Parameters.AddWithValue("@EmailId", tbxEmail.Text.Trim());
                 cmd.Parameters.AddWithValue("@Password", hashedLoginPass);
                 cmd.Connection = con;
                 con.Open();
@@ -304,5 +304,10 @@ public partial class Registration : System.Web.UI.Page
                     break;
             }
         }
+    }
+
+    protected void LnkBtnForgotPassword_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("~/UserPanel/EmailForPasswordChange.aspx");
     }
 }

@@ -31,9 +31,9 @@
             <asp:RegularExpressionValidator ID="REValidatorPassword" runat="server" Display="Dynamic" ValidationGroup="register" Font-Size="small" ErrorMessage="Password should contain atleast one digit, one alphabet and minimum length 6." ControlToValidate="tbxPassword" ForeColor="Red" ValidationExpression="^(?=.*[0-9])(?=.*[a-zA-Z]).{6,}$" />
             <br />
             <br />
-            <asp:TextBox ID="tbxComfrimPassword" runat="server" placeholder="Confirm Password" ValidationGroup="register" TextMode="Password"></asp:TextBox>
-            <asp:RequiredFieldValidator ID="RFValidatorConPassword" runat="server" Display="Dynamic" ValidationGroup="register" ControlToValidate="tbxComfrimPassword" ErrorMessage="Confirm password required" ForeColor="Red"></asp:RequiredFieldValidator>
-            <asp:CompareValidator ID="CMValidatorConfirmPassword" Display="Dynamic" ValidationGroup="register" ControlToValidate="tbxComfrimPassword" ErrorMessage="Passwords do not match" ForeColor="Red" ControlToCompare="tbxPassword" runat="server"></asp:CompareValidator>
+            <asp:TextBox ID="tbxComfirmPassword" runat="server" placeholder="Confirm Password" ValidationGroup="register" TextMode="Password"></asp:TextBox>
+            <asp:RequiredFieldValidator ID="RFValidatorConfirmPassword" runat="server" Display="Dynamic" ValidationGroup="register" ControlToValidate="tbxComfirmPassword" ErrorMessage="Confirm password required" ForeColor="Red"></asp:RequiredFieldValidator>
+            <asp:CompareValidator ID="CMValidatorConfirmPassword" Display="Dynamic" ValidationGroup="register" ControlToValidate="tbxComfirmPassword" ErrorMessage="Passwords do not match" ForeColor="Red" ControlToCompare="tbxPassword" runat="server"></asp:CompareValidator>
             <br />
             <br />
             <asp:UpdatePanel ID="UPCaptcha" runat="server">
@@ -44,16 +44,15 @@
                 </ContentTemplate>
             </asp:UpdatePanel>
             <br />
-            <br />
             <asp:TextBox ID="tbxCaptcha" runat="server" placeholder="Enter above captcha"></asp:TextBox>
             <asp:Label ID="lblIncorrectCaptcha" runat="server" Display="Dynamic" ForeColor="Red"></asp:Label>
             <br />
             <br />
-            <asp:Button ID="btnSubmit" Text="submit" runat="server" OnClick="btnSubmit_Click" />
+            <asp:Button ID="btnSubmit" Text="register" runat="server" OnClick="btnSubmit_Click" />
         </div>
         <br />
         <br />
-        <h2>LOGIN</h2>
+        <h2>SIGN IN</h2>
         <div>
             <asp:TextBox ID="tbxLoginEmail" runat="server" ValidationGroup="login" placeholder="Enter Email Id"></asp:TextBox>
             <asp:RequiredFieldValidator Display="Dynamic" ID="RFValidatorLoginEmail" ValidationGroup="login" runat="server" ErrorMessage="Please enter an email id" ControlToValidate="tbxLoginEmail" ForeColor="Red"></asp:RequiredFieldValidator>
@@ -61,12 +60,13 @@
             <br />
             <asp:TextBox ID="tbxLoginPassword" runat="server" ValidationGroup="login" TextMode="Password" placeholder="Enter Password"></asp:TextBox>
             <asp:RequiredFieldValidator Display="Dynamic" ID="RFValidatorLoginPassword" ValidationGroup="login" runat="server" ControlToValidate="tbxLoginPassword" ErrorMessage="Please enter the password" ForeColor="Red"></asp:RequiredFieldValidator>
+            <asp:LinkButton ID="LnkBtnForgotPassword" runat="server" OnClick="LnkBtnForgotPassword_Click" Text="forgot password?" ></asp:LinkButton>
             <br />
             <br />
-            <asp:Button ID="btnLogin" runat="server" OnClick="btnLogin_Click" Text="Login" />
+            <asp:Button ID="btnLogin" runat="server" OnClick="btnLogin_Click" Text="Login"/>
             <br />
             <br />
-            <asp:Label ID="lblWarning" runat="server" Display="Dynamic" ForeColor="Red" ></asp:Label>
+            <asp:Label ID="lblWarning" runat="server" Display="Dynamic" ForeColor="Red"></asp:Label>
         </div>
     </form>
 </body>
