@@ -15,10 +15,18 @@ public partial class UserPanel_EmailForPasswordChange : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         ValidationSettings.UnobtrusiveValidationMode = UnobtrusiveValidationMode.None;
+        if(!IsPostBack)
+        {
+            Session["EmailToChangePassword"] = null;
+        }
     }
 
     protected void btnForgotPassword_Click(object sender, EventArgs e)
     {
+        Page.Validate("submit");
+        if (!Page.IsValid)
+            return;
+
         int accountExists = 0;
         Session["EmailToChangePassword"] = tbxForgotPassword.Text.Trim();
         string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
@@ -39,6 +47,7 @@ public partial class UserPanel_EmailForPasswordChange : System.Web.UI.Page
         if (accountExists == 0)
         {
             lblNoAccount.Visible = true;
+            Session["EmailToChangePassword"] = null;
         }
         else
         {
@@ -60,7 +69,12 @@ public partial class UserPanel_EmailForPasswordChange : System.Web.UI.Page
                 smtp.Send(mm);
             }
             lblNoAccount.Visible = false;
-            tbxForgotPassword.Text = "";
+            lblChangePasswordMail.Visible = true;
         }
+    }
+
+    protected void btnBack_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("~/UserPanel/Registration.aspx");
     }
 }

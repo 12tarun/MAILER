@@ -48,7 +48,7 @@
             <asp:Label ID="lblIncorrectCaptcha" runat="server" Display="Dynamic" ForeColor="Red"></asp:Label>
             <br />
             <br />
-            <asp:Button ID="btnSubmit" Text="register" runat="server" OnClick="btnSubmit_Click" />
+            <asp:Button ID="btnRegister" Text="register" runat="server" OnClick="btnRegister_Click" />
         </div>
         <br />
         <br />

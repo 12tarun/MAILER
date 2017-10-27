@@ -105,7 +105,7 @@ public partial class Registration : System.Web.UI.Page
         }
     }
 
-    protected void btnSubmit_Click(object sender, EventArgs e)
+    protected void btnRegister_Click(object sender, EventArgs e)
     {
         Page.Validate("register");
         if (!Page.IsValid)
@@ -215,7 +215,7 @@ public partial class Registration : System.Web.UI.Page
             int temp = Convert.ToInt32(checkUsername.ExecuteScalar().ToString());
             if (temp == 1)
             {
-                btnSubmit.Enabled = false;
+                btnRegister.Enabled = false;
                 lblInvalidUsername.Visible = true;
                 lblInvalidUsername.Text = "Username is already used.";
                 Session["UsernameAlreadyExists"] = true;
@@ -225,7 +225,7 @@ public partial class Registration : System.Web.UI.Page
                 Session["UsernameAlreadyExists"] = false;
                 if ((bool)Session["EmailAlreadyExists"] == false)
                 {
-                    btnSubmit.Enabled = true;
+                    btnRegister.Enabled = true;
                 }
                 lblInvalidUsername.Visible = false;
             }
@@ -241,7 +241,7 @@ public partial class Registration : System.Web.UI.Page
             int temp = Convert.ToInt32(checkEmail.ExecuteScalar().ToString());
             if (temp == 1)
             {
-                btnSubmit.Enabled = false;
+                btnRegister.Enabled = false;
                 lblInvalidEmail.Visible = true;
                 lblInvalidEmail.Text = "EmailId is already used.";
                 Session["EmailAlreadyExists"] = true;
@@ -251,7 +251,7 @@ public partial class Registration : System.Web.UI.Page
                 Session["EmailAlreadyExists"] = false;
                 if ((bool)Session["UsernameAlreadyExists"] == false)
                 {
-                    btnSubmit.Enabled = true;
+                    btnRegister.Enabled = true;
                 }
                 lblInvalidEmail.Visible = false;
             }

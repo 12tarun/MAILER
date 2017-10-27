@@ -15,27 +15,40 @@ public partial class UserPanel_PasswordChange : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         ValidationSettings.UnobtrusiveValidationMode = UnobtrusiveValidationMode.None;
+        if(Session["EmailToChangePassword"] == null)
+        {
+            Response.Write("Link is already used or invalid access.Get link again if password forgotten.");
+            tbxConfirmNewPassword.Visible = false;
+            tbxNewPassword.Visible = false;
+            btnPasswordChanged.Visible = false;
+        }
     }
 
     protected void btnPasswordChanged_Click(object sender, EventArgs e)
     {
-        string emailId = Session["EmailToChangePassword"].ToString();
-        string hashedNewPass = getNewHash(tbxNewPassword.Text.Trim());
-        string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
-        using (SqlConnection con = new SqlConnection(constr))
+        if (Session["EmailToChangePassword"] != null)
         {
-            using (SqlCommand cmd = new SqlCommand("UPDATE tblUsers SET password = @password WHERE emailId ='" + emailId + "'"))
+            string emailId = Session["EmailToChangePassword"].ToString();
+            string hashedNewPass = getNewHash(tbxNewPassword.Text.Trim());
+            string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+            using (SqlConnection con = new SqlConnection(constr))
             {
-                using (SqlDataAdapter sda = new SqlDataAdapter())
+                using (SqlCommand cmd = new SqlCommand("UPDATE tblUsers SET password = @password WHERE emailId ='" + emailId + "'"))
                 {
-                    cmd.CommandType = CommandType.Text;
-                    cmd.Parameters.AddWithValue("@password", hashedNewPass);
-                    cmd.Connection = con;
-                    con.Open();
-                    cmd.ExecuteScalar();
+                    using (SqlDataAdapter sda = new SqlDataAdapter())
+                    {
+                        cmd.CommandType = CommandType.Text;
+                        cmd.Parameters.AddWithValue("@password", hashedNewPass);
+                        cmd.Connection = con;
+                        con.Open();
+                        cmd.ExecuteScalar();
+                    }
                 }
             }
+            lblNewPassword.Visible = true;
         }
+
+        Session["EmailToChangePassword"] = null;
     }
 
     private static string getNewHash(string text)

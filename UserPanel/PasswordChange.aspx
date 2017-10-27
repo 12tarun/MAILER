@@ -20,6 +20,9 @@
             <br />
             <br />
             <asp:Button ID="btnPasswordChanged" runat="server" OnClick="btnPasswordChanged_Click" Text="submit" />
+            <br />
+            <br />
+            <asp:Label ID="lblNewPassword" ForeColor="Blue" Visible="false" Text="New password set successfully!" runat="server" ></asp:Label>
         </div>
     </form>
 </body>
