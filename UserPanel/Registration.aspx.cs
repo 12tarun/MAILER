@@ -21,10 +21,20 @@ public partial class Registration : System.Web.UI.Page
         if (!IsPostBack)
         {
             fillCaptcha();
+            Session["LoggedIn"] = null;
             Session["UsernameAlreadyExists"] = false;
             Session["EmailAlreadyExists"] = false;
         }
 
+        if (!IsPostBack)
+        {
+            lblWarning.Visible = false;
+        }
+
+        if (Session["LoggedIn"] != null)
+        {
+            Response.Redirect("~/UserPanel/userHomePage.aspx");
+        }
 
         DateTime dtCreate;
         int userId = 0;
@@ -97,6 +107,10 @@ public partial class Registration : System.Web.UI.Page
 
     protected void btnSubmit_Click(object sender, EventArgs e)
     {
+        Page.Validate("register");
+        if (!Page.IsValid)
+            return;
+
         int userId = 0;
 
         if (tbxCaptcha.Text == "")
@@ -247,5 +261,48 @@ public partial class Registration : System.Web.UI.Page
     protected void btnRefresh_Click(object sender, EventArgs e)
     {
         fillCaptcha();
+    }
+
+    protected void btnLogin_Click(object sender, EventArgs e)
+    {
+        ValidationSettings.UnobtrusiveValidationMode = UnobtrusiveValidationMode.None;
+
+        Page.Validate("login");
+        if (!Page.IsValid)
+            return;
+
+        int userId = 0;
+        string hashedLoginPass = getHash(tbxLoginPassword.Text.Trim());
+        string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+        using (SqlConnection con = new SqlConnection(constr))
+        {
+            using (SqlCommand cmd = new SqlCommand("Validate_User"))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@EmailId", tbxLoginEmail.Text.Trim());
+                cmd.Parameters.AddWithValue("@Password", hashedLoginPass);
+                cmd.Connection = con;
+                con.Open();
+                userId = Convert.ToInt32(cmd.ExecuteScalar());
+                con.Close();
+            }
+            switch (userId)
+            {
+                case -1:
+                    lblWarning.Visible = true;
+                    lblWarning.Text = "Email Id and/or password is incorrect.";
+                    lblWarning.ForeColor = System.Drawing.Color.Red;
+                    break;
+                case -2:
+                    lblWarning.Visible = true;
+                    lblWarning.Text = "Account has not been activated.";
+                    lblWarning.ForeColor = System.Drawing.Color.Red;
+                    break;
+                default:
+                    Session["LoggedIn"] = userId;
+                    Response.Redirect("~/UserPanel/userHomePage.aspx");
+                    break;
+            }
+        }
     }
 }
