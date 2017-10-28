@@ -279,7 +279,7 @@ public partial class Registration : System.Web.UI.Page
             using (SqlCommand cmd = new SqlCommand("Validate_User"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@EmailId", tbxEmail.Text.Trim());
+                cmd.Parameters.AddWithValue("@EmailId", tbxLoginEmail.Text.Trim());
                 cmd.Parameters.AddWithValue("@Password", hashedLoginPass);
                 cmd.Connection = con;
                 con.Open();
