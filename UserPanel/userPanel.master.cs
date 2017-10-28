@@ -14,7 +14,7 @@ public partial class UserPanel_userPanel : System.Web.UI.MasterPage
 
     protected void btnLogout_Click(object sender, EventArgs e)
     {
-        Session["ID"] = null;
+        Session["LoggedIn"] = null;
         Response.Redirect("appHomePage.aspx");
     }
 }
