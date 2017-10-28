@@ -1,0 +1,31 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="userPanel.master.cs" Inherits="UserPanel_userPanel" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+    <title></title>
+    <asp:ContentPlaceHolder id="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div>
+        <div class="topnav">
+            <a class="active" href="userHomePage.aspx">Recipient Settings</a>
+            <a href="">Compose Email</a>
+            <a href="">Sent Emails</a>
+            <a href="">See Recipients List</a>
+            
+            <asp:Button ID="btnLogout" runat="server" BackColor="#333" BorderWidth="0px" Text="Logout" ForeColor="white" OnClick="btnLogout_Click" />
+                
+            
+        </div>
+        
+        <asp:ContentPlaceHolder id="ContentPlaceHolder1" runat="server">
+        
+        </asp:ContentPlaceHolder>
+    </div>
+    </form>
+</body>
+</html>
