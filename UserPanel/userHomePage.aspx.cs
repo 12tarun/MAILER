@@ -11,16 +11,20 @@ public partial class UserPanel_Default : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (Session["LoggedIn"] == null) Response.Redirect("~/UserPanel/Registration.aspx");
+        if (Session["LoggedIn"] == null)
+        {
+            Response.Redirect("~/UserPanel/Registration.aspx");
+        }
         else
         {
             if (!IsPostBack)
             {
-                //adding the data to the drop down list
-                using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["constr"].ConnectionString))
+                //adding data to the drop down list in input category name.
+                string userID = Session["LoggedIn"].ToString();
+                string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+                using (SqlConnection con = new SqlConnection(constr))
                 {
-                    string userID = Session["LoggedIn"].ToString();
-                    SqlCommand com = new SqlCommand("select categoryName,categoryId from tblCategory where userId='" + userID + "'", con);
+                    SqlCommand com = new SqlCommand("SELECT categoryName,categoryId FROM tblCategory WHERE userId='" + userID + "'", con);
                     con.Open();
                     ddlCategoryName.DataSource = com.ExecuteReader();
                     ddlCategoryName.DataTextField = "categoryName";
@@ -29,36 +33,41 @@ public partial class UserPanel_Default : System.Web.UI.Page
                 }
             }
         }
-
     }
+
     protected void btnCategoryAdder_Click(object sender, EventArgs e)
     {
         Page.Validate("Category");
         if (!Page.IsValid)
             return;
-        using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["constr"].ConnectionString))
-        {
+
+        //Whether to insert category or not is decided here.
+
+        int userId = Convert.ToInt32(Session["LoggedIn"]);
+        string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+        using (SqlConnection con = new SqlConnection(constr))
+        {     
+            SqlCommand checkCategory = new SqlCommand("select count(*) from tblCategory where categoryName='" + tbxCategoryName.Text.Trim() + "' and userID='" + userId + "'", con);
             con.Open();
-            string message;
-            SqlCommand checkCategory = new SqlCommand("select count(*) from tblCategory where categoryName='" + tbxCategoryName.Text + "' and userID='" + Convert.ToInt32(Session["LoggedIn"]) + "'", con);
             int temp = Convert.ToInt32(checkCategory.ExecuteScalar());
             if (temp == 1)
             {
-                message = "category already registered";
+                lblCategoryAlreadyAdded.Visible = true;
+                lblCategoryAdder.Visible = false;
             }
             else
             {
-                SqlCommand insertCategory = new SqlCommand("insert into tblCategory(userId,categoryName) values(@userID,@categoryName)", con);
-                insertCategory.Parameters.AddWithValue("@userId", Convert.ToInt32(Session["ID"]));
-                insertCategory.Parameters.AddWithValue("@categoryName", tbxCategoryName.Text);
+                SqlCommand insertCategory = new SqlCommand("INSERT INTO tblCategory(userId,categoryName) VALUES(@userId,@categoryName)", con);
+                insertCategory.Parameters.AddWithValue("@userId", userId);
+                insertCategory.Parameters.AddWithValue("@categoryName", tbxCategoryName.Text.Trim());
                 insertCategory.ExecuteNonQuery();
-                message = "Category Added Succesfuly";
+                lblCategoryAdder.Visible = true;
+                lblCategoryAlreadyAdded.Visible = false;
             }
-            ClientScript.RegisterStartupScript(GetType(), "alert", "alert('" + message + "');", true);
-
         }
     }
 
+    //yaha se padhna hai
     protected void tbxRecipientEmail_TextChanged(object sender, EventArgs e)
     {
         using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["constr"].ConnectionString))

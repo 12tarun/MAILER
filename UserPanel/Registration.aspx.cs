@@ -190,7 +190,7 @@ public partial class Registration : System.Web.UI.Page
             mm.Subject = "Account Activation";
             string body = "Hello " + tbxFullname.Text.Trim() + ",";
             body += "<br /><br />Please click the following link to activate your account";
-            body += "<br /><a href = http://localhost:58317/UserPanel/Activation.aspx?activationCode=" + activationCode + ">Click here to activate your account.</a>";
+            body += "<br /><a href = http://localhost:56617/UserPanel/Activation.aspx?activationCode=" + activationCode + ">Click here to activate your account.</a>";
             body += "<br /><br />Thanks";
             body += "<br/><br>NOTE: Link expires after 24 hours.";
             mm.Body = body;

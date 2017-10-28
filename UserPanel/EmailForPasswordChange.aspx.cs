@@ -55,7 +55,7 @@ public partial class UserPanel_EmailForPasswordChange : System.Web.UI.Page
             {
                 mm.Subject = "Forgot Password";
                 string body = "Hi,";
-                body += "<br /><a href = http://localhost:58317/UserPanel/PasswordChange.aspx >Click here to change your password.</a>";
+                body += "<br /><a href = http://localhost:56617/UserPanel/PasswordChange.aspx >Click here to change your password.</a>";
                 body += "<br /><br />Thanks";
                 mm.Body = body;
                 mm.IsBodyHtml = true;
