@@ -1,15 +1,9 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="userHomePage.aspx.cs" Inherits="_Default" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/UserPanel/userPanel.master" AutoEventWireup="true" CodeFile="userHomePage.aspx.cs" Inherits="UserPanel_Default" %>
 
-<!DOCTYPE html>
-
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-    <title></title>
-</head>
-<body>
-    <form id="form1" runat="server">
-        <div>
-            <table style="caption-side: top">
+<asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
+    <table style="caption-side: top">
                 <caption>Add Category</caption>
                 <tr>
                     <td>
@@ -38,8 +32,10 @@
                     <td>
                         <asp:Label ID="lblRecipeintEmail" runat="server" Text="RecipientEmail" ></asp:Label></td>
                     <td><asp:TextBox ID="tbxRecipientEmail" runat="server" ValidationGroup="Recipient" AutoPostBack="true" OnTextChanged="tbxRecipientEmail_TextChanged"  placeholder="Enter Recipeint Email"></asp:TextBox></td>    
-                    <td><asp:RequiredFieldValidator runat="server" ID="RFVRecipientEmail" ValidationGroup="Recipient" ControlToValidate="tbxRecipientEmail" ErrorMessage="*Mandatory Field" ForeColor="Red"></asp:RequiredFieldValidator> </td>
-                    <td><asp:Label runat="server" ID="lblInvalidEmail" ></asp:Label></td>
+                    <td><asp:RequiredFieldValidator runat="server" ID="RFVRecipientEmail" ValidationGroup="Recipient" ControlToValidate="tbxRecipientEmail" ErrorMessage="*Mandatory Field" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator> </td>
+                    <td><asp:Label runat="server" ID="lblInvalidEmail" ForeColor="Red" ></asp:Label></td>
+                    <asp:RequiredFieldValidator ID="RegexEmail" runat="server" ControlToValidate="tbxRecipientEmail" ValidationExpression="^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$" ErrorMessage="*Invalid Email" ForeColor="Red"></asp:RequiredFieldValidator>
+                
                 </tr>
                 <tr>
                 <td >
@@ -55,9 +51,6 @@
                     </td>
                 </tr>
             </table>
-            <asp:Button runat="server" Text="Logout" ID="btnLogout" OnClick="btnLogout_Click" />
+ 
+</asp:Content>
 
-        </div>
-    </form>
-</body>
-</html>

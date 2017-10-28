@@ -7,11 +7,11 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-public partial class _Default : System.Web.UI.Page
+public partial class UserPanel_Default : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (Session["ID"] == null) Response.Redirect("../appHomePage.aspx");
+        if (Session["LoggedIn"] == null) Response.Redirect("~/UserPanel/Registration.aspx");
         else
         {
             if (!IsPostBack)
@@ -19,7 +19,7 @@ public partial class _Default : System.Web.UI.Page
                 //adding the data to the drop down list
                 using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["constr"].ConnectionString))
                 {
-                    string userID = Session["ID"].ToString();
+                    string userID = Session["LoggedIn"].ToString();
                     SqlCommand com = new SqlCommand("select categoryName,categoryId from tblCategory where userId='" + userID + "'", con);
                     con.Open();
                     ddlCategoryName.DataSource = com.ExecuteReader();
@@ -29,8 +29,8 @@ public partial class _Default : System.Web.UI.Page
                 }
             }
         }
-    }
 
+    }
     protected void btnCategoryAdder_Click(object sender, EventArgs e)
     {
         Page.Validate("Category");
@@ -40,7 +40,7 @@ public partial class _Default : System.Web.UI.Page
         {
             con.Open();
             string message;
-            SqlCommand checkCategory = new SqlCommand("select count(*) from tblCategory where categoryName='" + tbxCategoryName.Text + "' and userID='" + Convert.ToInt32(Session["ID"]) + "'", con);
+            SqlCommand checkCategory = new SqlCommand("select count(*) from tblCategory where categoryName='" + tbxCategoryName.Text + "' and userID='" + Convert.ToInt32(Session["LoggedIn"]) + "'", con);
             int temp = Convert.ToInt32(checkCategory.ExecuteScalar());
             if (temp == 1)
             {
@@ -58,17 +58,17 @@ public partial class _Default : System.Web.UI.Page
 
         }
     }
-    
+
     protected void tbxRecipientEmail_TextChanged(object sender, EventArgs e)
     {
         using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["constr"].ConnectionString))
         {
-            int temp=0;
+            int temp = 0;
             con.Open();
             using (SqlConnection con2 = new SqlConnection(ConfigurationManager.ConnectionStrings["constr"].ConnectionString))
             {
                 con2.Open();
-                SqlCommand getCategories = new SqlCommand("select categoryId from tblCategory where userId='" + Convert.ToInt32(Session["ID"]) + "'", con2);
+                SqlCommand getCategories = new SqlCommand("select categoryId from tblCategory where userId='" + Convert.ToInt32(Session["LoggedIn"]) + "'", con2);
                 using (SqlDataReader rdCategoryID = getCategories.ExecuteReader())
                 {
                     while (rdCategoryID.Read())
@@ -82,7 +82,7 @@ public partial class _Default : System.Web.UI.Page
                             break;
                         }
                         else
-                        {                           
+                        {
                             lblInvalidEmail.Text = null;
                             btnRecipientAdder.Enabled = true;
                         }
@@ -98,23 +98,23 @@ public partial class _Default : System.Web.UI.Page
         Page.Validate("Recipient");
         if (!Page.IsValid)
             return;
-      
-            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["constr"].ConnectionString))
-            {
-                con.Open();
-                SqlCommand insertRecipientInfo = new SqlCommand("insert into tblRecipients(name,email,categoryId) values(@name,@email,@CategoryId)", con);
-                insertRecipientInfo.Parameters.AddWithValue("@name", tbxRecipientName.Text);
-                insertRecipientInfo.Parameters.AddWithValue("@email", tbxRecipientEmail.Text);
-                insertRecipientInfo.Parameters.AddWithValue("@CategoryId", ddlCategoryName.SelectedItem.Value);
-                insertRecipientInfo.ExecuteNonQuery();
-                ClientScript.RegisterStartupScript(GetType(), "alert", "alert('Recipient Added Succesfuly');", true);
+
+        using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["constr"].ConnectionString))
+        {
+            con.Open();
+            SqlCommand insertRecipientInfo = new SqlCommand("insert into tblRecipients(name,email,categoryId) values(@name,@email,@CategoryId)", con);
+            insertRecipientInfo.Parameters.AddWithValue("@name", tbxRecipientName.Text);
+            insertRecipientInfo.Parameters.AddWithValue("@email", tbxRecipientEmail.Text);
+            insertRecipientInfo.Parameters.AddWithValue("@CategoryId", ddlCategoryName.SelectedItem.Value);
+            insertRecipientInfo.ExecuteNonQuery();
+            ClientScript.RegisterStartupScript(GetType(), "alert", "alert('Recipient Added Succesfuly');", true);
             tbxRecipientEmail.Text = tbxRecipientName.Text = "";
         }
-        }
+    }
 
     protected void btnLogout_Click(object sender, EventArgs e)
     {
-        Session["ID"] = null;
+        Session["LoggedIn"] = null;
         Response.Redirect("~/appHomepage.aspx");
     }
 }
