@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
@@ -17,20 +18,17 @@ public partial class UserPanel_Default : System.Web.UI.Page
         }
         else
         {
-            if (!IsPostBack)
+            //adding data to the drop down list in input category name.
+            string userID = Session["LoggedIn"].ToString();
+            string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+            using (SqlConnection con = new SqlConnection(constr))
             {
-                //adding data to the drop down list in input category name.
-                string userID = Session["LoggedIn"].ToString();
-                string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
-                using (SqlConnection con = new SqlConnection(constr))
-                {
-                    SqlCommand com = new SqlCommand("SELECT categoryName,categoryId FROM tblCategory WHERE userId='" + userID + "'", con);
-                    con.Open();
-                    ddlCategoryName.DataSource = com.ExecuteReader();
-                    ddlCategoryName.DataTextField = "categoryName";
-                    ddlCategoryName.DataValueField = "categoryId";
-                    ddlCategoryName.DataBind();
-                }
+                SqlCommand com = new SqlCommand("SELECT categoryName,categoryId FROM tblCategory WHERE userId='" + userID + "'", con);
+                con.Open();
+                ddlCategoryName.DataSource = com.ExecuteReader();
+                ddlCategoryName.DataTextField = "categoryName";
+                ddlCategoryName.DataValueField = "categoryId";
+                ddlCategoryName.DataBind();
             }
         }
     }
@@ -53,7 +51,6 @@ public partial class UserPanel_Default : System.Web.UI.Page
             if (temp == 1)
             {
                 lblCategoryAlreadyAdded.Visible = true;
-                lblCategoryAdder.Visible = false;
             }
             else
             {
@@ -61,63 +58,52 @@ public partial class UserPanel_Default : System.Web.UI.Page
                 insertCategory.Parameters.AddWithValue("@userId", userId);
                 insertCategory.Parameters.AddWithValue("@categoryName", tbxCategoryName.Text.Trim());
                 insertCategory.ExecuteNonQuery();
-                lblCategoryAdder.Visible = true;
-                lblCategoryAlreadyAdded.Visible = false;
+                Response.Redirect("~/UserPanel/userHomePage.aspx");
             }
         }
     }
 
-    //yaha se padhna hai
-    protected void tbxRecipientEmail_TextChanged(object sender, EventArgs e)
-    {
-        using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["constr"].ConnectionString))
-        {
-            int temp = 0;
-            con.Open();
-            using (SqlConnection con2 = new SqlConnection(ConfigurationManager.ConnectionStrings["constr"].ConnectionString))
-            {
-                con2.Open();
-                SqlCommand getCategories = new SqlCommand("select categoryId from tblCategory where userId='" + Convert.ToInt32(Session["LoggedIn"]) + "'", con2);
-                using (SqlDataReader rdCategoryID = getCategories.ExecuteReader())
-                {
-                    while (rdCategoryID.Read())
-                    {
-                        SqlCommand checkEmail = new SqlCommand("select count(*) from tblRecipients where categoryId='" + rdCategoryID["categoryId"] + "' and email='" + tbxRecipientEmail.Text + "'", con);
-                        temp = Convert.ToInt32(checkEmail.ExecuteScalar());
-                        if (temp == 1)
-                        {
-                            lblInvalidEmail.Text = "Email already registered";
-                            btnRecipientAdder.Enabled = false;
-                            break;
-                        }
-                        else
-                        {
-                            lblInvalidEmail.Text = null;
-                            btnRecipientAdder.Enabled = true;
-                        }
-                    }
-                    if (temp == 1) btnRecipientAdder.Enabled = false;
-                }
-            }
-        }
-    }
-
-    protected void btnRecipientAdder_Click1(object sender, EventArgs e)
+    protected void btnRecipientAdd_Click(object sender, EventArgs e)
     {
         Page.Validate("Recipient");
         if (!Page.IsValid)
             return;
 
-        using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["constr"].ConnectionString))
+        //Whether a recipient can be added or not is decided here.
+
+        lblCategoryName.Visible = false;
+        lblCategoryAlreadyAdded.Visible = false;
+        int temp = 0;
+        string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+        using (SqlConnection con = new SqlConnection(constr))
         {
-            con.Open();
-            SqlCommand insertRecipientInfo = new SqlCommand("insert into tblRecipients(name,email,categoryId) values(@name,@email,@CategoryId)", con);
-            insertRecipientInfo.Parameters.AddWithValue("@name", tbxRecipientName.Text);
-            insertRecipientInfo.Parameters.AddWithValue("@email", tbxRecipientEmail.Text);
-            insertRecipientInfo.Parameters.AddWithValue("@CategoryId", ddlCategoryName.SelectedItem.Value);
-            insertRecipientInfo.ExecuteNonQuery();
-            ClientScript.RegisterStartupScript(GetType(), "alert", "alert('Recipient Added Succesfuly');", true);
-            tbxRecipientEmail.Text = tbxRecipientName.Text = "";
+            using (SqlCommand cmd = new SqlCommand("SELECT count(*) FROM tblRecipients WHERE email ='" + tbxRecipientEmail.Text.Trim() + "'and categoryId='" + Convert.ToInt32(ddlCategoryName.SelectedItem.Value) + "'"))
+            {
+                using (SqlDataAdapter sda = new SqlDataAdapter())
+                {
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Connection = con;
+                    con.Open();
+                    temp = Convert.ToInt32(cmd.ExecuteScalar());
+                    con.Close();
+                }
+            }
+            if (temp != 0)
+            {
+                lblEmailAlreadyExists.Visible = true;
+            }
+            else
+            {
+                con.Open();
+                SqlCommand insertRecipientInfo = new SqlCommand("INSERT INTO tblRecipients(name,email,categoryId) VALUES(@name,@email,@categoryId)", con);
+                insertRecipientInfo.Parameters.AddWithValue("@name", tbxRecipientName.Text.Trim());
+                insertRecipientInfo.Parameters.AddWithValue("@email", tbxRecipientEmail.Text.Trim());
+                insertRecipientInfo.Parameters.AddWithValue("@categoryId", ddlCategoryName.SelectedItem.Value);
+                insertRecipientInfo.ExecuteNonQuery();
+                tbxRecipientEmail.Text = tbxRecipientName.Text = "";
+                tbxRecipientEmail.Text = tbxRecipientName.Text = "";
+                lblEmailAlreadyExists.Visible = false;
+            }
         }
     }
 
