@@ -63,7 +63,7 @@ public partial class UserPanel_Default : System.Web.UI.Page
                     }
                 }
             }
-        foreach(ListItem item in rbTemplates.Items)
+            foreach (ListItem item in rbTemplates.Items)
             {
                 if (Convert.ToInt32(item.Value) == 5)
                     item.Selected = true;
@@ -108,10 +108,10 @@ public partial class UserPanel_Default : System.Web.UI.Page
         {
             CheckBox cbCategory = (CheckBox)i.FindControl("cbCategory");
             Repeater rptrRecipient = (Repeater)i.FindControl("rptrRecipient");
-            foreach(RepeaterItem j in rptrRecipient.Items)
+            foreach (RepeaterItem j in rptrRecipient.Items)
             {
                 CheckBox cbRecipient = (CheckBox)j.FindControl("cbRecipient");
-                if(!cbRecipient.Checked)
+                if (!cbRecipient.Checked)
                 {
                     cbSelectAll.Checked = false;
                     cbCategory.Checked = false;
@@ -129,25 +129,25 @@ public partial class UserPanel_Default : System.Web.UI.Page
         using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["constr"].ConnectionString))
         {
             con.Open();
-            SqlCommand saveEmail = new SqlCommand("spSaveMail",con);
+            SqlCommand saveEmail = new SqlCommand("spSaveMail", con);
             saveEmail.CommandType = System.Data.CommandType.StoredProcedure;
-            saveEmail.Parameters.AddWithValue("@body",tbxMailBody.Text);
-            saveEmail.Parameters.AddWithValue("@templateId",rbTemplates.SelectedItem.Value);
-            saveEmail.Parameters.AddWithValue("@userId",Convert.ToInt32(Session["LoggedIn"]));
-            saveEmail.Parameters.AddWithValue("@subject",tbxMailSubject.Text);
+            saveEmail.Parameters.AddWithValue("@body", tbxMailBody.Text);
+            saveEmail.Parameters.AddWithValue("@templateId", rbTemplates.SelectedItem.Value);
+            saveEmail.Parameters.AddWithValue("@userId", Convert.ToInt32(Session["LoggedIn"]));
+            saveEmail.Parameters.AddWithValue("@subject", tbxMailSubject.Text);
             int sentMailId = Convert.ToInt32(saveEmail.ExecuteScalar());
-            foreach(RepeaterItem i in rptrCategory.Items)
+            foreach (RepeaterItem i in rptrCategory.Items)
             {
                 Repeater rptrRecipient = (Repeater)i.FindControl("rptrRecipient");
-                foreach(RepeaterItem j in rptrRecipient.Items)
+                foreach (RepeaterItem j in rptrRecipient.Items)
                 {
                     HiddenField hfRecipientID = (HiddenField)j.FindControl("hfRecipientId");
                     CheckBox cbRecipient = (CheckBox)j.FindControl("cbRecipient");
-                    if(cbRecipient.Checked)
+                    if (cbRecipient.Checked)
                     {
-                        SqlCommand saveRecipientId = new SqlCommand("insert into tblMailRecipient(sentMailId,recipientId) values(@sentMailId,@recipientId)",con);
-                        saveRecipientId.Parameters.AddWithValue("@sentMailId",sentMailId);
-                        saveRecipientId.Parameters.AddWithValue("@recipientId",hfRecipientID.Value);
+                        SqlCommand saveRecipientId = new SqlCommand("insert into tblMailRecipient(sentMailId,recipientId) values(@sentMailId,@recipientId)", con);
+                        saveRecipientId.Parameters.AddWithValue("@sentMailId", sentMailId);
+                        saveRecipientId.Parameters.AddWithValue("@recipientId", hfRecipientID.Value);
                         saveRecipientId.ExecuteNonQuery();
                         sendEmail(Convert.ToInt32(hfRecipientID.Value));
                     }
@@ -163,27 +163,24 @@ public partial class UserPanel_Default : System.Web.UI.Page
         {
             con.Open();
             string body = "";
-            SqlCommand getRecipientname = new SqlCommand("select name from tblRecipients where recipientId='"+recipientId+"'",con);
+            SqlCommand getRecipientname = new SqlCommand("select name from tblRecipients where recipientId='" + recipientId + "'", con);
             string recipientName = getRecipientname.ExecuteScalar().ToString();
-            SqlCommand getRecipientEmail = new SqlCommand("select email from tblRecipients where recipientId='"+recipientId+"'",con);
+            SqlCommand getRecipientEmail = new SqlCommand("select email from tblRecipients where recipientId='" + recipientId + "'", con);
             string recipientEmail = getRecipientEmail.ExecuteScalar().ToString();
-            SqlCommand getUserEmail = new SqlCommand("select emailId from tblUSers where userId='"+Convert.ToInt32(Session["LoggedIn"])+"'",con);
+            SqlCommand getUserEmail = new SqlCommand("select emailId from tblUSers where userId='" + Convert.ToInt32(Session["LoggedIn"]) + "'", con);
             string userEmail = getUserEmail.ExecuteScalar().ToString();
-            if (rbTemplates.SelectedItem == null) body = tbxMailBody.Text;
-            else
+            SqlCommand getTemplateFilePath = new SqlCommand("select filePath from tblTemplates where templateId='" + rbTemplates.SelectedItem.Value + "'", con);
+            string templateFilePath = getTemplateFilePath.ExecuteScalar().ToString();
+            using (StreamReader reader = new StreamReader(Server.MapPath(templateFilePath)))
             {
-                SqlCommand getTemplateFilePath = new SqlCommand("select filePath from tblTemplates where templateId='" + rbTemplates.SelectedItem.Value + "'", con);
-                string templateFilePath = getTemplateFilePath.ExecuteScalar().ToString();
-                using (StreamReader reader = new StreamReader(Server.MapPath(templateFilePath)))
-                {
-                    body = reader.ReadToEnd();
-                    body = body.Replace("{RecipientName}", recipientName);
-                    body = body.Replace("{body}", tbxMailBody.Text);
-                }
+                body = reader.ReadToEnd();
+                body = body.Replace("{RecipientName}", recipientName);
+                body = body.Replace("{body}", tbxMailBody.Text);
             }
+
             con.Close();
-                con.Open();
-            using(MailMessage mail = new MailMessage(userEmail, recipientEmail))
+            con.Open();
+            using (MailMessage mail = new MailMessage(userEmail, recipientEmail))
             {
                 mail.Subject = tbxMailSubject.Text;
                 mail.Body = body;
