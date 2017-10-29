@@ -1,6 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/UserPanel/userPanel.master" AutoEventWireup="true" CodeFile="userHomePage.aspx.cs" Inherits="UserPanel_Default" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
+   
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
     <table style="caption-side: top">
@@ -24,7 +25,7 @@
                     <td>
                         <asp:Label ID="lblRecipeintName" runat="server" Text="Recipient Name"></asp:Label></td>
                     <td>
-                        <asp:TextBox ID="tbxRecipientName" ValidationGroup="Recipeint" runat="server" placeholder="Enter Recipient Name"></asp:TextBox></td>
+                        <asp:TextBox ID="tbxRecipientName" ValidationGroup="Recipient" runat="server" placeholder="Enter Recipient Name"></asp:TextBox></td>
                     <td><asp:RequiredFieldValidator runat="server" ValidationGroup="Recipient" ID="RFVRecipientName" ControlToValidate="tbxRecipientName" ErrorMessage="*Mandatory Field" ForeColor="Red"></asp:RequiredFieldValidator></td>
                     
                 </tr>
@@ -34,7 +35,7 @@
                     <td><asp:TextBox ID="tbxRecipientEmail" runat="server" ValidationGroup="Recipient" AutoPostBack="true" OnTextChanged="tbxRecipientEmail_TextChanged"  placeholder="Enter Recipeint Email"></asp:TextBox></td>    
                     <td><asp:RequiredFieldValidator runat="server" ID="RFVRecipientEmail" ValidationGroup="Recipient" ControlToValidate="tbxRecipientEmail" ErrorMessage="*Mandatory Field" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator> </td>
                     <td><asp:Label runat="server" ID="lblInvalidEmail" ForeColor="Red" ></asp:Label></td>
-                    <asp:RequiredFieldValidator ID="RegexEmail" runat="server" ControlToValidate="tbxRecipientEmail" ValidationExpression="^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$" ErrorMessage="*Invalid Email" ForeColor="Red"></asp:RequiredFieldValidator>
+                    <asp:RequiredFieldValidator ValidationGroup="Recipient" ID="RegexEmail" runat="server" ControlToValidate="tbxRecipientEmail" ValidationExpression="^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$" ErrorMessage="*Invalid Email" ForeColor="Red"></asp:RequiredFieldValidator>
                 
                 </tr>
                 <tr>

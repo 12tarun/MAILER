@@ -40,7 +40,7 @@ public partial class UserPanel_Default : System.Web.UI.Page
         {
             con.Open();
             string message;
-            SqlCommand checkCategory = new SqlCommand("select count(*) from tblCategory where categoryName='" + tbxCategoryName.Text + "' and userID='" + Convert.ToInt32(Session["LoggedIn"]) + "'", con);
+            SqlCommand checkCategory = new SqlCommand("select count(*) from tblCategory where categoryName='" + tbxCategoryName.Text + "' and userId='" + Convert.ToInt32(Session["LoggedIn"]) + "'", con);
             int temp = Convert.ToInt32(checkCategory.ExecuteScalar());
             if (temp == 1)
             {
@@ -49,7 +49,7 @@ public partial class UserPanel_Default : System.Web.UI.Page
             else
             {
                 SqlCommand insertCategory = new SqlCommand("insert into tblCategory(userId,categoryName) values(@userID,@categoryName)", con);
-                insertCategory.Parameters.AddWithValue("@userId", Convert.ToInt32(Session["ID"]));
+                insertCategory.Parameters.AddWithValue("@userId", Convert.ToInt32(Session["LoggedIn"]));
                 insertCategory.Parameters.AddWithValue("@categoryName", tbxCategoryName.Text);
                 insertCategory.ExecuteNonQuery();
                 message = "Category Added Succesfuly";

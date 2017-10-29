@@ -13,7 +13,7 @@
     <div>
         <div class="topnav">
             <a class="active" href="userHomePage.aspx">Recipient Settings</a>
-            <a href="">Compose Email</a>
+            <a href="composeEmail.aspx">Compose Email</a>
             <a href="">Sent Emails</a>
             <a href="">See Recipients List</a>
             
