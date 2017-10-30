@@ -16,7 +16,7 @@
             <a href="composeEmail.aspx">Compose Email</a>
             <a href="sentMails.aspx">Sent Emails</a>
             <a href="recipientList.aspx">See Recipients List</a>
-            
+            <a href="templateSettings.aspx">Template Settings</a>
             <asp:Button ID="btnLogout" runat="server" BackColor="#333" BorderWidth="0px" Text="Logout" ForeColor="white" OnClick="btnLogout_Click" />
                 
             
