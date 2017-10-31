@@ -123,16 +123,94 @@ public partial class UserPanel_Default : System.Web.UI.Page
 
     protected void btnUploadExcel_Click(object sender, EventArgs e)
     {
+        int userId = Convert.ToInt32(Session["LoggedIn"]);
+
         string cs = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
         string excelfile = FileUploadExcel.PostedFile.FileName;
         if (excelfile.EndsWith("xls") || excelfile.EndsWith("xlsx"))
         {
+            lblWrongExcel.Visible = false;
+            lblRightExcel.Visible = true;
+
             string path = Server.MapPath("~/UploadedExcel/" + excelfile);
             if (File.Exists(path))
             {
                 File.Delete(path);
             }
             FileUploadExcel.SaveAs(path);
+
+            string categoryName = "";
+            for(int j=0; j< excelfile.Length;j++)
+            {
+                if(excelfile[j] == '.')
+                {
+                    break;
+                }
+                else
+                {
+                    categoryName = categoryName + excelfile[j];
+                }
+            }
+
+            int temp = 0;
+            int categoryId = 0;
+            using (SqlConnection con = new SqlConnection(cs))
+            {
+                using (SqlCommand cmd = new SqlCommand("SELECT count(*) FROM tblCategory WHERE categoryName ='" + categoryName + "'"))
+                {
+                    using (SqlDataAdapter sda = new SqlDataAdapter())
+                    {
+                        cmd.CommandType = CommandType.Text;
+                        cmd.Connection = con;
+                        con.Open();
+                        temp = Convert.ToInt32(cmd.ExecuteScalar());
+                        con.Close();
+                    }
+                }
+                if(temp == 1)
+                {
+                    using (SqlCommand cmd = new SqlCommand("SELECT categoryId FROM tblCategory WHERE categoryName ='" + categoryName + "'"))
+                    {
+                        using (SqlDataAdapter sda = new SqlDataAdapter())
+                        {
+                            cmd.CommandType = CommandType.Text;
+                            cmd.Connection = con;
+                            con.Open();
+                            categoryId = Convert.ToInt32(cmd.ExecuteScalar());
+                            con.Close();
+                        }
+                    }
+                }
+                else
+                {
+       
+                    string query = "INSERT INTO tblCategory(userId, categoryName) VALUES(@userId,@categoryName)";
+                    using (SqlConnection connect = new SqlConnection(cs))
+                    {
+                        using (SqlCommand cmd = new SqlCommand(query))
+                        {
+                            cmd.Connection = connect;
+                            connect.Open();
+                            cmd.Parameters.AddWithValue("@userId", userId);
+                            cmd.Parameters.AddWithValue("@categoryName", categoryName);
+                            cmd.ExecuteNonQuery();
+                            con.Close();
+                        }
+                    }
+
+                    using (SqlCommand cmd = new SqlCommand("SELECT categoryId FROM tblCategory WHERE categoryName ='" + categoryName + "'"))
+                    {
+                        using (SqlDataAdapter sda = new SqlDataAdapter())
+                        {
+                            cmd.CommandType = CommandType.Text;
+                            cmd.Connection = con;
+                            con.Open();
+                            categoryId = Convert.ToInt32(cmd.ExecuteScalar());
+                            con.Close();
+                        }
+                    }
+                }
+            }
 
             Excel.Application application = new Excel.Application();
             Excel.Workbook workbook = application.Workbooks.Open(path);
@@ -143,14 +221,13 @@ public partial class UserPanel_Default : System.Web.UI.Page
 
             {
                 List<tblRecipients> datacheckUpload = new List<tblRecipients>();
-                for (int row = 2; row <= range.Rows.Count; row++)
+                for (int row = 2; row <= rowCount; row++)
                 {
                     if (((Excel.Range)range.Cells[row, 1]).Text.ToString() != "")
                     {
                         datacheckUpload.Add(new tblRecipients
                         {
-                            categoryId = Convert.ToInt32(((Excel.Range)range.Cells[row, 1]).Text),
-                            name = ((Excel.Range)range.Cells[row, 2]).Text.ToString(),
+                            name = ((Excel.Range)range.Cells[row, 1]).Text.ToString(),
                             email = ((Excel.Range)range.Cells[row, 2]).Text.ToString(),
                         });
                     }
@@ -162,7 +239,7 @@ public partial class UserPanel_Default : System.Web.UI.Page
             here:
                 foreach (var item in datacheckUpload)
                 {
-                    if (item.categoryId != 0)
+                    if (item.name != "")
                     {
                         string query = "INSERT INTO tblRecipients(categoryId, name, email) VALUES(@categoryId,@name,@email)";
                         using (SqlConnection connect = new SqlConnection(cs))
@@ -171,7 +248,7 @@ public partial class UserPanel_Default : System.Web.UI.Page
                             {
                                 cmd.Connection = connect;
                                 connect.Open();
-                                cmd.Parameters.AddWithValue("@categoryId", item.categoryId);
+                                cmd.Parameters.AddWithValue("@categoryId", categoryId);
                                 cmd.Parameters.AddWithValue("@name", item.name);
                                 cmd.Parameters.AddWithValue("@email", item.email);
                                 cmd.ExecuteNonQuery();
@@ -184,9 +261,12 @@ public partial class UserPanel_Default : System.Web.UI.Page
                 Marshal.ReleaseComObject(worksheet);
                 Marshal.ReleaseComObject(workbook);
                 Marshal.ReleaseComObject(application);
-
-                //ScriptManager.RegisterClientScriptBlock(this, GetType()."alertMessage", "alert('Spreadsheet')");
             }
+        }
+        else
+        {
+            lblWrongExcel.Visible = true;
+            lblRightExcel.Visible = false;
         }
     }
 }

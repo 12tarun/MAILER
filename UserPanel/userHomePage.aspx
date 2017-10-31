@@ -81,5 +81,11 @@
     <asp:Label ID="lblSelectExcel" runat="server" Text="Select File:"></asp:Label>
     <asp:FileUpload ID="FileUploadExcel" runat="server" />
     <asp:Button ID="btnUploadExcel" runat="server" Text="Upload" OnClick="btnUploadExcel_Click" />
+    <br />
+    <br />
+    <asp:Label ID="lblWrongExcel" Text="Only .xls, xlsx file is acceptable." Visible="false" ForeColor="Red" runat="server" ></asp:Label>
+    <br />
+    <asp:Label ID="lblRightExcel" Text="Excel sheet added successfully!" Visible="false" ForeColor="Blue" runat="server" ></asp:Label>
+    
 </asp:Content>
 
