@@ -3,15 +3,21 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Excel = Microsoft.Office.Interop.Excel;
+using MAILER;
 
 public partial class UserPanel_Default : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        FileUploadExcel.Attributes["onchange"] = "CheckFile(this)";
+
         if (Session["LoggedIn"] == null)
         {
             Response.Redirect("~/UserPanel/Registration.aspx");
@@ -44,7 +50,7 @@ public partial class UserPanel_Default : System.Web.UI.Page
         int userId = Convert.ToInt32(Session["LoggedIn"]);
         string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
         using (SqlConnection con = new SqlConnection(constr))
-        {     
+        {
             SqlCommand checkCategory = new SqlCommand("select count(*) from tblCategory where categoryName='" + tbxCategoryName.Text.Trim() + "' and userID='" + userId + "'", con);
             con.Open();
             int temp = Convert.ToInt32(checkCategory.ExecuteScalar());
@@ -111,5 +117,76 @@ public partial class UserPanel_Default : System.Web.UI.Page
     {
         Session["LoggedIn"] = null;
         Response.Redirect("~/appHomepage.aspx");
+    }
+
+    //Uploading recipients through MS-Excel Sheet
+
+    protected void btnUploadExcel_Click(object sender, EventArgs e)
+    {
+        string cs = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+        string excelfile = FileUploadExcel.PostedFile.FileName;
+        if (excelfile.EndsWith("xls") || excelfile.EndsWith("xlsx"))
+        {
+            string path = Server.MapPath("~/UploadedExcel/" + excelfile);
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+            }
+            FileUploadExcel.SaveAs(path);
+
+            Excel.Application application = new Excel.Application();
+            Excel.Workbook workbook = application.Workbooks.Open(path);
+            Excel.Worksheet worksheet = (Microsoft.Office.Interop.Excel.Worksheet)workbook.ActiveSheet;
+            Excel.Range range = worksheet.UsedRange;
+            int rowCount = range.Rows.Count;
+            int colCount = range.Columns.Count;
+
+            {
+                List<tblRecipients> datacheckUpload = new List<tblRecipients>();
+                for (int row = 2; row <= range.Rows.Count; row++)
+                {
+                    if (((Excel.Range)range.Cells[row, 1]).Text.ToString() != "")
+                    {
+                        datacheckUpload.Add(new tblRecipients
+                        {
+                            categoryId = Convert.ToInt32(((Excel.Range)range.Cells[row, 1]).Text),
+                            name = ((Excel.Range)range.Cells[row, 2]).Text.ToString(),
+                            email = ((Excel.Range)range.Cells[row, 2]).Text.ToString(),
+                        });
+                    }
+                    else
+                    {
+                        goto here;
+                    }
+                }
+            here:
+                foreach (var item in datacheckUpload)
+                {
+                    if (item.categoryId != 0)
+                    {
+                        string query = "INSERT INTO tblRecipients(categoryId, name, email) VALUES(@categoryId,@name,@email)";
+                        using (SqlConnection connect = new SqlConnection(cs))
+                        {
+                            using (SqlCommand cmd = new SqlCommand(query))
+                            {
+                                cmd.Connection = connect;
+                                connect.Open();
+                                cmd.Parameters.AddWithValue("@categoryId", item.categoryId);
+                                cmd.Parameters.AddWithValue("@name", item.name);
+                                cmd.Parameters.AddWithValue("@email", item.email);
+                                cmd.ExecuteNonQuery();
+                            }
+                        }
+                    }
+                }
+                workbook.Close(true, null, null);
+
+                Marshal.ReleaseComObject(worksheet);
+                Marshal.ReleaseComObject(workbook);
+                Marshal.ReleaseComObject(application);
+
+                //ScriptManager.RegisterClientScriptBlock(this, GetType()."alertMessage", "alert('Spreadsheet')");
+            }
+        }
     }
 }

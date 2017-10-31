@@ -3,6 +3,13 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
+    <script type="text/javascript">
+        function CheckFile(fileUpload) {
+            if (fileUpload.value != '') {
+                document.getElementById("<%=btnUploadExcel.ClientID%>").click();
+            }
+        }
+    </script>
     <table style="caption-side: top">
         <caption>Add Category</caption>
         <tr>
@@ -68,6 +75,11 @@
             </td>
         </tr>
     </table>
-
+    <br />
+    <br />
+    <h4>Add recipients through MS-Excel</h4>
+    <asp:Label ID="lblSelectExcel" runat="server" Text="Select File:"></asp:Label>
+    <asp:FileUpload ID="FileUploadExcel" runat="server" />
+    <asp:Button ID="btnUploadExcel" runat="server" Text="Upload" OnClick="btnUploadExcel_Click" />
 </asp:Content>
 
