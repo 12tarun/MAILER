@@ -84,8 +84,5 @@
     <br />
     <br />
     <asp:Label ID="lblWrongExcel" Text="Only .xls, xlsx file is acceptable." Visible="false" ForeColor="Red" runat="server" ></asp:Label>
-    <br />
-    <asp:Label ID="lblRightExcel" Text="Excel sheet added successfully!" Visible="false" ForeColor="Blue" runat="server" ></asp:Label>
-    
 </asp:Content>
 

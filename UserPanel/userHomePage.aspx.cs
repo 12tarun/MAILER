@@ -130,7 +130,6 @@ public partial class UserPanel_Default : System.Web.UI.Page
         if (excelfile.EndsWith("xls") || excelfile.EndsWith("xlsx"))
         {
             lblWrongExcel.Visible = false;
-            lblRightExcel.Visible = true;
 
             string path = Server.MapPath("~/UploadedExcel/" + excelfile);
             if (File.Exists(path))
@@ -241,17 +240,35 @@ public partial class UserPanel_Default : System.Web.UI.Page
                 {
                     if (item.name != "")
                     {
-                        string query = "INSERT INTO tblRecipients(categoryId, name, email) VALUES(@categoryId,@name,@email)";
-                        using (SqlConnection connect = new SqlConnection(cs))
+                        int exist = 0;
+                        using (SqlConnection con = new SqlConnection(cs))
                         {
-                            using (SqlCommand cmd = new SqlCommand(query))
+                            using (SqlCommand cmd = new SqlCommand("SELECT count(*) FROM tblRecipients WHERE email ='" + item.email + "'and categoryId ='" + categoryId + "'"))
                             {
-                                cmd.Connection = connect;
-                                connect.Open();
-                                cmd.Parameters.AddWithValue("@categoryId", categoryId);
-                                cmd.Parameters.AddWithValue("@name", item.name);
-                                cmd.Parameters.AddWithValue("@email", item.email);
-                                cmd.ExecuteNonQuery();
+                                using (SqlDataAdapter sda = new SqlDataAdapter())
+                                {
+                                    cmd.CommandType = CommandType.Text;
+                                    cmd.Connection = con;
+                                    con.Open();
+                                    exist = Convert.ToInt32(cmd.ExecuteScalar());
+                                    con.Close();
+                                }
+                            }
+                            if (exist != 1)
+                            {
+                                string query = "INSERT INTO tblRecipients(categoryId, name, email) VALUES(@categoryId,@name,@email)";
+                                using (SqlConnection connect = new SqlConnection(cs))
+                                {
+                                    using (SqlCommand cmd = new SqlCommand(query))
+                                    {
+                                        cmd.Connection = connect;
+                                        connect.Open();
+                                        cmd.Parameters.AddWithValue("@categoryId", categoryId);
+                                        cmd.Parameters.AddWithValue("@name", item.name);
+                                        cmd.Parameters.AddWithValue("@email", item.email);
+                                        cmd.ExecuteNonQuery();
+                                    }
+                                }
                             }
                         }
                     }
@@ -262,11 +279,11 @@ public partial class UserPanel_Default : System.Web.UI.Page
                 Marshal.ReleaseComObject(workbook);
                 Marshal.ReleaseComObject(application);
             }
+            Response.Redirect("~/UserPanel/userHomePage.aspx");
         }
         else
         {
             lblWrongExcel.Visible = true;
-            lblRightExcel.Visible = false;
         }
     }
 }
