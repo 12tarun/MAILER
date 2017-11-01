@@ -3,6 +3,20 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
+
+    <br />
+    <br />
+    <asp:Label ID="lblUsername" runat="server" Text="Welcome "></asp:Label>
+    <br />
+    <br />
+    <asp:Image ID="imgDP" Width="200px" Height="250px" runat="server" />
+    <br />
+    <asp:FileUpload ID="fileUploadDP" runat="server" />
+    <asp:Button ID="btnDP" runat="server" Text="update" OnClick="btnDP_Click" />
+    <br />
+    <br />
+    <asp:Label ID="lblWrongExtension" Text="Only .jpg or .png file is acceptable." Visible="false" runat="server" ForeColor="Red"></asp:Label>
+
     <script type="text/javascript">
         function CheckFile(fileUpload) {
             if (fileUpload.value != '') {
@@ -83,6 +97,6 @@
     <asp:Button ID="btnUploadExcel" runat="server" Text="Upload" OnClick="btnUploadExcel_Click" />
     <br />
     <br />
-    <asp:Label ID="lblWrongExcel" Text="Only .xls, xlsx file is acceptable." Visible="false" ForeColor="Red" runat="server" ></asp:Label>
+    <asp:Label ID="lblWrongExcel" Text="Only .xls, xlsx file is acceptable." Visible="false" ForeColor="Red" runat="server"></asp:Label>
 </asp:Content>
 
