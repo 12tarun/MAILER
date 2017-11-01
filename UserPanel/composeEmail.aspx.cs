@@ -9,6 +9,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Web;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
 public partial class UserPanel_Default : System.Web.UI.Page
@@ -23,7 +24,7 @@ public partial class UserPanel_Default : System.Web.UI.Page
             using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["constr"].ConnectionString))
             {
                 con.Open();
-                using (SqlDataAdapter da = new SqlDataAdapter("select displayName,templateId from tblTemplates where userId='6' or userId='" + Convert.ToInt32(Session["LoggedIn"]) + "'", con))
+                using (SqlDataAdapter da = new SqlDataAdapter("select displayName,templateId from tblTemplates where userId='8' or userId='" + Convert.ToInt32(Session["LoggedIn"]) + "'", con))
                 {
                     DataSet ds2 = new DataSet();
                     da.Fill(ds2);
@@ -192,8 +193,33 @@ public partial class UserPanel_Default : System.Web.UI.Page
                 smtp.UseDefaultCredentials = true;
                 smtp.Credentials = NetworkCred;
                 smtp.Port = 587;
+                
                 smtp.Send(mail);
             }
         }
+    }
+
+
+
+    protected void rbTemplates_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        string filePath,body;
+        
+        using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["constr"].ConnectionString))
+        {
+            con.Open();
+            SqlCommand getTemplatePath = new SqlCommand("select filePath from tblTemplates where templateId='"+rbTemplates.SelectedItem.Value+"'",con);
+             filePath = getTemplatePath.ExecuteScalar().ToString();
+        }
+        using (StreamReader reader = new StreamReader(Server.MapPath(filePath)))
+        {
+            body = reader.ReadToEnd();
+            
+        }
+        this.I1.Src =filePath;
+        
+        //templatePrevie.Text = body;
+        //    HtmlControl frame1 = (HtmlControl)this.FindControl("I1");
+        //frame1.Attributes.Add("src",Server.MapPath(filePath));
     }
 }

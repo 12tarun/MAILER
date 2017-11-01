@@ -20,8 +20,8 @@ public partial class UserPanel_Default : System.Web.UI.Page
             SqlCommand getMailsInfo = new SqlCommand("select * from tblSentMails where userId='" + Convert.ToInt32(Session["LoggedIn"]) + "'",con);
             SqlDataReader drMailInfo = getMailsInfo.ExecuteReader();
             DataTable table = new DataTable();
-            table.Columns.Add("Body");
             table.Columns.Add("Subject");
+            table.Columns.Add("Body");
             table.Columns.Add("Recipients");
             table.Columns.Add("Template");
             table.Columns.Add("Date");
