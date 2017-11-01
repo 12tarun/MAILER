@@ -1,7 +1,7 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Registration.aspx.cs" Inherits="Registration" %>
 
 <!DOCTYPE html>
-
+<!--This is Registration file -->
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
