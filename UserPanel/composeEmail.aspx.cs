@@ -18,13 +18,17 @@ public partial class UserPanel_Default : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (Session["LoggedIn"] == null) Response.Redirect("~/UserPanel/Registration.aspx");
+        if (Session["LoggedIn"] == null)
+        {
+            Response.Redirect("~/UserPanel/Registration.aspx");
+        }
+
         if (!IsPostBack)
         {
             using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["constr"].ConnectionString))
             {
                 con.Open();
-                using (SqlDataAdapter da = new SqlDataAdapter("select displayName,templateId from tblTemplates where userId='8' or userId='" + Convert.ToInt32(Session["LoggedIn"]) + "'", con))
+                using (SqlDataAdapter da = new SqlDataAdapter("select displayName,templateId from tblTemplates where userId='5' or userId='" + Convert.ToInt32(Session["LoggedIn"]) + "'", con))
                 {
                     DataSet ds2 = new DataSet();
                     da.Fill(ds2);
@@ -66,7 +70,7 @@ public partial class UserPanel_Default : System.Web.UI.Page
             }
             foreach (ListItem item in rbTemplates.Items)
             {
-                if (Convert.ToInt32(item.Value) == 5)
+                if (rbTemplates.Text=="noDesignTemplate")
                     item.Selected = true;
             }
         }
@@ -130,12 +134,15 @@ public partial class UserPanel_Default : System.Web.UI.Page
         using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["constr"].ConnectionString))
         {
             con.Open();
+            string mailSubject;
+            if (tbxMailSubject.Text == "") mailSubject = "(no subject)";
+            else mailSubject = tbxMailSubject.Text;
             SqlCommand saveEmail = new SqlCommand("spSaveMail", con);
-            saveEmail.CommandType = System.Data.CommandType.StoredProcedure;
+            saveEmail.CommandType = CommandType.StoredProcedure;
             saveEmail.Parameters.AddWithValue("@body", tbxMailBody.Text);
             saveEmail.Parameters.AddWithValue("@templateId", rbTemplates.SelectedItem.Value);
             saveEmail.Parameters.AddWithValue("@userId", Convert.ToInt32(Session["LoggedIn"]));
-            saveEmail.Parameters.AddWithValue("@subject", tbxMailSubject.Text);
+            saveEmail.Parameters.AddWithValue("@subject", mailSubject);
             int sentMailId = Convert.ToInt32(saveEmail.ExecuteScalar());
             foreach (RepeaterItem i in rptrCategory.Items)
             {
@@ -153,9 +160,9 @@ public partial class UserPanel_Default : System.Web.UI.Page
                         sendEmail(Convert.ToInt32(hfRecipientID.Value));
                     }
                 }
-                lblMailStatus.Text = "All the messaes were sent succesfully";
-                tbxMailBody.Text = tbxMailSubject.Text = tbxPassword.Text = "";
             }
+            lblMailStatus.Text = "All the emails were sent successfully!";
+            tbxMailBody.Text = "";
         }
     }
     public void sendEmail(int recipientId)
@@ -181,6 +188,7 @@ public partial class UserPanel_Default : System.Web.UI.Page
 
             con.Close();
             con.Open();
+            string enteredPassword = tbxPassword.Text;
             using (MailMessage mail = new MailMessage(userEmail, recipientEmail))
             {
                 mail.Subject = tbxMailSubject.Text;
@@ -189,11 +197,10 @@ public partial class UserPanel_Default : System.Web.UI.Page
                 SmtpClient smtp = new SmtpClient();
                 smtp.Host = "smtp.gmail.com";
                 smtp.EnableSsl = true;
-                NetworkCredential NetworkCred = new NetworkCredential(userEmail, tbxPassword.Text);
+                NetworkCredential NetworkCred = new NetworkCredential(userEmail, enteredPassword);
                 smtp.UseDefaultCredentials = true;
                 smtp.Credentials = NetworkCred;
                 smtp.Port = 587;
-                
                 smtp.Send(mail);
             }
         }

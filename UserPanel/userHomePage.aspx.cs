@@ -25,48 +25,51 @@ public partial class UserPanel_Default : System.Web.UI.Page
         else
         {
             //adding data to the drop down list in input category name.
-            string userID = Session["LoggedIn"].ToString();
-            string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
-            using (SqlConnection con = new SqlConnection(constr))
+            if (!IsPostBack)
             {
-                SqlCommand com = new SqlCommand("SELECT categoryName,categoryId FROM tblCategory WHERE userId='" + userID + "'", con);
-                con.Open();
-                ddlCategoryName.DataSource = com.ExecuteReader();
-                ddlCategoryName.DataTextField = "categoryName";
-                ddlCategoryName.DataValueField = "categoryId";
-                ddlCategoryName.DataBind();
-            }
-            string username = "";
-            string imageDataString = "";
-            int c = 0;
-            string constr2 = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
-            using (SqlConnection con = new SqlConnection(constr2))
-            {
-                using (SqlCommand cmd = new SqlCommand("SELECT DPdata, username FROM tblUsers WHERE UserId = '" + userID + "'"))
+                string userID = Session["LoggedIn"].ToString();
+                string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+                using (SqlConnection con = new SqlConnection(constr))
                 {
-                    using (SqlDataAdapter sda = new SqlDataAdapter())
+                    SqlCommand com = new SqlCommand("SELECT categoryName,categoryId FROM tblCategory WHERE userId='" + userID + "'", con);
+                    con.Open();
+                    ddlCategoryName.DataSource = com.ExecuteReader();
+                    ddlCategoryName.DataTextField = "categoryName";
+                    ddlCategoryName.DataValueField = "categoryId";
+                    ddlCategoryName.DataBind();
+                }
+                string username = "";
+                string imageDataString = "";
+                int c = 0;
+                string constr2 = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+                using (SqlConnection con = new SqlConnection(constr2))
+                {
+                    using (SqlCommand cmd = new SqlCommand("SELECT DPdata, username FROM tblUsers WHERE UserId = '" + userID + "'"))
                     {
-                        cmd.CommandType = CommandType.Text;
-                        cmd.Connection = con;
-                        con.Open();
-                        SqlDataReader reader = cmd.ExecuteReader();
-                        while (reader.Read())
+                        using (SqlDataAdapter sda = new SqlDataAdapter())
                         {
-                            username = reader["Username"].ToString();
-                            if (reader["DPdata"].ToString() != "")
+                            cmd.CommandType = CommandType.Text;
+                            cmd.Connection = con;
+                            con.Open();
+                            SqlDataReader reader = cmd.ExecuteReader();
+                            while (reader.Read())
                             {
-                                c = 1;
-                                byte[] imagedata = (byte[])reader["DPdata"];
-                                imageDataString = Convert.ToBase64String(imagedata);
+                                username = reader["Username"].ToString();
+                                if (reader["DPdata"].ToString() != "")
+                                {
+                                    c = 1;
+                                    byte[] imagedata = (byte[])reader["DPdata"];
+                                    imageDataString = Convert.ToBase64String(imagedata);
+                                }
                             }
                         }
                     }
                 }
-            }
-            lblUsername.Text += username;
-            if (c == 1)
-            {
-                imgDP.ImageUrl = "data:Image/png;base64," + imageDataString;
+                lblUsername.Text += username;
+                if (c == 1)
+                {
+                    imgDP.ImageUrl = "data:Image/png;base64," + imageDataString;
+                }
             }
         }
     }
@@ -187,7 +190,7 @@ public partial class UserPanel_Default : System.Web.UI.Page
             int categoryId = 0;
             using (SqlConnection con = new SqlConnection(cs))
             {
-                using (SqlCommand cmd = new SqlCommand("SELECT count(*) FROM tblCategory WHERE categoryName ='" + categoryName + "'"))
+                using (SqlCommand cmd = new SqlCommand("SELECT count(*) FROM tblCategory WHERE categoryName ='" + categoryName + "' and userID='" + userId + "'"))
                 {
                     using (SqlDataAdapter sda = new SqlDataAdapter())
                     {
