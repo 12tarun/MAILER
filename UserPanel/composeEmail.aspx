@@ -6,6 +6,7 @@
    <script>
    </script>
     <h1>Select Recipients</h1>
+    <div id="templatePreview"></div>
     <br />
     <asp:ScriptManager runat="server"></asp:ScriptManager>
     <asp:UpdatePanel ID="updatePanelCheckbox" runat="server"><ContentTemplate>
@@ -30,9 +31,8 @@
     <asp:RadioButtonList AutoPostBack="true" runat="server"  ID="rbTemplates" OnSelectedIndexChanged="rbTemplates_SelectedIndexChanged" RepeatLayout="Table" RepeatDirection="Horizontal" RepeatColumns="4"></asp:RadioButtonList>
     <br />
 
-    <asp:TextBox ValidationGroup="mailCredentials" ID="tbxMailSubject" runat="server" placeholder="subject"></asp:TextBox>
-    <asp:RequiredFieldValidator ValidationGroup="mailCredentials" ID="RFVtbxMailSubject" runat="server" ControlToValidate="tbxMailSubject" ErrorMessage="*This field cant be empty" ForeColor="Red"></asp:RequiredFieldValidator>
-    <br />
+    <asp:TextBox  ID="tbxMailSubject" runat="server" placeholder="subject"></asp:TextBox>
+        <br />
     <asp:TextBox ID="tbxMailBody" runat="server" placeholder="enter mail body" ValidationGroup="mailCredentials" TextMode="MultiLine" Height="267px" Width="450px"></asp:TextBox>
     <asp:RequiredFieldValidator ValidationGroup="mailCredentials" ID="RequiredFieldValidator1" runat="server" ControlToValidate="tbxMailBody" ErrorMessage="*This field cant be empty" ForeColor="Red"></asp:RequiredFieldValidator>
     <iframe id="I1" runat="server"  name="I1"></iframe>

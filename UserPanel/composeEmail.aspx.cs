@@ -14,13 +14,11 @@ using System.Web.UI.WebControls;
 
 public partial class UserPanel_Default : System.Web.UI.Page
 {
-
-
     protected void Page_Load(object sender, EventArgs e)
     {
         if (Session["LoggedIn"] == null) Response.Redirect("~/UserPanel/Registration.aspx");
         if (!IsPostBack)
-        {
+        {           
             using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["constr"].ConnectionString))
             {
                 con.Open();
@@ -130,32 +128,48 @@ public partial class UserPanel_Default : System.Web.UI.Page
         using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["constr"].ConnectionString))
         {
             con.Open();
+            string mailSubject;
+
+            if (tbxMailSubject.Text == "") mailSubject = "No Subject";
+            else mailSubject = tbxMailSubject.Text;
             SqlCommand saveEmail = new SqlCommand("spSaveMail", con);
             saveEmail.CommandType = System.Data.CommandType.StoredProcedure;
             saveEmail.Parameters.AddWithValue("@body", tbxMailBody.Text);
             saveEmail.Parameters.AddWithValue("@templateId", rbTemplates.SelectedItem.Value);
             saveEmail.Parameters.AddWithValue("@userId", Convert.ToInt32(Session["LoggedIn"]));
-            saveEmail.Parameters.AddWithValue("@subject", tbxMailSubject.Text);
+            saveEmail.Parameters.AddWithValue("@subject", mailSubject);
             int sentMailId = Convert.ToInt32(saveEmail.ExecuteScalar());
-            foreach (RepeaterItem i in rptrCategory.Items)
+            try
             {
-                Repeater rptrRecipient = (Repeater)i.FindControl("rptrRecipient");
-                foreach (RepeaterItem j in rptrRecipient.Items)
+                foreach (RepeaterItem i in rptrCategory.Items)
                 {
-                    HiddenField hfRecipientID = (HiddenField)j.FindControl("hfRecipientId");
-                    CheckBox cbRecipient = (CheckBox)j.FindControl("cbRecipient");
-                    if (cbRecipient.Checked)
+                    Repeater rptrRecipient = (Repeater)i.FindControl("rptrRecipient");
+                    foreach (RepeaterItem j in rptrRecipient.Items)
                     {
-                        SqlCommand saveRecipientId = new SqlCommand("insert into tblMailRecipient(sentMailId,recipientId) values(@sentMailId,@recipientId)", con);
-                        saveRecipientId.Parameters.AddWithValue("@sentMailId", sentMailId);
-                        saveRecipientId.Parameters.AddWithValue("@recipientId", hfRecipientID.Value);
-                        saveRecipientId.ExecuteNonQuery();
-                        sendEmail(Convert.ToInt32(hfRecipientID.Value));
+                        HiddenField hfRecipientID = (HiddenField)j.FindControl("hfRecipientId");
+                        CheckBox cbRecipient = (CheckBox)j.FindControl("cbRecipient");
+                        if (cbRecipient.Checked)
+                        {
+                            SqlCommand saveRecipientId = new SqlCommand("insert into tblMailRecipient(sentMailId,recipientId) values(@sentMailId,@recipientId)", con);
+                            saveRecipientId.Parameters.AddWithValue("@sentMailId", sentMailId);
+                            saveRecipientId.Parameters.AddWithValue("@recipientId", hfRecipientID.Value);
+                            saveRecipientId.ExecuteNonQuery();
+                            sendEmail(Convert.ToInt32(hfRecipientID.Value));
+                        }
                     }
+                    tbxMailBody.Text = tbxMailSubject.Text = tbxPassword.Text = "";
                 }
                 lblMailStatus.Text = "All the messaes were sent succesfully";
-                tbxMailBody.Text = tbxMailSubject.Text = tbxPassword.Text = "";
             }
+            catch (Exception ex)
+            {
+                lblMailStatus.Text = "Wrong password make sure you enter your email account's password";
+                SqlCommand deleteFailedMail = new SqlCommand("delete from tblMailRecipient where sentMailId='"+sentMailId+"'",con);
+                deleteFailedMail.ExecuteNonQuery();
+                SqlCommand deleteFailedMailInfo = new SqlCommand("delete from tblSentMails where sentMailId='"+sentMailId+"'",con);
+                deleteFailedMailInfo.ExecuteNonQuery();
+            }
+
         }
     }
     public void sendEmail(int recipientId)
@@ -178,7 +192,6 @@ public partial class UserPanel_Default : System.Web.UI.Page
                 body = body.Replace("{RecipientName}", recipientName);
                 body = body.Replace("{body}", tbxMailBody.Text);
             }
-
             con.Close();
             con.Open();
             using (MailMessage mail = new MailMessage(userEmail, recipientEmail))
@@ -193,33 +206,28 @@ public partial class UserPanel_Default : System.Web.UI.Page
                 smtp.UseDefaultCredentials = true;
                 smtp.Credentials = NetworkCred;
                 smtp.Port = 587;
-                
                 smtp.Send(mail);
             }
         }
     }
 
-
-
     protected void rbTemplates_SelectedIndexChanged(object sender, EventArgs e)
     {
-        string filePath,body;
-        
+        string filePath, body;
+
         using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["constr"].ConnectionString))
         {
             con.Open();
-            SqlCommand getTemplatePath = new SqlCommand("select filePath from tblTemplates where templateId='"+rbTemplates.SelectedItem.Value+"'",con);
-             filePath = getTemplatePath.ExecuteScalar().ToString();
+            SqlCommand getTemplatePath = new SqlCommand("select filePath from tblTemplates where templateId='" + rbTemplates.SelectedItem.Value + "'", con);
+            filePath = getTemplatePath.ExecuteScalar().ToString();
         }
         using (StreamReader reader = new StreamReader(Server.MapPath(filePath)))
         {
             body = reader.ReadToEnd();
-            
+
         }
-        this.I1.Src =filePath;
-        
-        //templatePrevie.Text = body;
-        //    HtmlControl frame1 = (HtmlControl)this.FindControl("I1");
-        //frame1.Attributes.Add("src",Server.MapPath(filePath));
+        this.I1.Src = filePath;
+
+
     }
 }
