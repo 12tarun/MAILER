@@ -1,18 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Configuration;
-using System.Data;
-using System.Data.SqlClient;
-using System.IO;
 
-public partial class UserPanel_EmailPreview : System.Web.UI.Page
+public partial class UserPanel_Default : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        if (Session["LoggedIn"] == null)
+        {
+            Response.Redirect("~/UserPanel/Registration.aspx");
+        }
+
         if (!IsPostBack)
         {
             string body = "";
@@ -28,7 +32,7 @@ public partial class UserPanel_EmailPreview : System.Web.UI.Page
                     body = body.Replace("{RecipientName}", Session["recipientName"].ToString());
                     body = body.Replace("{body}", Session["body"].ToString());
                 }
-                templatePreview.InnerHtml = body;
+                emailPreview.InnerHtml = body;
             }
         }
     }
