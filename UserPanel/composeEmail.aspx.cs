@@ -161,19 +161,18 @@ public partial class UserPanel_Default : System.Web.UI.Page
                             sendEmail(Convert.ToInt32(hfRecipientID.Value));
                         }
                     }
-                    tbxMailBody.Text = tbxMailSubject.Text = tbxPassword.Text = "";
                 }
                 lblMailStatus.Text = "All the emails were sent successfully!";
                 tbxMailBody.Text = "";
             }
-            catch(Exception ex)
+           catch(Exception ex)
             {
                 lblMailStatus.Text = "Wrong Password!";
                 SqlCommand deleteMailRecipient = new SqlCommand("delete from tblMailRecipient where sentMailId='"+sentMailId+"'",con);
                 deleteMailRecipient.ExecuteNonQuery();
                 SqlCommand deleteMail = new SqlCommand("delete from tblSentMails where sentMailId='"+sentMailId+"'",con);
                 deleteMail.ExecuteNonQuery();
-            }
+            } 
         }
     }
     public void sendEmail(int recipientId)
