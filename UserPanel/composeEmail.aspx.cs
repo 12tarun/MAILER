@@ -18,7 +18,7 @@ public partial class UserPanel_Default : System.Web.UI.Page
     {
         if (Session["LoggedIn"] == null) Response.Redirect("~/UserPanel/Registration.aspx");
         if (!IsPostBack)
-        {           
+        {
             using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["constr"].ConnectionString))
             {
                 con.Open();
@@ -164,9 +164,9 @@ public partial class UserPanel_Default : System.Web.UI.Page
             catch (Exception ex)
             {
                 lblMailStatus.Text = "Wrong password make sure you enter your email account's password";
-                SqlCommand deleteFailedMail = new SqlCommand("delete from tblMailRecipient where sentMailId='"+sentMailId+"'",con);
+                SqlCommand deleteFailedMail = new SqlCommand("delete from tblMailRecipient where sentMailId='" + sentMailId + "'", con);
                 deleteFailedMail.ExecuteNonQuery();
-                SqlCommand deleteFailedMailInfo = new SqlCommand("delete from tblSentMails where sentMailId='"+sentMailId+"'",con);
+                SqlCommand deleteFailedMailInfo = new SqlCommand("delete from tblSentMails where sentMailId='" + sentMailId + "'", con);
                 deleteFailedMailInfo.ExecuteNonQuery();
             }
 
@@ -224,10 +224,9 @@ public partial class UserPanel_Default : System.Web.UI.Page
         using (StreamReader reader = new StreamReader(Server.MapPath(filePath)))
         {
             body = reader.ReadToEnd();
-
         }
-        this.I1.Src = filePath;
-
-
+        hfTemplateCode.Value = body;
     }
+
 }
+
