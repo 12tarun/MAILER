@@ -135,7 +135,7 @@ public partial class UserPanel_Default : System.Web.UI.Page
         {
             con.Open();
             string mailSubject;
-            if (tbxMailSubject.Text == "") mailSubject = "(no subject)";
+            if (tbxMailSubject.Text == "") mailSubject = "No subject";
             else mailSubject = tbxMailSubject.Text;
             SqlCommand saveEmail = new SqlCommand("spSaveMail", con);
             saveEmail.CommandType = CommandType.StoredProcedure;
@@ -236,9 +236,5 @@ public partial class UserPanel_Default : System.Web.UI.Page
             
         }
         this.I1.Src =filePath;
-        
-        //templatePrevie.Text = body;
-        //    HtmlControl frame1 = (HtmlControl)this.FindControl("I1");
-        //frame1.Attributes.Add("src",Server.MapPath(filePath));
     }
 }
