@@ -321,47 +321,4 @@ public partial class UserPanel_Default : System.Web.UI.Page
             lblWrongExcel.Visible = true;
         }
     }
-
-    protected void btnDP_Click(object sender, EventArgs e)
-    {
-        int userId = Convert.ToInt32(Session["LoggedIn"]);
-
-        HttpPostedFile postedFile = fileUploadDP.PostedFile;
-        string fileName = Path.GetFileName(postedFile.FileName);
-        string fileExtension = Path.GetExtension(fileName);
-        int fileSize = postedFile.ContentLength;
-
-        if ((fileExtension.ToLower() == ".jpg" || fileExtension.ToLower() == ".png") && fileUploadDP.HasFile == true)
-        {
-            lblWrongExtension.Visible = false;
-
-            Stream stream = postedFile.InputStream;
-            BinaryReader binaryReader = new BinaryReader(stream);
-            byte[] bytes = binaryReader.ReadBytes((int)stream.Length);
-
-            string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
-            using (SqlConnection con = new SqlConnection(constr))
-            {
-                using (SqlCommand cmd = new SqlCommand("UPDATE tblUsers SET DPname = @ImageName , DPsize = @ImageSize , DPdata = @ImageData WHERE userId='" + userId + "'"))
-                {
-                    using (SqlDataAdapter sda = new SqlDataAdapter())
-                    {
-                        cmd.CommandType = CommandType.Text;
-                        cmd.Parameters.AddWithValue("@ImageName", fileName);
-                        cmd.Parameters.AddWithValue("ImageSize", fileSize);
-                        cmd.Parameters.AddWithValue("@ImageData", bytes);
-                        cmd.Connection = con;
-                        con.Open();
-                        cmd.ExecuteNonQuery();
-                        con.Close();
-                    }
-                }
-            }
-            Response.Redirect("~/UserPanel/userHomePage.aspx");
-        }
-        else
-        {
-            lblWrongExtension.Visible = true;
-        }
-    }
 }

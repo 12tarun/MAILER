@@ -144,25 +144,37 @@ public partial class UserPanel_Default : System.Web.UI.Page
             saveEmail.Parameters.AddWithValue("@userId", Convert.ToInt32(Session["LoggedIn"]));
             saveEmail.Parameters.AddWithValue("@subject", mailSubject);
             int sentMailId = Convert.ToInt32(saveEmail.ExecuteScalar());
-            foreach (RepeaterItem i in rptrCategory.Items)
+
+            try
             {
-                Repeater rptrRecipient = (Repeater)i.FindControl("rptrRecipient");
-                foreach (RepeaterItem j in rptrRecipient.Items)
+                foreach (RepeaterItem i in rptrCategory.Items)
                 {
-                    HiddenField hfRecipientID = (HiddenField)j.FindControl("hfRecipientId");
-                    CheckBox cbRecipient = (CheckBox)j.FindControl("cbRecipient");
-                    if (cbRecipient.Checked)
+                    Repeater rptrRecipient = (Repeater)i.FindControl("rptrRecipient");
+                    foreach (RepeaterItem j in rptrRecipient.Items)
                     {
-                        SqlCommand saveRecipientId = new SqlCommand("insert into tblMailRecipient(sentMailId,recipientId) values(@sentMailId,@recipientId)", con);
-                        saveRecipientId.Parameters.AddWithValue("@sentMailId", sentMailId);
-                        saveRecipientId.Parameters.AddWithValue("@recipientId", hfRecipientID.Value);
-                        saveRecipientId.ExecuteNonQuery();
-                        sendEmail(Convert.ToInt32(hfRecipientID.Value));
+                        HiddenField hfRecipientID = (HiddenField)j.FindControl("hfRecipientId");
+                        CheckBox cbRecipient = (CheckBox)j.FindControl("cbRecipient");
+                        if (cbRecipient.Checked)
+                        {
+                            SqlCommand saveRecipientId = new SqlCommand("insert into tblMailRecipient(sentMailId,recipientId) values(@sentMailId,@recipientId)", con);
+                            saveRecipientId.Parameters.AddWithValue("@sentMailId", sentMailId);
+                            saveRecipientId.Parameters.AddWithValue("@recipientId", hfRecipientID.Value);
+                            saveRecipientId.ExecuteNonQuery();
+                            sendEmail(Convert.ToInt32(hfRecipientID.Value));
+                        }
                     }
                 }
+                lblMailStatus.Text = "All the emails were sent successfully!";
+                tbxMailBody.Text = "";
             }
-            lblMailStatus.Text = "All the emails were sent successfully!";
-            tbxMailBody.Text = "";
+            catch(Exception ex)
+            {
+                lblMailStatus.Text = "Wrong Password!";
+                SqlCommand deleteMailRecipient = new SqlCommand("delete from tblMailRecipient where sentMailId='"+sentMailId+"'",con);
+                deleteMailRecipient.ExecuteNonQuery();
+                SqlCommand deleteMail = new SqlCommand("delete from tblSentMails where sentMailId='"+sentMailId+"'",con);
+                deleteMail.ExecuteNonQuery();
+            }
         }
     }
     public void sendEmail(int recipientId)
