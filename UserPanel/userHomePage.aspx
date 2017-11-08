@@ -93,5 +93,11 @@
     <br />
     <br />
     <asp:Label ID="lblWrongExcel" Text="Only .xls, xlsx file is acceptable." Visible="false" ForeColor="Red" runat="server"></asp:Label>
+<br />
+    <h4>Upload your own html file</h4>
+    <asp:Label ID="lblUploadTemplate" runat="server" Text="Select Template File"></asp:Label>
+<asp:FileUpload ID="FileUploadTemplate" runat="server" />
+    <asp:Button ID="btnTemplateUpload" runat="server" Text="Upload" OnClick="btnTemplateUpload_Click" />
+    <asp:Label ID="lblTemplateStatus" runat="server" ></asp:Label>
 </asp:Content>
 
