@@ -148,11 +148,7 @@ public partial class UserPanel_Default : System.Web.UI.Page
         }
     }
 
-    protected void btnLogout_Click(object sender, EventArgs e)
-    {
-        Session["LoggedIn"] = null;
-        Response.Redirect("~/appHomepage.aspx");
-    }
+    
 
     //Uploading recipients through MS-Excel Sheet
 

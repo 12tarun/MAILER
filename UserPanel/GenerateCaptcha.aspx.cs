@@ -13,6 +13,7 @@ public partial class UserPanel_GenerateCaptcha : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         Response.Clear();
+       
         int height = 30;
         int width = 100;
         Bitmap bmp = new Bitmap(width, height);

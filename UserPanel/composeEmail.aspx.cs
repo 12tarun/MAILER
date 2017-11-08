@@ -14,8 +14,6 @@ using System.Web.UI.WebControls;
 
 public partial class UserPanel_Default : System.Web.UI.Page
 {
-
-
     protected void Page_Load(object sender, EventArgs e)
     {
         if (Session["LoggedIn"] == null)
@@ -135,6 +133,7 @@ public partial class UserPanel_Default : System.Web.UI.Page
         {
             con.Open();
             string mailSubject;
+
             if (tbxMailSubject.Text == "") mailSubject = "No subject";
             else mailSubject = tbxMailSubject.Text;
             SqlCommand saveEmail = new SqlCommand("spSaveMail", con);
@@ -144,7 +143,6 @@ public partial class UserPanel_Default : System.Web.UI.Page
             saveEmail.Parameters.AddWithValue("@userId", Convert.ToInt32(Session["LoggedIn"]));
             saveEmail.Parameters.AddWithValue("@subject", mailSubject);
             int sentMailId = Convert.ToInt32(saveEmail.ExecuteScalar());
-
             try
             {
                 foreach (RepeaterItem i in rptrCategory.Items)
@@ -163,6 +161,7 @@ public partial class UserPanel_Default : System.Web.UI.Page
                             sendEmail(Convert.ToInt32(hfRecipientID.Value));
                         }
                     }
+                    tbxMailBody.Text = tbxMailSubject.Text = tbxPassword.Text = "";
                 }
                 lblMailStatus.Text = "All the emails were sent successfully!";
                 tbxMailBody.Text = "";
@@ -197,7 +196,6 @@ public partial class UserPanel_Default : System.Web.UI.Page
                 body = body.Replace("{RecipientName}", recipientName);
                 body = body.Replace("{body}", tbxMailBody.Text);
             }
-
             con.Close();
             con.Open();
             string enteredPassword = tbxPassword.Text;
@@ -218,23 +216,22 @@ public partial class UserPanel_Default : System.Web.UI.Page
         }
     }
 
-
-
     protected void rbTemplates_SelectedIndexChanged(object sender, EventArgs e)
     {
-        string filePath,body;
-        
+        string filePath, body;
+
         using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["constr"].ConnectionString))
         {
             con.Open();
-            SqlCommand getTemplatePath = new SqlCommand("select filePath from tblTemplates where templateId='"+rbTemplates.SelectedItem.Value+"'",con);
-             filePath = getTemplatePath.ExecuteScalar().ToString();
+            SqlCommand getTemplatePath = new SqlCommand("select filePath from tblTemplates where templateId='" + rbTemplates.SelectedItem.Value + "'", con);
+            filePath = getTemplatePath.ExecuteScalar().ToString();
         }
         using (StreamReader reader = new StreamReader(Server.MapPath(filePath)))
         {
             body = reader.ReadToEnd();
-            
         }
-        this.I1.Src =filePath;
+        hfTemplateCode.Value = body;
     }
+
 }
+
