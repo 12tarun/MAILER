@@ -1,0 +1,85 @@
+﻿.bg-img{
+   min-height: 100vh;
+   background: linear-gradient(90deg, rgba(0,0,0,0.6) , rgba(0,0,0,0.5)), url(../images/bgimage1.jpg);
+   background-size: cover;
+   background-position: center;
+   background-attachment: fixed;
+}
+
+.logo{
+	width: 50px;
+	height: 50px;
+	border-radius: 50px;
+}
+
+.cotainer{
+	margin: 0;
+	padding: 0;
+}
+
+.navbar-brand{
+	color: #fff;
+}
+
+.brnd-name{
+	color: #fff;
+}
+
+.animation{
+	margin: 0;
+	padding: 0;
+	max-width: 100%;
+	height: auto;
+	margin-top: 65px;
+	border-radius: 50px;
+}
+
+
+.txt{
+	text-align: center;
+	color: #fff;
+	padding: 15px;
+
+}
+
+@media(min-width: 992px){
+	.txt{
+		margin-top: 150px;
+	}
+}
+
+.btnstyle{
+	width: 100px;
+	border-radius: 1px;
+	text-decoration: none;
+}
+
+.btnstyle:hover{
+	background-color: #000;
+	border-color: #000;
+}
+
+.login {
+	margin-top:5px;
+	border-radius:20px;
+	border:2px solid #fff;
+	background: transparent;
+	color:#fff;
+
+}
+
+.display-3{
+	font-family: Roboto;
+	color:#fff;
+	font-size: 6em;
+}
+
+.modal{
+	margin-top: 85px;
+
+}
+
+.modal-header{
+	background-color: rgba(0,0,0,0.9);
+	color: #fff;
+}

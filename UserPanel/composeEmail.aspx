@@ -64,7 +64,7 @@
 
         function setHTML()
         {
-            var tbxMailBody = document.getElementById('<%= tbxMailBody.ClientID%>').value.replace("\n","<br/>");
+            var tbxMailBody = document.getElementById('<%= tbxMailBody.ClientID%>').value.replace(/(?:\r\n|\r|\n)/g, '<br />');
             hiddenStatusFlag = document.getElementById('<%= hfTemplateCode.ClientID%>').value.replace("{body}", tbxMailBody);
             document.getElementById('<%= divTemplatePreview.ClientID%>').innerHTML = hiddenStatusFlag;
         }

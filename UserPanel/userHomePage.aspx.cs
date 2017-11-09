@@ -65,7 +65,7 @@ public partial class UserPanel_Default : System.Web.UI.Page
                         }
                     }
                 }
-                lblUsername.Text += username;
+                lblUsername.Text = username;
                 if (c == 1)
                 {
                     imgDP.ImageUrl = "data:Image/png;base64," + imageDataString;
@@ -158,6 +158,7 @@ public partial class UserPanel_Default : System.Web.UI.Page
 
         string cs = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
         string excelfile = FileUploadExcel.PostedFile.FileName;
+        
         if (excelfile.EndsWith("xls") || excelfile.EndsWith("xlsx"))
         {
             lblWrongExcel.Visible = false;

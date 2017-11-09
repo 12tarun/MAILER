@@ -16,7 +16,7 @@
             <a class="active" href="userHomePage.aspx">Settings</a>
             <a href="sentMails.aspx">Outbox</a>
             <a href="recipientList.aspx">Recipients List</a>
-            <a href="Profile.aspx">Profile</a>
+            <a href="Profile.aspx"><asp:Image ID="imgDP" Width="25px" ToolTip="Profile" Height="30px" runat="server"/><asp:Label ID="lblUsername" runat="server" ToolTip="Profile"></asp:Label></a>
             <asp:Button ID="btnLogout" runat="server" BackColor="#333" BorderWidth="0px" Text="Logout" ForeColor="white" OnClick="btnLogout_Click" />          
         </div>
         <asp:ContentPlaceHolder id="ContentPlaceHolder1" runat="server">

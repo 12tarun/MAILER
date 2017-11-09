@@ -1,0 +1,85 @@
+﻿.bg-img{
+   min-height: 100vh;
+   background: linear-gradient(90deg, rgba(0,0,0,0.6) , rgba(0,0,0,0.5)), url(../images/bgimage1.jpg);
+   background-size: cover;
+   background-position: center;
+   background-attachment: fixed;
+}
+
+.logo{
+	width: 50px;
+	height: 50px;
+	border-radius: 50px;
+	font-size: 2em;
+}
+
+.container-fluid{
+	padding: 0;
+	overflow-x: hidden;
+}
+
+.container{/*
+	margin: 0;*/
+	padding: 0;
+}
+
+.navbar{
+	background-color: rgba(0,0,0,0.9);
+	color: #fff;
+	width: 100%;
+	margin: 0;
+	position: fixed;
+	z-index: 10;
+}
+
+.navbar-brand{
+	color: #fff;
+}
+
+.brnd-name{
+	color: #fff;
+	margin-left: 50px;
+}
+
+.icon{
+	color: #fff;
+	background-color: rgba(256,256,256,0.2);
+}
+
+.txt-style{
+	text-align: center;
+	padding: 15px;
+}
+
+.btnstyle{
+	width: 100px;
+	border-radius: 1px;
+	text-decoration: none;
+	background-color: rgba(0,0,0,0);
+	border-color: #fff;
+	border-radius: 1px solid #000;
+}
+
+@media (min-width: 576px)
+{
+.col-sm-10 
+{
+    -ms-flex: 0 0 83.333333%;
+    flex: 1 0 83.333333%;
+    max-width: 100.333333%;
+}
+}
+
+.btnstyle:hover{
+	background-color: #000;
+	border-color: #000;
+}
+.card{
+	margin-bottom: 50px;
+}
+.preview{
+	float:right;
+	margin-right: 20px;
+	width:20%;
+	height:80%;
+}

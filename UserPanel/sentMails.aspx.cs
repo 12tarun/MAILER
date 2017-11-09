@@ -76,16 +76,6 @@ public partial class UserPanel_Default : System.Web.UI.Page
         } 
     }
 
-    public static string Limit(object Desc, int length)
-    {
-        StringBuilder strDesc = new StringBuilder();
-        strDesc.Insert(0, Desc.ToString());
-
-        if (strDesc.Length > length)
-            return strDesc.ToString().Substring(0, length) + "...";
-        else return strDesc.ToString();
-    }
-
     protected void lnkBtnPreview_Click(object sender, EventArgs e)
     {
         LinkButton btn = (LinkButton)sender;
