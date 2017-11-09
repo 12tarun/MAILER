@@ -1,6 +1,6 @@
 ﻿.bg-img{
    min-height: 100vh;
-   background: linear-gradient(90deg, rgba(0,0,0,0.6) , rgba(0,0,0,0.5)), url(../images/bgimage1.jpg);
+   background: linear-gradient(90deg, rgba(0,0,0,0.6) , rgba(0,0,0,0.5)), url(../Images/bgimage1.jpg);
    background-size: cover;
    background-position: center;
    background-attachment: fixed;
