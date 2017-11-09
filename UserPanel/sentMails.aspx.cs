@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -75,10 +76,14 @@ public partial class UserPanel_Default : System.Web.UI.Page
         } 
     }
 
-    protected void gvMails_RowDataBound(object sender, GridViewRowEventArgs e)
+    public static string Limit(object Desc, int length)
     {
-        e.Row.Cells[1].Visible = false;
-        e.Row.Cells[4].Visible = false;
+        StringBuilder strDesc = new StringBuilder();
+        strDesc.Insert(0, Desc.ToString());
+
+        if (strDesc.Length > length)
+            return strDesc.ToString().Substring(0, length) + "...";
+        else return strDesc.ToString();
     }
 
     protected void lnkBtnPreview_Click(object sender, EventArgs e)
@@ -87,13 +92,20 @@ public partial class UserPanel_Default : System.Web.UI.Page
         GridViewRow row = (GridViewRow)btn.NamingContainer;
 
         Label lblRecipientValue = (Label)row.FindControl("lblRecipient");
-        Label lblBodyValue = (Label)row.FindControl("lblBody");
+        Label lblBodyValue = (Label)row.FindControl("lblBodyValue");
         Label lblTemplateIdValue = (Label)row.FindControl("lblTemplateId");
 
+        
         Session["recipientName"] = lblRecipientValue.Text.ToString();
         Session["body"] = lblBodyValue.Text.ToString();
         Session["templateId"] = lblTemplateIdValue.Text.ToString();
 
         Response.Redirect("~/UserPanel/PreviewEmail.aspx");
+    }
+
+    protected void gvMails_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        gvMails.PageIndex = e.NewPageIndex;
+        gvMails.DataBind();
     }
 }
