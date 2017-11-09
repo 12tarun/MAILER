@@ -54,14 +54,20 @@
     <br />
     <asp:Button ID="btnSend" Text="Send" runat="server" OnClick="btnSend_Click" />
     <br />
+    
     <asp:Label ID="lblMailStatus" ForeColor="Blue" runat="server"></asp:Label>
     <script type="text/javascript">
         var templateCode;
 
-        function setHTML()
-        {
+        function setHTML() {
+            var tbxMailBody = "";
             var tbxMailBody = document.getElementById('<%= tbxMailBody.ClientID%>').value;
+            if (tbxMailBody.includes("\n"))
+                tbxMailBody.replace("\n", "<br />");
+
             hiddenStatusFlag = document.getElementById('<%= hfTemplateCode.ClientID%>').value.replace("{body}", tbxMailBody);
+
+
             document.getElementById('<%= divTemplatePreview.ClientID%>').innerHTML = hiddenStatusFlag;
         }
         window.onload = function () {

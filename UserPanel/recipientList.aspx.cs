@@ -5,6 +5,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -13,47 +14,82 @@ public partial class UserPanel_Default : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (Session["LoggedIn"] == null) Response.Redirect("~/UserPanel/Registration.aspx");
-        using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["constr"].ConnectionString))
+        if (!IsPostBack)
+        {
+            if (Session["LoggedIn"] == null) Response.Redirect("~/UserPanel/Registration.aspx");
+            else
             {
-                con.Open();
-                ArrayList categories = new ArrayList();
-                
-                DataTable table = new DataTable();
-                table.Columns.Add("Name");
-                table.Columns.Add("Email");
-                table.Columns.Add("Category");
-                SqlCommand getcategories = new SqlCommand("select categoryId from tblCategory where userId='" +Convert.ToInt32(Session["LoggedIn"]) + "' ", con);
-                using (SqlDataReader rdCategoryID = getcategories.ExecuteReader())
-                {
-                    while (rdCategoryID.Read())
-                    {
-                        categories.Add(rdCategoryID["categoryId"]);
-                    }
-                }
-                foreach (int categoyID in categories)
-                {
-                    SqlCommand getCategoryName = new SqlCommand("select categoryName from tblCategory where categoryId='" + categoyID + "'", con);
-                    string categoryName = getCategoryName.ExecuteScalar().ToString();
-                    SqlCommand getRecipientsInfo = new SqlCommand("select name,email from tblRecipients where categoryId='" + categoyID + "'", con);
-                    using (SqlDataReader rdrRecipients = getRecipientsInfo.ExecuteReader())
-                    {
-                        while (rdrRecipients.Read())
-                        {
-                            DataRow dataRow = table.NewRow();
-                            dataRow["Name"] = rdrRecipients["name"];
-                            dataRow["Email"] = rdrRecipients["email"];
-                            dataRow["Category"] = categoryName;
-                            table.Rows.Add(dataRow);
-                        }
-                    }
-
-                }
-                
-                grdView.DataSource = table;
-                grdView.DataBind();
-
-
+                this.BindGrid();
             }
         }
+    }
+    protected void grdView_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+        if (e.Row.RowType == DataControlRowType.DataRow)
+        {
+            e.Row.Cells[0].Text = Regex.Replace(e.Row.Cells[0].Text, tbxSearch.Text.Trim(), delegate (Match match)
+            {
+                return string.Format("<span style = 'background-color:#D9EDF7'>{0}</span>", match.Value);
+            }, RegexOptions.IgnoreCase);
+        }
+    }
+
+    protected void grdView_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        grdView.PageIndex = e.NewPageIndex;
+        this.BindGrid();
+    }
+
+    private void BindGrid()
+    {
+        using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["constr"].ConnectionString))
+        {
+            con.Open();
+
+            ArrayList categories = new ArrayList();
+            DataTable table = new DataTable();
+            table.Columns.Add("Name");
+            table.Columns.Add("Email");
+            table.Columns.Add("Category");
+            SqlCommand getCategories = new SqlCommand("select categoryId from tblCategory where userId='" + Convert.ToInt32(Session["LoggedIn"]) + "'", con);
+            using (SqlDataReader drCategoryId = getCategories.ExecuteReader())
+            {
+                while (drCategoryId.Read())
+                    categories.Add(drCategoryId["categoryId"]);
+            }
+            foreach (int categoryId in categories)
+            {
+                SqlCommand getCategoryName = new SqlCommand("select categoryName from tblCategory where categoryId='" + categoryId + "'", con);
+                string categoryName = getCategoryName.ExecuteScalar().ToString();
+                SqlCommand getRecipientsInfo = new SqlCommand("SELECT * FROM tblRecipients WHERE name LIKE '%' + @recipientName + '%' and categoryId='" + categoryId + "'", con);
+                getRecipientsInfo.Parameters.AddWithValue("@recipientName", tbxSearch.Text);
+                using (SqlDataReader drRecipients = getRecipientsInfo.ExecuteReader())
+                {
+                    while (drRecipients.Read())
+                    {
+                        DataRow datarow = table.NewRow();
+                        datarow["Name"] = drRecipients["name"];
+                        datarow["Email"] = drRecipients["email"];
+                        datarow["Category"] = categoryName;
+                        table.Rows.Add(datarow);
+                    }
+                }
+            }
+            grdView.DataSource = table;
+            grdView.DataBind();
+        }
+
+
+    }
+
+    protected void btnSearch_Click(object sender, EventArgs e)
+    {
+        this.BindGrid();
+    }
+
+    protected void tbxSearch_TextChanged(object sender, EventArgs e)
+    {
+        if (tbxSearch.Text == "")
+            this.BindGrid();
+    }
 }

@@ -8,6 +8,7 @@
 </head>
 <body>
     <form id="form1" runat="server">
+      
         <h2>SIGN UP</h2>
         <div>
             <asp:ScriptManager ID="SMCapcha" runat="server"></asp:ScriptManager>

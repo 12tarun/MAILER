@@ -16,44 +16,47 @@ public partial class Registration : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        ValidationSettings.UnobtrusiveValidationMode = UnobtrusiveValidationMode.None;
-        
-        if (!IsPostBack)
-        {
-            fillCaptcha();
-            Session["LoggedIn"] = null;
-            Session["UsernameAlreadyExists"] = false;
-            Session["EmailAlreadyExists"] = false;
-        }
+        if (Session["LoggedIn"] != null) Response.Redirect("~/UserPanel/composeEmail.aspx");
 
-        if (!IsPostBack)
+        else
         {
-            lblWarning.Visible = false;
-        }
+            ValidationSettings.UnobtrusiveValidationMode = UnobtrusiveValidationMode.None;
 
-        if (Session["LoggedIn"] != null)
-        {
-            Response.Redirect("~/UserPanel/userHomePage.aspx");
-        }
-
-        DateTime dtCreate;
-        int userId = 0;
-        string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
-        using (SqlConnection con = new SqlConnection(constr))
-        {
-            using (SqlCommand cmd = new SqlCommand("SELECT createdDate,userId FROM tblUsers WHERE verification ='" + 0 + "'"))
+            if (!IsPostBack)
             {
-                using (SqlDataAdapter sda = new SqlDataAdapter())
+                fillCaptcha();
+                Session["LoggedIn"] = null;
+                Session["UsernameAlreadyExists"] = false;
+                Session["EmailAlreadyExists"] = false;
+            }
+
+            if (!IsPostBack)
+            {
+                lblWarning.Visible = false;
+            }
+
+
+
+
+            DateTime dtCreate;
+            int userId = 0;
+            string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+            using (SqlConnection con = new SqlConnection(constr))
+            {
+                using (SqlCommand cmd = new SqlCommand("SELECT createdDate,userId FROM tblUsers WHERE verification ='" + 0 + "'"))
                 {
-                    cmd.CommandType = CommandType.Text;
-                    cmd.Connection = con;
-                    con.Open();
-                    SqlDataReader rdr = cmd.ExecuteReader();
-                    while (rdr.Read())
+                    using (SqlDataAdapter sda = new SqlDataAdapter())
                     {
-                        dtCreate = (DateTime)(rdr["createdDate"]);
-                        userId = Convert.ToInt32(rdr["userId"]);
-                        deleteExpiredRegistrations(dtCreate,userId);
+                        cmd.CommandType = CommandType.Text;
+                        cmd.Connection = con;
+                        con.Open();
+                        SqlDataReader rdr = cmd.ExecuteReader();
+                        while (rdr.Read())
+                        {
+                            dtCreate = (DateTime)(rdr["createdDate"]);
+                            userId = Convert.ToInt32(rdr["userId"]);
+                            deleteExpiredRegistrations(dtCreate, userId);
+                        }
                     }
                 }
             }
@@ -300,7 +303,7 @@ public partial class Registration : System.Web.UI.Page
                     break;
                 default:
                     Session["LoggedIn"] = userId;
-                    Response.Redirect("~/UserPanel/userHomePage.aspx");
+                    Response.Redirect("~/UserPanel/composeEmail.aspx");
                     break;
             }
         }
