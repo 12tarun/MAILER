@@ -9,8 +9,8 @@
         <Columns>
             <asp:TemplateField HeaderText="Recipient" ItemStyle-Width="150px">
                 <ItemTemplate>
-                    <%#Eval("Recipient").ToString().Length > 13 ? (Eval("Recipient").ToString().Substring(0,13))+"........": Eval("Recipient") %>
-                    <asp:Label ID="lblRecipient" Visible="false" runat="server" Text='<%#Bind("Recipient") %>'></asp:Label>
+                    <%#Eval("Recipient").ToString().Length > 13 ? (Eval("Recipient").ToString().Substring(0,13))+" ......": Eval("Recipient") %>
+                    <asp:Label ID="lblRecipient" Visible="false"  runat="server" Text='<%#Bind("Recipient") %>'></asp:Label>
                 </ItemTemplate>
             </asp:TemplateField>
 
@@ -22,14 +22,14 @@
 
             <asp:TemplateField HeaderText="Subject" ItemStyle-Width="220px">
                 <ItemTemplate>
-                    <%#Eval("Subject").ToString().Length > 20 ? (Eval("Subject").ToString().Substring(0,20))+"........": Eval("Subject") %>
+                    <%#Eval("Subject").ToString().Length > 20 ? (Eval("Subject").ToString().Substring(0,20))+" ......": Eval("Subject") %>
                     <asp:Label ID="lblSubject" Visible="false" runat="server" Text='<%#Bind("Subject") %>'></asp:Label>
                 </ItemTemplate>
             </asp:TemplateField>
 
             <asp:TemplateField HeaderText="Body" ItemStyle-Width="900px">
                 <ItemTemplate >
-                    <%#Eval("Body").ToString().Length > 125 ? (Eval("Body").ToString().Substring(0,125))+"........": Eval("Body") %>
+                    <%#Eval("Body").ToString().Length > 125 ? (Eval("Body").ToString().Substring(0,125))+" ......": Eval("Body") %>
                     <asp:Label Id="lblBodyValue" Visible="false" Text='<%#Bind("Body") %>' runat="server"></asp:Label>
                 </ItemTemplate>
             </asp:TemplateField>

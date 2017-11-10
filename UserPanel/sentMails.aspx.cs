@@ -41,25 +41,24 @@ public partial class UserPanel_Default : System.Web.UI.Page
                         con2.Open();
                         SqlCommand getRecipientsName = new SqlCommand("select recipientId from tblMailRecipient  where sentMailId='" + Convert.ToInt32(rdr["sentMailId"]) + "'", con2);
                         SqlDataReader rdr2 = getRecipientsName.ExecuteReader();
+                        DataRow dr = dt.NewRow();
                         while (rdr2.Read())
                         {
                             using (SqlConnection con3 = new SqlConnection(ConfigurationManager.ConnectionStrings["constr"].ConnectionString))
                             {
                                 con3.Open();
                                 SqlCommand getRecipientName = new SqlCommand("select name from tblRecipients where recipientId='" + Convert.ToInt32(rdr2["recipientId"]) + "'", con3);
-                                recipientName = getRecipientName.ExecuteScalar().ToString();
+                                recipientName += getRecipientName.ExecuteScalar().ToString()+"," ;
 
-                                DataRow dr = dt.NewRow();
-                                dr["Recipient"] = recipientName;
                                 dr["sentMailId"] = rdr["sentMailId"];
                                 dr["Subject"] = rdr["subject"];
                                 dr["Body"] = rdr["body"];
                                 dr["templateId"] = rdr["templateId"];
                                 dr["Date"] = rdr["sendDate"];
-
-                                dt.Rows.Add(dr);
                             }
                         }
+                        dr["Recipient"] = recipientName.Remove(recipientName.Length - 1);
+                        dt.Rows.Add(dr);
                     }
                 }
 
