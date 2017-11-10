@@ -47,7 +47,7 @@ public partial class UserPanel_userPanel : System.Web.UI.MasterPage
         }
     }
 
-    protected void btnLogout_Click(object sender, EventArgs e)
+        protected void btnLogout_Click(object sender, EventArgs e)
     {
         Session["LoggedIn"] = null;
         Response.Redirect("~/UserPanel/Registration.aspx");

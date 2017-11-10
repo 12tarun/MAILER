@@ -1,8 +1,29 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/UserPanel/userPanel.master" AutoEventWireup="true" CodeFile="recipientList.aspx.cs" Inherits="UserPanel_Default" %>
 
-<asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
 </asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
-    <asp:GridView ID="grdView" runat="server"></asp:GridView>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
+    <asp:ScriptManager runat="server"></asp:ScriptManager>
+    
+            <asp:TextBox ID="tbxSearch" placeholder="Enter Recipient Name" OnTextChanged="tbxSearch_TextChanged" AutoPostBack="true" runat="server"></asp:TextBox>
+        
+    <asp:Button ID="btnSearch" runat="server" Text="Search" OnClick="btnSearch_Click" />
+    <br />
+    <asp:GridView ID="grdView" runat="server" AllowPaging="true" AutoGenerateColumns="false" OnRowDataBound="grdView_RowDataBound" OnPageIndexChanging="grdView_PageIndexChanging">
+        <Columns>
+            <asp:BoundField HeaderStyle-Width="150px" DataField="Name" HeaderText="Recipient Name" ItemStyle-CssClass="ContactName" />
+            <asp:TemplateField HeaderText="Recipient Email">
+                <ItemTemplate>
+                    <%# Eval("Email") %>
+                </ItemTemplate>
+            </asp:TemplateField>
+            <asp:TemplateField HeaderText="Category">
+                <ItemTemplate>
+                    <%# Eval("Category") %>
+                </ItemTemplate>
+            </asp:TemplateField>
+        </Columns>
+
+    </asp:GridView>
 </asp:Content>
 

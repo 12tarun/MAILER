@@ -1,5 +1,4 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/UserPanel/userPanel.master" ValidateRequest="false" AutoEventWireup="true" CodeFile="composeEmail.aspx.cs" Inherits="UserPanel_Default" %>
-
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
     <style type="text/css">
         #divtemplatePreview {
@@ -58,10 +57,10 @@
     <br />
     <asp:Button ID="btnSend" Text="Send" runat="server" OnClick="btnSend_Click" />
     <br />
+
     <asp:Label ID="lblMailStatus" ForeColor="Blue" runat="server"></asp:Label>
     <script type="text/javascript">
         var templateCode;
-
         function setHTML()
         {
             var tbxMailBody = document.getElementById('<%= tbxMailBody.ClientID%>').value.replace(/(?:\r\n|\r|\n)/g, '<br />');
