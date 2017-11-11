@@ -51,6 +51,8 @@
     <br />
     <br />
     <br />
+    <asp:FileUpload ID="fileAttachment" runat="server" AllowMultiple="true" />
+ 
     <br />
     <asp:TextBox ID="tbxPassword" TextMode="Password" ValidationGroup="mailCredentials" runat="server" placeholder="enter your registered mail's password here" Width="450px"></asp:TextBox>
     <asp:RequiredFieldValidator ValidationGroup="mailCredentials" ID="RequiredFieldValidator2" runat="server" ControlToValidate="tbxPassword" ErrorMessage="*This field cant be empty" ForeColor="Red"></asp:RequiredFieldValidator>

@@ -12,38 +12,41 @@ public partial class UserPanel_userPanel : System.Web.UI.MasterPage
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        string username = "";
-        string imageDataString = "";
-        int userID = Convert.ToInt32(Session["LoggedIn"]);
-        int c = 0;
-        string constr2 = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
-        using (SqlConnection con = new SqlConnection(constr2))
+        if (!IsPostBack)
         {
-            using (SqlCommand cmd = new SqlCommand("SELECT DPdata, username FROM tblUsers WHERE UserId = '" + userID + "'"))
+            string username = "";
+            string imageDataString = "";
+            int userID = Convert.ToInt32(Session["LoggedIn"]);
+            int c = 0;
+            string constr2 = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+            using (SqlConnection con = new SqlConnection(constr2))
             {
-                using (SqlDataAdapter sda = new SqlDataAdapter())
+                using (SqlCommand cmd = new SqlCommand("SELECT DPdata, username FROM tblUsers WHERE UserId = '" + userID + "'"))
                 {
-                    cmd.CommandType = CommandType.Text;
-                    cmd.Connection = con;
-                    con.Open();
-                    SqlDataReader reader = cmd.ExecuteReader();
-                    while (reader.Read())
+                    using (SqlDataAdapter sda = new SqlDataAdapter())
                     {
-                        username = reader["Username"].ToString();
-                        if (reader["DPdata"].ToString() != "")
+                        cmd.CommandType = CommandType.Text;
+                        cmd.Connection = con;
+                        con.Open();
+                        SqlDataReader reader = cmd.ExecuteReader();
+                        while (reader.Read())
                         {
-                            c = 1;
-                            byte[] imagedata = (byte[])reader["DPdata"];
-                            imageDataString = Convert.ToBase64String(imagedata);
+                            username = reader["Username"].ToString();
+                            if (reader["DPdata"].ToString() != "")
+                            {
+                                c = 1;
+                                byte[] imagedata = (byte[])reader["DPdata"];
+                                imageDataString = Convert.ToBase64String(imagedata);
+                            }
                         }
                     }
                 }
             }
-        }
-        lblUsername.Text += username;
-        if (c == 1)
-        {
-            imgDP.ImageUrl = "data:Image/png;base64," + imageDataString;
+            lblUsername.Text += username;
+            if (c == 1)
+            {
+                imgDP.ImageUrl = "data:Image/png;base64," + imageDataString;
+            }
         }
     }
 

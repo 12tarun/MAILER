@@ -6,17 +6,17 @@
     <br />
     <br />
     <asp:GridView ID="gvMails" AllowPaging="true" AutoGenerateColumns="False" runat="server" OnPageIndexChanging="gvMails_PageIndexChanging">
+
         <Columns>
             <asp:TemplateField HeaderText="Recipient" ItemStyle-Width="150px">
                 <ItemTemplate>
                     <%#Eval("Recipient").ToString().Length > 13 ? (Eval("Recipient").ToString().Substring(0,13))+" ......": Eval("Recipient") %>
-                    <asp:Label ID="lblRecipient" Visible="false"  runat="server" Text='<%#Bind("Recipient") %>'></asp:Label>
+                    <asp:Label ID="lblRecipient" Visible="false" runat="server" Text='<%#Bind("Recipient") %>'></asp:Label>
                 </ItemTemplate>
             </asp:TemplateField>
-
-            <asp:TemplateField Visible="false" >
+            <asp:TemplateField Visible="false">
                 <ItemTemplate>
-                    <asp:HiddenField ID="hfSentMailId" runat="server" Value='<%# Eval("sentMailId") %>' />
+                    <asp:Label ID="lblSentMailId" runat="server" Text='<%# Eval("sentMailId") %>' Visible="false"></asp:Label>
                 </ItemTemplate>
             </asp:TemplateField>
 
@@ -28,9 +28,9 @@
             </asp:TemplateField>
 
             <asp:TemplateField HeaderText="Body" ItemStyle-Width="900px">
-                <ItemTemplate >
+                <ItemTemplate>
                     <%#Eval("Body").ToString().Length > 125 ? (Eval("Body").ToString().Substring(0,125))+" ......": Eval("Body") %>
-                    <asp:Label Id="lblBodyValue" Visible="false" Text='<%#Bind("Body") %>' runat="server"></asp:Label>
+                    <asp:Label ID="lblBodyValue" Visible="false" Text='<%#Bind("Body") %>' runat="server"></asp:Label>
                 </ItemTemplate>
             </asp:TemplateField>
 
@@ -45,7 +45,7 @@
                     <asp:Label ID="lblDate" runat="server" Text='<%#Bind("Date") %>'></asp:Label>
                 </ItemTemplate>
             </asp:TemplateField>
-            
+
             <asp:TemplateField ItemStyle-Width="100px">
                 <ItemTemplate>
                     <asp:LinkButton ID="lnkBtnPreview" OnClick="lnkBtnPreview_Click" Text="Preview" runat="server"></asp:LinkButton>
