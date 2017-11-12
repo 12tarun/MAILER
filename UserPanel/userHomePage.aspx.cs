@@ -38,38 +38,6 @@ public partial class UserPanel_Default : System.Web.UI.Page
                     ddlCategoryName.DataValueField = "categoryId";
                     ddlCategoryName.DataBind();
                 }
-                string username = "";
-                string imageDataString = "";
-                int c = 0;
-                string constr2 = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
-                using (SqlConnection con = new SqlConnection(constr2))
-                {
-                    using (SqlCommand cmd = new SqlCommand("SELECT DPdata, username FROM tblUsers WHERE UserId = '" + userID + "'"))
-                    {
-                        using (SqlDataAdapter sda = new SqlDataAdapter())
-                        {
-                            cmd.CommandType = CommandType.Text;
-                            cmd.Connection = con;
-                            con.Open();
-                            SqlDataReader reader = cmd.ExecuteReader();
-                            while (reader.Read())
-                            {
-                                username = reader["Username"].ToString();
-                                if (reader["DPdata"].ToString() != "")
-                                {
-                                    c = 1;
-                                    byte[] imagedata = (byte[])reader["DPdata"];
-                                    imageDataString = Convert.ToBase64String(imagedata);
-                                }
-                            }
-                        }
-                    }
-                }
-                lblUsername.Text = username;
-                if (c == 1)
-                {
-                    imgDP.ImageUrl = "data:Image/png;base64," + imageDataString;
-                }
             }
         }
     }

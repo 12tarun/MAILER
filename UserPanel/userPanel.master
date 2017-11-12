@@ -5,23 +5,62 @@
 <html>
 <head runat="server">
     <title></title>
-    <asp:ContentPlaceHolder id="head" runat="server">
+    <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../CSS/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
     <form id="form1" runat="server">
-    <div>
-        <div class="topnav">
-            <a href="composeEmail.aspx">Compose Email</a>
-            <a class="active" href="userHomePage.aspx">Settings</a>
-            <a href="sentMails.aspx">Outbox</a>
-            <a href="recipientList.aspx">Recipients List</a>
-            <a href="Profile.aspx"><asp:Image ID="imgDP" Width="25px" ToolTip="Profile" Height="30px" runat="server"/><asp:Label ID="lblUsername" runat="server" ToolTip="Profile"></asp:Label></a>
-            <asp:Button ID="btnLogout" runat="server" BackColor="#333" BorderWidth="0px" Text="Logout" ForeColor="white" OnClick="btnLogout_Click" />          
-        </div>
-        <asp:ContentPlaceHolder id="ContentPlaceHolder1" runat="server">  
-        </asp:ContentPlaceHolder>
+        <div class="container-fluid">
+            <div class="bg-img">
+                <nav class="navbar" id="navBar">
+                    <div class="navbar-brand">
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#menu" aria-controls="menu" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon icon"><i class="fa fa-bars" aria-hidden="true"></i></span>
+                        </button>
+                        <img class="logo" src="../Images/message.gif">
+                    </div>
+                    <div class="form-inline my-2 my-lg-0">
+                        <asp:Button class=" btn btn-primary btnstyle my-2 my-sm-0" ID="btnLogout" runat="server" Text="Logout" ForeColor="white" OnClick="btnLogout_Click" />
+                    </div>
+                    <div class="collapse navbar-collapse" id="menu">
+                        <ul class="navbar-nav mr-auto">
+                            <li class="nav-item">
+                                <h2><a class="nav-link" href="Profile.aspx">
+                                    <asp:Label ID="lblUsername" runat="server" ToolTip="Profile"></asp:Label></a></h2>
+                                <a class="nav-link" href="Profile.aspx">
+                                    <asp:Image class="img" ID="imgDP" ToolTip="Profile" runat="server" /></a></li>
+                            <li class="nav-item">
+                                <h3><a class="nav-link" href="composeEmail.aspx">Compose Email</a></h3>
+                            </li>
+                            <li class="nav-item active">
+                                <h3><a class="nav-link" href="userHomePage.aspx">Settings</a></h3>
+                            </li>
+                            <li class="nav-item">
+                                <h3><a class="nav-link" href="sentMails.aspx">Outbox</a></h3>
+                            </li>
+                            <li class="nav-item">
+                                <h3><a class="nav-link" href="recipientList.aspx">Recipients List</a></h3>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+            </asp:ContentPlaceHolder>
+     </div>
     </div>
     </form>
+    <!-- SCRIPT -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+    <script src="../JS/functions.js"></script>
 </body>
 </html>
+

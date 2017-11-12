@@ -3,40 +3,40 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-
-    <h2>Full Name
-    </h2>
-    <asp:Label ID="lblEditFullName" Font-Size="Large" runat="server"></asp:Label>
-    <br />
-    <br />
-    <asp:TextBox ID="tbxEditFullName" runat="server" placeholder="Enter new fullname" Visible="false"></asp:TextBox>
-    <asp:RequiredFieldValidator ID="rfvFullname" runat="server" ControlToValidate="tbxEditFullName" ErrorMessage="*Enter a name" ForeColor="Red"></asp:RequiredFieldValidator>
-    <asp:Button ID="btnEnterFullName" OnClick="btnEnterFullName_Click" Visible="false" Text="Update" runat="server" />
-    <br />
-    <asp:Button ID="btnEditFullName" Text="Edit" runat="server" OnClick="btnEditFullName_Click" />
-    <br />
-    <br />
-    <h2>Profile Picture
-    </h2>
-    <asp:Image ID="imgEditProfilePicture" Width="200px" Height="250px" runat="server" />
-    <br />
-    <br />
-    <asp:FileUpload ID="fileUploadDP" runat="server" />
-    <asp:Button ID="btnDP" runat="server" Text="Edit" OnClick="btnDP_Click" />
-    <br />
-    <br />
-    <asp:Label ID="lblWrongExtension" Text="Only .jpg or .png file is acceptable." Visible="false" runat="server" ForeColor="Red"></asp:Label>
-    <br />
-    <br />
-        <h2>Username
-    </h2>
-    <asp:Label ID="lblEditUsername" Font-Size="Large" runat="server"></asp:Label>
-    <br />
-    <br />
-    <asp:TextBox ID="tbxEditUsername" runat="server" placeholder="Enter new username" OnTextChanged="tbxEditUsername_TextChanged" Visible="false"></asp:TextBox>
-    <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="tbxEditUsername" ErrorMessage="*Enter a name" ForeColor="Red"></asp:RequiredFieldValidator>
-    <asp:Label ID="lblInvalidUsername" Visible="false" ForeColor="Red" Text="Username is already used" runat="server"></asp:Label>
-    <br />
-    <asp:Button ID="btnEditUsername" Text="Edit" OnClick="btnEditUsername_Click" runat="server" />
+    <div class="container-fluid child-page">
+        <div class="container content txt-style">
+            <i class="fa fa-user" style="font-size:50px" aria-hidden="true"></i>
+            <h1>PROFILE</h1>
+            <h2>Full Name</h2>
+            <asp:label id="lblEditFullName" font-size="Large" runat="server"></asp:label>
+            <br />
+            <br />
+            <asp:textbox id="tbxEditFullName" runat="server" placeholder="Enter new fullname" visible="false"></asp:textbox>
+            <asp:button id="btnEnterFullName" class="btnstyle" onclick="btnEnterFullName_Click" visible="false" text="Update" runat="server" />
+            <br />
+            <asp:button id="btnEditFullName" class="btnstyle" text="Edit" runat="server" onclick="btnEditFullName_Click" />
+            <br />
+            <br />
+            <h2>Profile Picture</h2>
+            <asp:image id="imgEditProfilePicture" width="200px" height="250px" runat="server" />
+            <br />
+            <br />
+            <asp:fileupload id="fileUploadDP" runat="server" />
+            <asp:button id="btnDP" class="btnstyle" runat="server" text="Edit" onclick="btnDP_Click" />
+            <br />
+            <br />
+            <asp:label id="lblWrongExtension" text="Only .jpg or .png file is acceptable." visible="false" runat="server" forecolor="Red"></asp:label>
+            <br />
+            <br />
+            <h2>Username</h2>
+            <asp:label id="lblEditUsername" font-size="Large" runat="server"></asp:label>
+            <br />
+            <br />
+            <asp:textbox id="tbxEditUsername" runat="server" placeholder="Enter new username" ontextchanged="tbxEditUsername_TextChanged" visible="false"></asp:textbox>
+            <asp:label id="lblInvalidUsername" visible="false" forecolor="Red" text="Username is already used" runat="server"></asp:label>
+            <br />
+            <asp:button id="btnEditUsername" class="btnstyle" text="Edit" onclick="btnEditUsername_Click" runat="server" />
+        </div>
+    </div>
 </asp:Content>
 

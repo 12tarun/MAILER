@@ -3,32 +3,36 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-    <asp:GridView ID="gvMails" AllowPaging="true" AutoGenerateColumns="False" runat="server" OnPageIndexChanging="gvMails_PageIndexChanging">
-
+     <div class="container-fluid child-page">
+        <div class="container content txt-style">
+            <i class="fa fa-envelope-open" style="font-size:50px" aria-hidden="true"></i>
+            <h1>OUTBOX</h1>
+    <asp:GridView ID="gvMails" AllowPaging="true" AutoGenerateColumns="False" runat="server" OnPageIndexChanging="gvMails_PageIndexChanging" class="table table-responsive">
         <Columns>
-            <asp:TemplateField HeaderText="Recipient" ItemStyle-Width="150px">
+            <asp:TemplateField HeaderText="Recipient">
                 <ItemTemplate>
-                    <%#Eval("Recipient").ToString().Length > 13 ? (Eval("Recipient").ToString().Substring(0,13))+" ......": Eval("Recipient") %>
+                    <%#Eval("Recipient").ToString().Length > 13 ? (Eval("Recipient").ToString().Substring(0,13))+"........": Eval("Recipient") %>
                     <asp:Label ID="lblRecipient" Visible="false" runat="server" Text='<%#Bind("Recipient") %>'></asp:Label>
                 </ItemTemplate>
             </asp:TemplateField>
-            <asp:TemplateField Visible="false">
+
+            <asp:TemplateField Visible="false" >
                 <ItemTemplate>
-                    <asp:Label ID="lblSentMailId" runat="server" Text='<%# Eval("sentMailId") %>' Visible="false"></asp:Label>
+                    <asp:HiddenField ID="hfSentMailId" runat="server" Value='<%# Eval("sentMailId") %>' />
                 </ItemTemplate>
             </asp:TemplateField>
 
-            <asp:TemplateField HeaderText="Subject" ItemStyle-Width="220px">
+            <asp:TemplateField HeaderText="Subject">
                 <ItemTemplate>
-                    <%#Eval("Subject").ToString().Length > 20 ? (Eval("Subject").ToString().Substring(0,20))+" ......": Eval("Subject") %>
+                    <%#Eval("Subject").ToString().Length > 20 ? (Eval("Subject").ToString().Substring(0,20))+"........": Eval("Subject") %>
                     <asp:Label ID="lblSubject" Visible="false" runat="server" Text='<%#Bind("Subject") %>'></asp:Label>
                 </ItemTemplate>
             </asp:TemplateField>
 
-            <asp:TemplateField HeaderText="Body" ItemStyle-Width="900px">
-                <ItemTemplate>
-                    <%#Eval("Body").ToString().Length > 125 ? (Eval("Body").ToString().Substring(0,125))+" ......": Eval("Body") %>
-                    <asp:Label ID="lblBodyValue" Visible="false" Text='<%#Bind("Body") %>' runat="server"></asp:Label>
+            <asp:TemplateField HeaderText="Body">
+                <ItemTemplate >
+                    <%#Eval("Body").ToString().Length > 125 ? (Eval("Body").ToString().Substring(0,125))+"........": Eval("Body") %>
+                    <asp:Label Id="lblBodyValue" Visible="false" Text='<%#Bind("Body") %>' runat="server"></asp:Label>
                 </ItemTemplate>
             </asp:TemplateField>
 
@@ -38,18 +42,21 @@
                 </ItemTemplate>
             </asp:TemplateField>
 
-            <asp:TemplateField HeaderText="Date" ItemStyle-Width="150px">
+            <asp:TemplateField HeaderText="Date">
                 <ItemTemplate>
                     <asp:Label ID="lblDate" runat="server" Text='<%#Bind("Date") %>'></asp:Label>
                 </ItemTemplate>
             </asp:TemplateField>
-
-            <asp:TemplateField ItemStyle-Width="100px">
+            
+            <asp:TemplateField>
                 <ItemTemplate>
                     <asp:LinkButton ID="lnkBtnPreview" OnClick="lnkBtnPreview_Click" Text="Preview" runat="server"></asp:LinkButton>
                 </ItemTemplate>
             </asp:TemplateField>
         </Columns>
     </asp:GridView>
+            </div>
+         </div>
 </asp:Content>
+
 
