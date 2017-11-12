@@ -49,66 +49,67 @@
                     <div class="modal-body">
                         <asp:ScriptManager ID="SMCapcha" runat="server"></asp:ScriptManager>
                         <div class="container">
-                            <div class="input-group">
-                                <span for="InputUsername" class="input-group-addon" id="basic-addon1"><i class="fa fa-user" aria-hidden="true"></i></span>
-                                <asp:TextBox class="form-control" ID="tbxFullname" runat="server" ValidationGroup="register" placeholder="Full Name"></asp:TextBox>
-                            </div>
-                            <asp:RequiredFieldValidator ControlToValidate="tbxFullName" ValidationGroup="register" Display="Dynamic" ForeColor="Red" ID="RFValidatorFullName" runat="server" ErrorMessage="Full name required"></asp:RequiredFieldValidator>
-                            <br />
-                            <div class="input-group">
-                                <span class="input-group-addon" id="basic-addon1"><i class="fa fa-user" aria-hidden="true"></i></span>
-                                <asp:TextBox class="form-control" ID="tbxUsername" runat="server" ValidationGroup="register" placeholder="Username" AutoPostBack="true" OnTextChanged="tbxUsername_TextChanged"></asp:TextBox>
-                            </div>
-                            <asp:RequiredFieldValidator Display="Dynamic" ID="RFValidatorUsername" ValidationGroup="register" ControlToValidate="tbxUsername" runat="server" ErrorMessage="Username required" ForeColor="red"></asp:RequiredFieldValidator>
-                            <asp:Label ID="lblInvalidUsername" runat="server" Display="Dynamic" ForeColor="Red"></asp:Label>
-                            <br />
-                            <div class="input-group">
-                                <span for="InputEmail" class="input-group-addon" id="basic-addon1">@</span>
-                                <asp:TextBox class="form-control" ID="tbxEmail" runat="server" ValidationGroup="register" placeholder="Email" AutoPostBack="true" OnTextChanged="tbxEmail_TextChanged"></asp:TextBox>
-                            </div>
-                            <asp:RequiredFieldValidator Display="Dynamic" ID="RFValidatorEmail" ValidationGroup="register" runat="server" ControlToValidate="tbxEmail" ErrorMessage="Email id required" ForeColor="Red"></asp:RequiredFieldValidator>
-                            <asp:RegularExpressionValidator Display="Dynamic" ID="REValidatorEmail" runat="server" ValidationGroup="register" ForeColor="Red" ErrorMessage="Invalid email id" ControlToValidate="tbxEmail" ValidationExpression="^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$" />
-                            <asp:Label ID="lblInvalidEmail" runat="server" Display="Dynamic" ForeColor="Red"></asp:Label>
-                            <small id="emailHelp" class="form-text text-muted"></small>
-                            <br />
-                            <div class="input-group">
-                                <span for="InputPassword" class="input-group-addon" id="basic-addon1"><i class="fa fa-key" aria-hidden="true"></i></span>
-                                <asp:TextBox class="form-control" ID="tbxPassword" runat="server" placeholder="Password" ValidationGroup="register" TextMode="Password"></asp:TextBox>
-                            </div>
-                            <asp:RequiredFieldValidator ID="RFValidatorPassword" runat="server" Display="Dynamic" ValidationGroup="register" ControlToValidate="tbxPassword" ErrorMessage="Password required" ForeColor="Red"></asp:RequiredFieldValidator>
-
-                            <asp:RegularExpressionValidator ID="REValidatorPassword" runat="server" Display="Dynamic" ValidationGroup="register" Font-Size="small" ErrorMessage="Password should contain atleast one digit, one alphabet and minimum length 6." ControlToValidate="tbxPassword" ForeColor="Red" ValidationExpression="^(?=.*[0-9])(?=.*[a-zA-Z]).{6,}$" />
-                            <br />
-                            <div class="input-group">
-                                <span class="input-group-addon" id="basic-addon1"><i class="fa fa-key" aria-hidden="true"></i></span>
-                                <asp:TextBox class="form-control" ID="tbxComfirmPassword" runat="server" placeholder="Confirm Password" ValidationGroup="register" TextMode="Password"></asp:TextBox>
-                            </div>
-                            <asp:RequiredFieldValidator ID="RFValidatorConfirmPassword" runat="server" Display="Dynamic" ValidationGroup="register" ControlToValidate="tbxComfirmPassword" ErrorMessage="Confirm password required" ForeColor="Red"></asp:RequiredFieldValidator>
-                            <asp:CompareValidator ID="CMValidatorConfirmPassword" Display="Dynamic" ValidationGroup="register" ControlToValidate="tbxComfirmPassword" ErrorMessage="Passwords do not match" ForeColor="Red" ControlToCompare="tbxPassword" runat="server"></asp:CompareValidator>
-
-                            <br />
-                            <div class="form-group">
-                                <asp:UpdatePanel ID="UPCaptcha" runat="server">
-                                    <ContentTemplate>
-                                        <asp:Image ID="imgCaptcha" Width="100px" Height="50px" runat="server" />
+                            <asp:UpdatePanel ID="updatePanelRegister" runat="server">
+                                <ContentTemplate>
+                                    <div class="input-group">
+                                        <span for="InputUsername" class="input-group-addon" id="basic-addon1"><i class="fa fa-user" aria-hidden="true"></i></span>
+                                        <asp:TextBox class="form-control" ID="tbxFullname" runat="server" ValidationGroup="register" placeholder="Full Name"></asp:TextBox>
+                                    </div>
+                                    <asp:RequiredFieldValidator ControlToValidate="tbxFullName" ValidationGroup="register" Display="Dynamic" ForeColor="Red" ID="RFValidatorFullName" runat="server" ErrorMessage="Full name required"></asp:RequiredFieldValidator>
+                                    <br />
+                                    <div class="input-group">
+                                        <span class="input-group-addon" id="basic-addon1"><i class="fa fa-user" aria-hidden="true"></i></span>
+                                        <asp:TextBox class="form-control" ID="tbxUsername" runat="server" ValidationGroup="register" placeholder="Username" AutoPostBack="true" OnTextChanged="tbxUsername_TextChanged"></asp:TextBox>
+                                    </div>
+                                    <asp:RequiredFieldValidator Display="Dynamic" ID="RFValidatorUsername" ValidationGroup="register" ControlToValidate="tbxUsername" runat="server" ErrorMessage="Username required" ForeColor="red"></asp:RequiredFieldValidator>
+                                    <br />
+                                    <asp:Label ID="lblInvalidUsername" runat="server" Display="Dynamic" ForeColor="Red"></asp:Label>
+                                    <div class="input-group">
+                                        <span for="InputEmail" class="input-group-addon" id="basic-addon1">@</span>
+                                        <asp:TextBox class="form-control" ID="tbxEmail" runat="server" ValidationGroup="register" placeholder="Email" AutoPostBack="true" OnTextChanged="tbxEmail_TextChanged"></asp:TextBox>
+                                    </div>
+                                    <asp:RequiredFieldValidator Display="Dynamic" ID="RFValidatorEmail" ValidationGroup="register" runat="server" ControlToValidate="tbxEmail" ErrorMessage="Email id required" ForeColor="Red"></asp:RequiredFieldValidator>
+                                    <asp:RegularExpressionValidator Display="Dynamic" ID="REValidatorEmail" runat="server" ValidationGroup="register" ForeColor="Red" ErrorMessage="Invalid email id" ControlToValidate="tbxEmail" ValidationExpression="^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$" />
+                                    <asp:Label ID="lblInvalidEmail" runat="server" Display="Dynamic" ForeColor="Red"></asp:Label>
+                                    <small id="emailHelp" class="form-text text-muted"></small>
+                                    <br />
+                                    <div class="input-group">
+                                        <span for="InputPassword" class="input-group-addon" id="basic-addon1"><i class="fa fa-key" aria-hidden="true"></i></span>
+                                        <asp:TextBox class="form-control" ID="tbxPassword" runat="server" placeholder="Password" ValidationGroup="register" TextMode="Password"></asp:TextBox>
+                                    </div>
+                                    <asp:RequiredFieldValidator ID="RFValidatorPassword" runat="server" Display="Dynamic" ValidationGroup="register" ControlToValidate="tbxPassword" ErrorMessage="Password required" ForeColor="Red"></asp:RequiredFieldValidator>
+                                    <asp:RegularExpressionValidator ID="REValidatorPassword" runat="server" Display="Dynamic" ValidationGroup="register" Font-Size="small" ErrorMessage="Password should contain atleast one digit, one alphabet and minimum length 6." ControlToValidate="tbxPassword" ForeColor="Red" ValidationExpression="^(?=.*[0-9])(?=.*[a-zA-Z]).{6,}$" />
+                                    <br />
+                                    <div class="input-group">
+                                        <span class="input-group-addon" id="basic-addon1"><i class="fa fa-key" aria-hidden="true"></i></span>
+                                        <asp:TextBox class="form-control" ID="tbxComfirmPassword" runat="server" placeholder="Confirm Password" ValidationGroup="register" TextMode="Password"></asp:TextBox>
+                                    </div>
+                                    <asp:RequiredFieldValidator ID="RFValidatorConfirmPassword" runat="server" Display="Dynamic" ValidationGroup="register" ControlToValidate="tbxComfirmPassword" ErrorMessage="Confirm password required" ForeColor="Red"></asp:RequiredFieldValidator>
+                                    <asp:CompareValidator ID="CMValidatorConfirmPassword" Display="Dynamic" ValidationGroup="register" ControlToValidate="tbxComfirmPassword" ErrorMessage="Passwords do not match" ForeColor="Red" ControlToCompare="tbxPassword" runat="server"></asp:CompareValidator>
+                                    <br />
+                                    <div class="form-group">
+                                        <asp:UpdatePanel ID="UPCaptcha" runat="server">
+                                            <ContentTemplate>
+                                                <asp:Image ID="imgCaptcha" Width="100px" Height="50px" runat="server" />
+                                                <br />
+                                                <br />
+                                                <asp:Button class="btn btn-dark" ID="btnRefresh" runat="server" Text="Refresh" OnClick="btnRefresh_Click" />
+                                            </ContentTemplate>
+                                        </asp:UpdatePanel>
                                         <br />
-                                        <asp:Button class="btn btn-dark" ID="btnRefresh" runat="server" Text="Refresh" OnClick="btnRefresh_Click" />
-                                    </ContentTemplate>
-                                </asp:UpdatePanel>
-                                <br />
-                                <asp:TextBox class="form-control" ID="tbxCaptcha" runat="server" placeholder="Enter above captcha"></asp:TextBox>
-                                <asp:Label ID="lblIncorrectCaptcha" runat="server" Display="Dynamic" ForeColor="Red"></asp:Label>
-                                <div class="form-check">
-                                </div>
-
-                                <asp:Button ID="btnRegister" Text="register" class="btn btn-dark submit" runat="server" OnClick="btnRegister_Click" />
-                            </div>
-
+                                        <asp:TextBox class="form-control" ID="tbxCaptcha" runat="server" placeholder="Enter above captcha"></asp:TextBox>
+                                        <asp:Label ID="lblIncorrectCaptcha" runat="server" ForeColor="Red"></asp:Label>
+                                        <div class="form-check">
+                                        </div>
+                                        <asp:Button ID="btnRegister" Text="register" class="btn btn-dark submit" runat="server" OnClick="btnRegister_Click" />
+                                    </div>
+                                    </div>
+                                </ContentTemplate>
+                            </asp:UpdatePanel>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
         <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -120,30 +121,29 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <!--
-<div class="input-group">
-  <span class="input-group-addon" id="basic-addon1">@</span>
-  <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
-</div>-->
-                        <div class="container">
-                            <div class="input-group">
-                                <span for="InputEmail" class="input-group-addon" id="basic-addon1">@</span>
-                                <asp:TextBox ID="tbxLoginEmail" class="form-control" runat="server" ValidationGroup="login" placeholder="Enter Email Id"></asp:TextBox>
-                            </div>
-                            <asp:RequiredFieldValidator Display="Dynamic" ID="RFValidatorLoginEmail" ValidationGroup="login" runat="server" ErrorMessage="Please enter an email id" ControlToValidate="tbxLoginEmail" ForeColor="Red"></asp:RequiredFieldValidator>
-                            <small id="emailHelp" class="form-text text-muted"></small>
-                            <div class="input-group">
-                                <span for="InputPassword" class="input-group-addon" id="basic-addon1"><i class="fa fa-key" aria-hidden="true"></i></span>
-                                <asp:TextBox class="form-control" ID="tbxLoginPassword" runat="server" ValidationGroup="login" TextMode="Password" placeholder="Enter Password"></asp:TextBox>
-                            </div>
-                            <asp:RequiredFieldValidator Display="Dynamic" ID="RFValidatorLoginPassword" ValidationGroup="login" runat="server" ControlToValidate="tbxLoginPassword" ErrorMessage="Please enter the password" ForeColor="Red"></asp:RequiredFieldValidator>
-                            <br />
-                            <asp:LinkButton ID="LnkBtnForgotPassword" runat="server" OnClick="LnkBtnForgotPassword_Click" Text="forgot password?"></asp:LinkButton>
-                            <div class="form-check">
-                            </div>
-                            <asp:Button class="btn btn-dark btnstyle" ID="btnLogin" runat="server" OnClick="btnLogin_Click" Text="Login" />
-                            <asp:Label ID="lblWarning" runat="server" Display="Dynamic" ForeColor="Red"></asp:Label>
-                        </div>
+                        <asp:UpdatePanel ID="updatePanelLogin" runat="server">
+                            <ContentTemplate>
+                                <div class="container">
+                                    <div class="input-group">
+                                        <span for="InputEmail" class="input-group-addon" id="basic-addon1">@</span>
+                                        <asp:TextBox ID="tbxLoginEmail" class="form-control" runat="server" ValidationGroup="login" placeholder="Enter Email Id"></asp:TextBox>
+                                    </div>
+                                    <asp:RequiredFieldValidator Display="Dynamic" ID="RFValidatorLoginEmail" ValidationGroup="login" runat="server" ErrorMessage="Please enter an email id" ControlToValidate="tbxLoginEmail" ForeColor="Red"></asp:RequiredFieldValidator>
+                                    <small id="emailHelp" class="form-text text-muted"></small>
+                                    <div class="input-group">
+                                        <span for="InputPassword" class="input-group-addon" id="basic-addon1"><i class="fa fa-key" aria-hidden="true"></i></span>
+                                        <asp:TextBox class="form-control" ID="tbxLoginPassword" runat="server" ValidationGroup="login" TextMode="Password" placeholder="Enter Password"></asp:TextBox>
+                                    </div>
+                                    <asp:RequiredFieldValidator Display="Dynamic" ID="RFValidatorLoginPassword" ValidationGroup="login" runat="server" ControlToValidate="tbxLoginPassword" ErrorMessage="Please enter the password" ForeColor="Red"></asp:RequiredFieldValidator>
+                                    <br />
+                                    <asp:LinkButton ID="LnkBtnForgotPassword" runat="server" OnClick="LnkBtnForgotPassword_Click" Text="forgot password?"></asp:LinkButton>
+                                    <div class="form-check">
+                                    </div>
+                                    <asp:Button class="btn btn-dark btnstyle" ID="btnLogin" runat="server" OnClick="btnLogin_Click" Text="Login" />
+                                    <asp:Label ID="lblWarning" runat="server" Display="Dynamic" ForeColor="Red"></asp:Label>
+                                </div>
+                            </ContentTemplate>
+                        </asp:UpdatePanel>
                     </div>
                 </div>
             </div>

@@ -116,14 +116,10 @@ public partial class Registration : System.Web.UI.Page
             return;
 
         int userId = 0;
-
-        if (tbxCaptcha.Text == "")
-        {
-            lblIncorrectCaptcha.Visible = false;
-        }
-
+  
+        
         string captcha = Session["captcha"].ToString();
-        if ( captcha != tbxCaptcha.Text.Trim())
+        if ( captcha != tbxCaptcha.Text.Trim() || tbxCaptcha.Text == "")
         {
             lblIncorrectCaptcha.Visible = true;
             lblIncorrectCaptcha.Text = "Invalid Captcha Code";
