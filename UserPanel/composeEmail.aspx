@@ -60,8 +60,10 @@
                         <br />
                         <asp:TextBox ID="tbxMailSubject" runat="server" placeholder="subject"></asp:TextBox>
                         <br />
+                        <%--<asp:Label ID="lblSummernote" runat="server" Text="Image" AssociatedControlID="txtSummernote" CssClass="control-label col-md-3"></asp:Label>--%>
                         <asp:TextBox ID="tbxMailBody" runat="server" placeholder="enter mail body" ValidationGroup="mailCredentials" TextMode="MultiLine" Height="267px" Width="450px"></asp:TextBox>
-                        <asp:RequiredFieldValidator ValidationGroup="mailCredentials" ID="RequiredFieldValidator1" runat="server" ControlToValidate="tbxMailBody" ErrorMessage="*This field cant be empty" ForeColor="Red"></asp:RequiredFieldValidator>
+                        <asp:RequiredFieldValidator ValidationGroup="mailCredentials" ID="RequiredFieldValidator1" runat="server" ControlToValidate="tbxMailBody" ErrorMessage="This field can't be empty" ForeColor="Red"></asp:RequiredFieldValidator>
+                      <%--  <asp:Label ID="lblSum" runat="server" Text="Summernote"></asp:Label>--%>
                         <br />
                         <br />
                         <asp:FileUpload ID="fileAttachment" runat="server" AllowMultiple="true" />
@@ -96,4 +98,22 @@
             document.getElementById('<%= divTemplatePreview.ClientID%>').innerHTML = hiddenStatusFlag;
         }
     </script>
+<%--    <script src="../script/jquery-1.11.2.js"></script>
+    <script>
+        $(function () {
+            // Set up your summernote instance
+            $("#<%= tbxMailBody.ClientID %>").summernote();
+            focus: true
+            // When the summernote instance loses focus, update the content of your <textarea>
+            $("#<%= tbxMailBody.ClientID %>").on('summernote.blur', function () {
+                $('#<%= tbxMailBody.ClientID %>').html($('#<%= tbxMailBody.ClientID %>').summernote('code'));
+           });
+        });
+    </script>
+    <script type="text/javascript">
+        function funcMyHtml() {
+            debugger;
+            document.getElementById("#<%= tbxMailBody.ClientID %>").value = $('#<%= tbxMailBody.ClientID %>').summernote('code');
+        }
+    </script>--%>
 </asp:Content>

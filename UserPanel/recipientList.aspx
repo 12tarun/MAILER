@@ -11,20 +11,19 @@
                 <h1>RECIPIENT LIST</h1>
                 <div class="txt-style">
                     <asp:ScriptManager runat="server"></asp:ScriptManager>
-
                     <asp:TextBox ID="tbxSearch" placeholder="Enter Recipient Name" OnTextChanged="tbxSearch_TextChanged" AutoPostBack="true" runat="server"></asp:TextBox>
-
-                    <asp:Button ID="btnSearch" runat="server" Text="Search" OnClick="btnSearch_Click" />
+                    <asp:Button ID="btnSearch" class="btnstyle" runat="server" Text="Search" OnClick="btnSearch_Click" />
                     <br />
-                    <asp:GridView ID="grdView" runat="server" AllowPaging="true" AutoGenerateColumns="false" OnRowDataBound="grdView_RowDataBound" OnPageIndexChanging="grdView_PageIndexChanging">
+                    <br />
+                    <asp:GridView ID="grdView" class="table table-responsive" runat="server" AllowPaging="true" AutoGenerateColumns="false" OnRowDataBound="grdView_RowDataBound" OnPageIndexChanging="grdView_PageIndexChanging">
                         <Columns>
-                            <asp:BoundField HeaderStyle-Width="150px" DataField="Name" HeaderText="Recipient Name" ItemStyle-CssClass="ContactName" />
-                            <asp:TemplateField HeaderText="Recipient Email">
+                            <asp:BoundField HeaderStyle-Width="200px" DataField="Name" HeaderText="Recipient Name" ItemStyle-CssClass="ContactName" />
+                            <asp:TemplateField HeaderStyle-Width="700px" HeaderText="Recipient Email">
                                 <ItemTemplate>
                                     <%# Eval("Email") %>
                                 </ItemTemplate>
                             </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Category">
+                            <asp:TemplateField HeaderStyle-Width="200px" HeaderText="Category">
                                 <ItemTemplate>
                                     <%# Eval("Category") %>
                                 </ItemTemplate>

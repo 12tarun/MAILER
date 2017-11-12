@@ -5,12 +5,6 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <div class="container-fluid child-page">
         <div class="container content txt-style">
-            <asp:Label ID="lblUsername" runat="server" Text="Welcome "></asp:Label>
-            <br />
-            <br />
-            <%--    <asp:Image ID="imgDP" Width="200px" Height="250px" runat="server" />--%>
-            <br />
-
             <script type="text/javascript">
                 function CheckFile(fileUpload) {
                     if (fileUpload.value != '') {
@@ -38,9 +32,9 @@
                         <asp:Label ID="lblCategoryAlreadyAdded" runat="server" Text="Category already added!" ForeColor="Red" Visible="false"></asp:Label>
                     </div>
                 </div>
-
+                <br />
                 <div>
-                    <h3>Add Recipients</h3>
+                    <h3>Add Recipient</h3>
                     <div class="form">
                         <asp:Label runat="server" Visiblity="false" ID="lblRecipientCategory" Text="Choose Category name"></asp:Label>
                         <asp:DropDownList ID="ddlCategoryName" ValidationGroup="Recipient" runat="server"></asp:DropDownList>
@@ -59,7 +53,7 @@
                     <asp:Label ID="lblEmailAlreadyExists" Text="Email already exists in this category" Visible="false" ForeColor="Red" runat="server"></asp:Label>
                     <asp:Button class="btnstyle" ID="btnRecipientAdd" runat="server" OnClick="btnRecipientAdd_Click" Text="Add" />
                 </div>
-                <h3>OR</h3>
+                <br />
                 <div>
                     <h4>Add recipients through MS-Excel</h4>
                     <div class="form">
@@ -67,13 +61,14 @@
                     </div>
                     <asp:FileUpload ID="FileUploadExcel" Style="justify-content: center" runat="server" />
                     <asp:Button ID="btnUploadExcel" class="btnstyle" runat="server" Text="Upload" OnClick="btnUploadExcel_Click" />
-                    <asp:Label ID="lblWrongExcel" Text="Only .xls, xlsx file is acceptable." Visible="false" ForeColor="Red" runat="server"></asp:Label>
+                    <asp:Label ID="lblWrongExcel" Text="Only .xls, xlsx file is acceptable" Visible="false" ForeColor="Red" runat="server"></asp:Label>
                 </div>
-                <h4>Upload your own html file</h4>
-                <asp:Label ID="lblUploadTemplate" runat="server" Text="Select Template File"></asp:Label>
+                <br />
+                <h4>Upload your own template</h4>
+                <asp:Label ID="lblUploadTemplate" runat="server" Visible="false" Text="Select Template File"></asp:Label>
                 <asp:FileUpload ID="FileUploadTemplate" runat="server" />
-                <asp:Button ID="btnTemplateUpload" runat="server" Text="Upload" OnClick="btnTemplateUpload_Click" />
-                <asp:Label ID="lblTemplateStatus" runat="server"></asp:Label>
+                <asp:Button ID="btnTemplateUpload" class="btnstyle" runat="server" Text="Upload" OnClick="btnTemplateUpload_Click" />
+                <asp:Label ID="lblTemplateStatus" ForeColor="Red" runat="server"></asp:Label>
             </div>
         </div>
     </div>
