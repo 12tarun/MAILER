@@ -54,12 +54,9 @@
                     <div class="col-6 compose-area">
                         <h1>Mail Credentials</h1>
                         <asp:Label ID="lbltemplate" runat="server" Text="Select Template"></asp:Label>
-                        <asp:UpdatePanel ID="updatePanelTemplatePreview" runat="server">
-                            <ContentTemplate>
                                 <asp:RadioButtonList AutoPostBack="true" runat="server" ID="rbTemplates" OnSelectedIndexChanged="rbTemplates_SelectedIndexChanged" RepeatLayout="Table" RepeatDirection="Horizontal" RepeatColumns="4"></asp:RadioButtonList>
                                 <asp:HiddenField ID="hfTemplateCode" runat="server" />
-                            </ContentTemplate>
-                        </asp:UpdatePanel>
+                       
                         <br />
                         <asp:TextBox ID="tbxMailSubject" runat="server" placeholder="subject"></asp:TextBox>
                         <br />

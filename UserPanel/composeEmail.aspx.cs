@@ -27,7 +27,7 @@ public partial class UserPanel_Default : System.Web.UI.Page
             using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["constr"].ConnectionString))
             {
                 con.Open();
-                using (SqlDataAdapter da = new SqlDataAdapter("select displayName,templateId from tblTemplates where userId='5' or userId='" + Convert.ToInt32(Session["LoggedIn"]) + "'", con))
+                using (SqlDataAdapter da = new SqlDataAdapter("select displayName,templateId from tblTemplates where userId='8' or userId='" + Convert.ToInt32(Session["LoggedIn"]) + "'", con))
                 {
                     DataSet ds2 = new DataSet();
                     da.Fill(ds2);
