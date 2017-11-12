@@ -10,6 +10,7 @@
     <br />
     <br />
     <asp:TextBox ID="tbxEditFullName" runat="server" placeholder="Enter new fullname" Visible="false"></asp:TextBox>
+    <asp:RequiredFieldValidator ID="rfvFullname" runat="server" ControlToValidate="tbxEditFullName" ErrorMessage="*Enter a name" ForeColor="Red"></asp:RequiredFieldValidator>
     <asp:Button ID="btnEnterFullName" OnClick="btnEnterFullName_Click" Visible="false" Text="Update" runat="server" />
     <br />
     <asp:Button ID="btnEditFullName" Text="Edit" runat="server" OnClick="btnEditFullName_Click" />
@@ -33,6 +34,7 @@
     <br />
     <br />
     <asp:TextBox ID="tbxEditUsername" runat="server" placeholder="Enter new username" OnTextChanged="tbxEditUsername_TextChanged" Visible="false"></asp:TextBox>
+    <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="tbxEditUsername" ErrorMessage="*Enter a name" ForeColor="Red"></asp:RequiredFieldValidator>
     <asp:Label ID="lblInvalidUsername" Visible="false" ForeColor="Red" Text="Username is already used" runat="server"></asp:Label>
     <br />
     <asp:Button ID="btnEditUsername" Text="Edit" OnClick="btnEditUsername_Click" runat="server" />

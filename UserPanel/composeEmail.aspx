@@ -1,4 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/UserPanel/userPanel.master" ValidateRequest="false" AutoEventWireup="true" CodeFile="composeEmail.aspx.cs" Inherits="UserPanel_Default" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
     <style type="text/css">
         #divtemplatePreview {
@@ -32,12 +33,9 @@
     </asp:UpdatePanel>
     <h1>Mail Credentials</h1>
     <asp:Label ID="lbltemplate" runat="server" Text="Select Template"></asp:Label>
-    <asp:UpdatePanel ID="updatePanelTemplatePreview" runat="server">
-        <ContentTemplate>
-            <asp:RadioButtonList AutoPostBack="true" runat="server" ID="rbTemplates" OnSelectedIndexChanged="rbTemplates_SelectedIndexChanged" RepeatLayout="Table" RepeatDirection="Horizontal" RepeatColumns="4"></asp:RadioButtonList>
-            <asp:HiddenField ID="hfTemplateCode" runat="server" />
-        </ContentTemplate>
-    </asp:UpdatePanel>
+    <asp:RadioButtonList AutoPostBack="true" runat="server" ID="rbTemplates" OnSelectedIndexChanged="rbTemplates_SelectedIndexChanged" RepeatLayout="Table" RepeatDirection="Horizontal" RepeatColumns="4"></asp:RadioButtonList>
+    <asp:HiddenField ID="hfTemplateCode" runat="server" />
+
     <br />
     <asp:TextBox ID="tbxMailSubject" runat="server" placeholder="subject"></asp:TextBox>
     <br />
@@ -51,25 +49,31 @@
     <br />
     <br />
     <br />
+    <asp:FileUpload ID="fileAttachment" runat="server" AllowMultiple="true" />
+
     <br />
     <asp:TextBox ID="tbxPassword" TextMode="Password" ValidationGroup="mailCredentials" runat="server" placeholder="enter your registered mail's password here" Width="450px"></asp:TextBox>
     <asp:RequiredFieldValidator ValidationGroup="mailCredentials" ID="RequiredFieldValidator2" runat="server" ControlToValidate="tbxPassword" ErrorMessage="*This field cant be empty" ForeColor="Red"></asp:RequiredFieldValidator>
     <br />
     <asp:Button ID="btnSend" Text="Send" runat="server" OnClick="btnSend_Click" />
     <br />
-
     <asp:Label ID="lblMailStatus" ForeColor="Blue" runat="server"></asp:Label>
+    <script src="../script/jquery-1.11.2.js"></script>
     <script type="text/javascript">
         var templateCode;
-        function setHTML()
-        {
+        var interval;
+        var tbxBody = $('#<%=tbxMailBody.ClientID%>');
+        var hfTemplateCode = document
+        tbxBody.focus(function () {
+            interval = setInterval(setHTML, 100);
+        });
+        tbxBody.blur(function () {
+            clearInterval(interval);
+        });
+        function setHTML() {
             var tbxMailBody = document.getElementById('<%= tbxMailBody.ClientID%>').value.replace(/(?:\r\n|\r|\n)/g, '<br />');
             hiddenStatusFlag = document.getElementById('<%= hfTemplateCode.ClientID%>').value.replace("{body}", tbxMailBody);
             document.getElementById('<%= divTemplatePreview.ClientID%>').innerHTML = hiddenStatusFlag;
         }
-        window.onload = function () {
-            interval = setInterval(setHTML, 100);
-        }
-
     </script>
 </asp:Content>

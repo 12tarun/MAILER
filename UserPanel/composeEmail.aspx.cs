@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using System.Net.Mime;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
@@ -68,7 +69,7 @@ public partial class UserPanel_Default : System.Web.UI.Page
             }
             foreach (ListItem item in rbTemplates.Items)
             {
-                if (rbTemplates.Text=="noDesignTemplate")
+                if (rbTemplates.Text == "noDesignTemplate")
                     item.Selected = true;
             }
         }
@@ -131,54 +132,86 @@ public partial class UserPanel_Default : System.Web.UI.Page
             return;
         using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["constr"].ConnectionString))
         {
+            int selectedRecipientCount = 0;
             con.Open();
             string mailSubject;
-
-            if (tbxMailSubject.Text == "") mailSubject = "No subject";
-            else mailSubject = tbxMailSubject.Text;
-            SqlCommand saveEmail = new SqlCommand("spSaveMail", con);
-            saveEmail.CommandType = CommandType.StoredProcedure;
-            saveEmail.Parameters.AddWithValue("@body", tbxMailBody.Text);
-            saveEmail.Parameters.AddWithValue("@templateId", rbTemplates.SelectedItem.Value);
-            saveEmail.Parameters.AddWithValue("@userId", Convert.ToInt32(Session["LoggedIn"]));
-            saveEmail.Parameters.AddWithValue("@subject", mailSubject);
-            int sentMailId = Convert.ToInt32(saveEmail.ExecuteScalar());
-            try
+            foreach (RepeaterItem i in rptrCategory.Items)//making sure user has selected atleast one recipient
             {
-                foreach (RepeaterItem i in rptrCategory.Items)
+                Repeater rptrRecipient = (Repeater)i.FindControl("rptrRecipient");
+                foreach (RepeaterItem j in rptrRecipient.Items)
                 {
-                    Repeater rptrRecipient = (Repeater)i.FindControl("rptrRecipient");
-                    foreach (RepeaterItem j in rptrRecipient.Items)
+                    CheckBox cbRecipient = (CheckBox)j.FindControl("cbRecipient");
+                    if (cbRecipient.Checked) selectedRecipientCount++;
+                }
+            }
+            if (selectedRecipientCount == 0) lblMailStatus.Text = "Please select atleast one recipient ";
+            else
+            {
+                //saving the sent maildata into database
+                if (tbxMailSubject.Text == "") mailSubject = "No subject";
+                else mailSubject = tbxMailSubject.Text;
+                SqlCommand saveEmail = new SqlCommand("spSaveMail", con);
+                saveEmail.CommandType = CommandType.StoredProcedure;
+                saveEmail.Parameters.AddWithValue("@body", tbxMailBody.Text);
+                saveEmail.Parameters.AddWithValue("@templateId", rbTemplates.SelectedItem.Value);
+                saveEmail.Parameters.AddWithValue("@userId", Convert.ToInt32(Session["LoggedIn"]));
+                saveEmail.Parameters.AddWithValue("@subject", mailSubject);
+                int sentMailId = Convert.ToInt32(saveEmail.ExecuteScalar());
+                if (fileAttachment.HasFiles)
+                {
+                    foreach (HttpPostedFile uploadedFile in fileAttachment.PostedFiles)
                     {
-                        HiddenField hfRecipientID = (HiddenField)j.FindControl("hfRecipientId");
-                        CheckBox cbRecipient = (CheckBox)j.FindControl("cbRecipient");
-                        if (cbRecipient.Checked)
-                        {
-                            SqlCommand saveRecipientId = new SqlCommand("insert into tblMailRecipient(sentMailId,recipientId) values(@sentMailId,@recipientId)", con);
-                            saveRecipientId.Parameters.AddWithValue("@sentMailId", sentMailId);
-                            saveRecipientId.Parameters.AddWithValue("@recipientId", hfRecipientID.Value);
-                            saveRecipientId.ExecuteNonQuery();
-                            sendEmail(Convert.ToInt32(hfRecipientID.Value));
-                        }
+                        Stream stream = uploadedFile.InputStream;
+                        BinaryReader binaryReader = new BinaryReader(stream);
+                        byte[] bytes = binaryReader.ReadBytes((int)stream.Length);
+
+                        SqlCommand saveFileAttachments = new SqlCommand("insert into tblFileAttachments(sentMailId,fileName,fileSize,fileData) values(@sentMailId,@fileName,@fileSize,@fileData)",con);
+                        saveFileAttachments.Parameters.AddWithValue("@sentMailId",sentMailId);
+                        saveFileAttachments.Parameters.AddWithValue("@fileName",uploadedFile.FileName);
+                        saveFileAttachments.Parameters.AddWithValue("@fileSize",uploadedFile.ContentLength);
+                        saveFileAttachments.Parameters.AddWithValue("@fileData",bytes);
+                        saveFileAttachments.ExecuteNonQuery();
                     }
                 }
-                lblMailStatus.Text = "All the emails were sent successfully!";
-                tbxMailBody.Text = "";
+                try
+                {
+                    foreach (RepeaterItem i in rptrCategory.Items)
+                    {
+                        Repeater rptrRecipient = (Repeater)i.FindControl("rptrRecipient");
+                        foreach (RepeaterItem j in rptrRecipient.Items)
+                        {
+                            HiddenField hfRecipientID = (HiddenField)j.FindControl("hfRecipientId");
+                            CheckBox cbRecipient = (CheckBox)j.FindControl("cbRecipient");
+                            if (cbRecipient.Checked)
+                            {
+                                SqlCommand saveRecipientId = new SqlCommand("insert into tblMailRecipient(sentMailId,recipientId) values(@sentMailId,@recipientId)", con);
+                                saveRecipientId.Parameters.AddWithValue("@sentMailId", sentMailId);
+                                saveRecipientId.Parameters.AddWithValue("@recipientId", hfRecipientID.Value);
+                                saveRecipientId.ExecuteNonQuery();
+                                sendEmail(Convert.ToInt32(hfRecipientID.Value));
+                            }
+                        }
+                    }
+                    lblMailStatus.Text = "All the emails were sent successfully!";
+                    tbxMailBody.Text = "";
+                }
+                catch (Exception ex)
+                {
+                    lblMailStatus.Text = ex.Message;
+                    lblMailStatus.Text+= "Wrong Password!";
+                    SqlCommand deleteMailRecipient = new SqlCommand("delete from tblMailRecipient where sentMailId='" + sentMailId + "'", con);
+                    deleteMailRecipient.ExecuteNonQuery();
+                    SqlCommand deleteMail = new SqlCommand("delete from tblSentMails where sentMailId='" + sentMailId + "'", con);
+                    deleteMail.ExecuteNonQuery();
+                }
             }
-           catch(Exception ex)
-            {
-                lblMailStatus.Text = "Wrong Password!";
-                SqlCommand deleteMailRecipient = new SqlCommand("delete from tblMailRecipient where sentMailId='"+sentMailId+"'",con);
-                deleteMailRecipient.ExecuteNonQuery();
-                SqlCommand deleteMail = new SqlCommand("delete from tblSentMails where sentMailId='"+sentMailId+"'",con);
-                deleteMail.ExecuteNonQuery();
-            } 
         }
     }
     public void sendEmail(int recipientId)
     {
         using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["constr"].ConnectionString))
         {
+            //mail sending portion
             con.Open();
             string body = "";
             SqlCommand getRecipientname = new SqlCommand("select name from tblRecipients where recipientId='" + recipientId + "'", con);
@@ -189,12 +222,14 @@ public partial class UserPanel_Default : System.Web.UI.Page
             string userEmail = getUserEmail.ExecuteScalar().ToString();
             SqlCommand getTemplateFilePath = new SqlCommand("select filePath from tblTemplates where templateId='" + rbTemplates.SelectedItem.Value + "'", con);
             string templateFilePath = getTemplateFilePath.ExecuteScalar().ToString();
-            using (StreamReader reader = new StreamReader(Server.MapPath(templateFilePath)))
-            {
-                body = reader.ReadToEnd();
-                body = body.Replace("{RecipientName}", recipientName);
-                body = body.Replace("{body}", tbxMailBody.Text);
-            }
+            //using (StreamReader reader = new StreamReader(Server.MapPath(templateFilePath)))
+            //{
+            //    //inserting the value of placeholders as per the mail
+            //    body = reader.ReadToEnd();
+            //    body = body.Replace("{RecipientName}", recipientName);
+            //    body = body.Replace("{body}", tbxMailBody.Text);
+            //}
+            body = divTemplatePreview.InnerHtml;
             con.Close();
             con.Open();
             string enteredPassword = tbxPassword.Text;
@@ -210,6 +245,14 @@ public partial class UserPanel_Default : System.Web.UI.Page
                 smtp.UseDefaultCredentials = true;
                 smtp.Credentials = NetworkCred;
                 smtp.Port = 587;
+                if (fileAttachment.HasFiles)
+                {
+                    foreach (HttpPostedFile uploadedFile in fileAttachment.PostedFiles)
+                    {
+                        Attachment data = new Attachment(Server.MapPath(uploadedFile.FileName));
+                        mail.Attachments.Add(data);
+                    }
+                }
                 smtp.Send(mail);
             }
         }
@@ -230,6 +273,8 @@ public partial class UserPanel_Default : System.Web.UI.Page
             body = reader.ReadToEnd();
         }
         hfTemplateCode.Value = body;
+        divTemplatePreview.InnerHtml = body;
+
     }
 
 }

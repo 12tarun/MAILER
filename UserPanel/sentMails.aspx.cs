@@ -30,7 +30,7 @@ public partial class UserPanel_Default : System.Web.UI.Page
                 dt.Columns.Add("Body");
                 dt.Columns.Add("templateId");
                 dt.Columns.Add("Date");
-
+              
                 con.Open();
                 SqlDataReader rdr = cmd.ExecuteReader();
                 while (rdr.Read())
@@ -57,7 +57,7 @@ public partial class UserPanel_Default : System.Web.UI.Page
                                 dr["Date"] = rdr["sendDate"];
                             }
                         }
-                        dr["Recipient"] = recipientName.Remove(recipientName.Length - 1);
+                        dr["Recipient"] = recipientName;
                         dt.Rows.Add(dr);
                     }
                 }
@@ -83,7 +83,8 @@ public partial class UserPanel_Default : System.Web.UI.Page
         Label lblRecipientValue = (Label)row.FindControl("lblRecipient");
         Label lblBodyValue = (Label)row.FindControl("lblBodyValue");
         Label lblTemplateIdValue = (Label)row.FindControl("lblTemplateId");
-
+        Label lblSentMailId = (Label)row.FindControl("lblSentMailId");
+        Session["sentMailId"] = lblSentMailId.Text;
         
         Session["recipientName"] = lblRecipientValue.Text.ToString();
         Session["body"] = lblBodyValue.Text.ToString();

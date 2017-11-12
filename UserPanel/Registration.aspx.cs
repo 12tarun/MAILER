@@ -274,38 +274,42 @@ public partial class Registration : System.Web.UI.Page
         Page.Validate("login");
         if (!Page.IsValid)
             return;
-
-        int userId = 0;
-        string hashedLoginPass = getHash(tbxLoginPassword.Text.Trim());
-        string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
-        using (SqlConnection con = new SqlConnection(constr))
+        if (Session["LoggedIn"] != null) Response.Redirect("~/UserPanel/composeEmail.aspx");
+        else
         {
-            using (SqlCommand cmd = new SqlCommand("Validate_User"))
+
+            int userId = 0;
+            string hashedLoginPass = getHash(tbxLoginPassword.Text.Trim());
+            string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+            using (SqlConnection con = new SqlConnection(constr))
             {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@EmailId", tbxLoginEmail.Text.Trim());
-                cmd.Parameters.AddWithValue("@Password", hashedLoginPass);
-                cmd.Connection = con;
-                con.Open();
-                userId = Convert.ToInt32(cmd.ExecuteScalar());
-                con.Close();
-            }
-            switch (userId)
-            {
-                case -1:
-                    lblWarning.Visible = true;
-                    lblWarning.Text = "Email Id and/or password is incorrect.";
-                    lblWarning.ForeColor = System.Drawing.Color.Red;
-                    break;
-                case -2:
-                    lblWarning.Visible = true;
-                    lblWarning.Text = "Account has not been activated.";
-                    lblWarning.ForeColor = System.Drawing.Color.Red;
-                    break;
-                default:
-                    Session["LoggedIn"] = userId;
-                    Response.Redirect("~/UserPanel/composeEmail.aspx");
-                    break;
+                using (SqlCommand cmd = new SqlCommand("Validate_User"))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@EmailId", tbxLoginEmail.Text.Trim());
+                    cmd.Parameters.AddWithValue("@Password", hashedLoginPass);
+                    cmd.Connection = con;
+                    con.Open();
+                    userId = Convert.ToInt32(cmd.ExecuteScalar());
+                    con.Close();
+                }
+                switch (userId)
+                {
+                    case -1:
+                        lblWarning.Visible = true;
+                        lblWarning.Text = "Email Id and/or password is incorrect.";
+                        lblWarning.ForeColor = System.Drawing.Color.Red;
+                        break;
+                    case -2:
+                        lblWarning.Visible = true;
+                        lblWarning.Text = "Account has not been activated.";
+                        lblWarning.ForeColor = System.Drawing.Color.Red;
+                        break;
+                    default:
+                        Session["LoggedIn"] = userId;
+                        Response.Redirect("~/UserPanel/composeEmail.aspx");
+                        break;
+                }
             }
         }
     }
