@@ -9,7 +9,7 @@
             <h1>OUTBOX</h1>
     <asp:GridView ID="gvMails" AllowPaging="true" AutoGenerateColumns="False" runat="server" OnPageIndexChanging="gvMails_PageIndexChanging" class="table table-responsive">
         <Columns>
-            <asp:TemplateField HeaderText="Recipient">
+            <asp:TemplateField HeaderStyle-Width="150px" HeaderText="Recipient">
                 <ItemTemplate>
                     <%#Eval("Recipient").ToString().Length > 13 ? (Eval("Recipient").ToString().Substring(0,13))+"........": Eval("Recipient") %>
                     <asp:Label ID="lblRecipient" Visible="false" runat="server" Text='<%#Bind("Recipient") %>'></asp:Label>
@@ -18,18 +18,18 @@
 
             <asp:TemplateField Visible="false" >
                 <ItemTemplate>
-                    <asp:HiddenField ID="hfSentMailId" runat="server" Value='<%# Eval("sentMailId") %>' />
+                    <asp:Label ID="lblSentMailId" Visible="false" runat="server" Text='<%#Bind("sentMailId") %>'></asp:Label>
                 </ItemTemplate>
             </asp:TemplateField>
 
-            <asp:TemplateField HeaderText="Subject">
+            <asp:TemplateField HeaderStyle-Width="200px" HeaderText="Subject">
                 <ItemTemplate>
                     <%#Eval("Subject").ToString().Length > 20 ? (Eval("Subject").ToString().Substring(0,20))+"........": Eval("Subject") %>
                     <asp:Label ID="lblSubject" Visible="false" runat="server" Text='<%#Bind("Subject") %>'></asp:Label>
                 </ItemTemplate>
             </asp:TemplateField>
 
-            <asp:TemplateField HeaderText="Body">
+            <asp:TemplateField HeaderStyle-Width="500px" HeaderText="Body">
                 <ItemTemplate >
                     <%#Eval("Body").ToString().Length > 125 ? (Eval("Body").ToString().Substring(0,125))+"........": Eval("Body") %>
                     <asp:Label Id="lblBodyValue" Visible="false" Text='<%#Bind("Body") %>' runat="server"></asp:Label>

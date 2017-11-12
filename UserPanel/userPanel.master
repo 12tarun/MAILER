@@ -36,16 +36,16 @@
                                 <a class="nav-link" href="Profile.aspx">
                                     <asp:Image class="img" ID="imgDP" ToolTip="Profile" runat="server" /></a></li>
                             <li class="nav-item">
-                                <h3><a class="nav-link" href="composeEmail.aspx">Compose Email</a></h3>
+                                <h3><a class="nav-link" href="composeEmail.aspx">COMPOSE EMAIL</a></h3>
                             </li>
                             <li class="nav-item active">
-                                <h3><a class="nav-link" href="userHomePage.aspx">Settings</a></h3>
+                                <h3><a class="nav-link" href="userHomePage.aspx">SETTINGS</a></h3>
                             </li>
                             <li class="nav-item">
-                                <h3><a class="nav-link" href="sentMails.aspx">Outbox</a></h3>
+                                <h3><a class="nav-link" href="sentMails.aspx">OUTBOX</a></h3>
                             </li>
                             <li class="nav-item">
-                                <h3><a class="nav-link" href="recipientList.aspx">Recipients List</a></h3>
+                                <h3><a class="nav-link" href="recipientList.aspx">RECIPIENT LIST</a></h3>
                             </li>
                         </ul>
                     </div>

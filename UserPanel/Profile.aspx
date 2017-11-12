@@ -10,8 +10,10 @@
             <h2>Full Name</h2>
             <asp:label id="lblEditFullName" font-size="Large" runat="server"></asp:label>
             <br />
-            <br />
             <asp:textbox id="tbxEditFullName" runat="server" placeholder="Enter new fullname" visible="false"></asp:textbox>
+            <br />
+            <asp:RequiredFieldValidator ID="RFValidatorEditFullname" runat="server" Display="Dynamic" ValidationGroup="editFullName" ControlToValidate="tbxEditFullName" ErrorMessage="This field can't be empty" ForeColor="Red"></asp:RequiredFieldValidator>
+            <br />
             <asp:button id="btnEnterFullName" class="btnstyle" onclick="btnEnterFullName_Click" visible="false" text="Update" runat="server" />
             <br />
             <asp:button id="btnEditFullName" class="btnstyle" text="Edit" runat="server" onclick="btnEditFullName_Click" />
@@ -32,7 +34,9 @@
             <asp:label id="lblEditUsername" font-size="Large" runat="server"></asp:label>
             <br />
             <br />
-            <asp:textbox id="tbxEditUsername" runat="server" placeholder="Enter new username" ontextchanged="tbxEditUsername_TextChanged" visible="false"></asp:textbox>
+            <asp:textbox id="tbxEditUsername" runat="server" placeholder="Enter new username" visible="false"></asp:textbox>
+            <br />
+            <asp:RequiredFieldValidator ID="RFValidatorEditUsername" runat="server" Display="Dynamic" ValidationGroup="editUsername" ControlToValidate="tbxEditUsername" ErrorMessage="This field can't be empty" ForeColor="Red"></asp:RequiredFieldValidator>
             <asp:label id="lblInvalidUsername" visible="false" forecolor="Red" text="Username is already used" runat="server"></asp:label>
             <br />
             <asp:button id="btnEditUsername" class="btnstyle" text="Edit" onclick="btnEditUsername_Click" runat="server" />

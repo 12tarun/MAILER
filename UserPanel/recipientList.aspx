@@ -11,7 +11,7 @@
                 <h1>RECIPIENT LIST</h1>
                 <div class="txt-style">
                     <asp:ScriptManager runat="server"></asp:ScriptManager>
-                    <asp:TextBox ID="tbxSearch" placeholder="Enter Recipient Name" OnTextChanged="tbxSearch_TextChanged" AutoPostBack="true" runat="server"></asp:TextBox>
+                    <asp:TextBox ID="tbxSearch" placeholder="Enter Recipient Name" Width="200px" OnTextChanged="tbxSearch_TextChanged" AutoPostBack="true" runat="server"></asp:TextBox>
                     <asp:Button ID="btnSearch" class="btnstyle" runat="server" Text="Search" OnClick="btnSearch_Click" />
                     <br />
                     <br />

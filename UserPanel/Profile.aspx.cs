@@ -103,6 +103,10 @@ public partial class UserPanel_Default : System.Web.UI.Page
 
     protected void btnEnterFullName_Click(object sender, EventArgs e)
     {
+        Page.Validate("editFullName");
+        if (!Page.IsValid)
+            return;
+
         int userId = Convert.ToInt32(Session["LoggedIn"]);
         string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
         using (SqlConnection con = new SqlConnection(constr))
@@ -165,8 +169,15 @@ public partial class UserPanel_Default : System.Web.UI.Page
         }
     }
 
-    protected void tbxEditUsername_TextChanged(object sender, EventArgs e)
+    protected void btnEditUsername_Click(object sender, EventArgs e)
     {
+        tbxEditUsername.Visible = true;
+        lblInvalidUsername.Visible = false;
+
+        Page.Validate("editUsername");
+        if (!Page.IsValid)
+            return;
+
         using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["constr"].ConnectionString))
         {
             int userId = Convert.ToInt32(Session["LoggedIn"]);
@@ -198,10 +209,5 @@ public partial class UserPanel_Default : System.Web.UI.Page
                 Response.Redirect("~/UserPanel/Profile.aspx");
             }
         }
-    }
-
-    protected void btnEditUsername_Click(object sender, EventArgs e)
-    {
-        tbxEditUsername.Visible = true;
     }
 }
