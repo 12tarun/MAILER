@@ -3,9 +3,18 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-    <div id="emailPreview" runat="server"></div>
-    <asp:GridView runat="server" ID="grdFileAttachments">
-        
-    </asp:GridView>
+    <div class="container-fluid child-page">
+        <div class="container content txt-style">
+            <div class="row">
+                <div class="col-5">
+                    <div id="emailPreview" runat="server"></div>
+                </div>
+                <div class="col-7">
+                    <asp:GridView runat="server" class="table table-responsive" ID="grdFileAttachments">
+                    </asp:GridView>
+                </div>
+            </div>
+        </div>
+    </div>
 </asp:Content>
 

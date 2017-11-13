@@ -303,11 +303,10 @@ public partial class UserPanel_Default : System.Web.UI.Page
                     string templateBody, templateFilePath = HttpContext.Current.Request.PhysicalApplicationPath + FileUploadTemplate.FileName;
                     using (StreamReader reader = new StreamReader(FileUploadTemplate.PostedFile.InputStream))
                     {
-                        templateBody = reader.ReadToEnd();
-                        bodyPlaceHolder = templateBody.Contains("{body}");
-                        namePlaceHolder = templateBody.Contains("{RecipientName}");
+                        templateBody = reader.ReadToEnd();                        bodyPlaceHolder = templateBody.Contains("{body}");
+
                     }
-                    if (bodyPlaceHolder == true && namePlaceHolder == true)
+                    if (bodyPlaceHolder)
                     {
                         string filePath = "~/htmlTemplates/" + FileUploadTemplate.FileName;
 
@@ -327,7 +326,7 @@ public partial class UserPanel_Default : System.Web.UI.Page
                             }
                         }
                     }
-                    else lblTemplateStatus.Text = "Uploaded File does not contain the required placeholders({body} and{RecipientName})";
+                    else lblTemplateStatus.Text = "Uploaded File does not contain the required placeholders({body})";
                 }
             }
 

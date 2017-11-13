@@ -104,7 +104,7 @@ a {
                                     <dt>
                                         <a href="#">
                                             <span class="hida">
-                                                <asp:CheckBox ID="cbCategory" runat="server" OnCheckedChanged="cbCategory_CheckedChanged" AutoPostBack="true" Text='<%# Eval("categoryName") %>' />
+                                                <asp:CheckBox ID="cbCategory" ForeColor="White" runat="server" OnCheckedChanged="cbCategory_CheckedChanged" AutoPostBack="true" Text='<%# Eval("categoryName") %>' />
                                             </span>
                                             <p class="multiSel"></p>
                                         </a>
@@ -128,9 +128,10 @@ a {
                             </asp:Repeater>
                         </dl>
                     </ContentTemplate>
-
                 </asp:UpdatePanel>
             </div>
+
+
             <div class="col-9">
                 <div class="row">
                     <div class="col-6 txt-style">
@@ -142,23 +143,26 @@ a {
                     <div class="col-6 compose-area">
                         <h1>Mail Credentials</h1>
                         <asp:Label ID="lbltemplate" runat="server" Text="Select Template"></asp:Label>
-                        <asp:RadioButtonList AutoPostBack="true" runat="server" ID="rbTemplates" OnSelectedIndexChanged="rbTemplates_SelectedIndexChanged" RepeatLayout="Table" RepeatDirection="Horizontal" RepeatColumns="4"></asp:RadioButtonList>
+                        <asp:RadioButtonList AutoPostBack="true"  runat="server" ID="rbTemplates"  OnSelectedIndexChanged="rbTemplates_SelectedIndexChanged" RepeatLayout="Table" RepeatDirection="Horizontal" RepeatColumns="4"></asp:RadioButtonList>
                         <asp:HiddenField ID="hfTemplateCode" runat="server" />
 
                         <br />
-                        <asp:TextBox ID="tbxMailSubject" runat="server" placeholder="subject"></asp:TextBox>
+                        <asp:TextBox ID="tbxMailSubject" runat="server" Width="300px" placeholder="subject"></asp:TextBox>
+                        <br />
                         <br />
                         <%--<asp:Label ID="lblSummernote" runat="server" Text="Image" AssociatedControlID="txtSummernote" CssClass="control-label col-md-3"></asp:Label>--%>
-                        <asp:TextBox ID="tbxMailBody" runat="server" placeholder="enter mail body" ValidationGroup="mailCredentials" TextMode="MultiLine" Height="267px" Width="450px"></asp:TextBox>
+                        <asp:TextBox ID="tbxMailBody" runat="server" placeholder="enter mail body" ValidationGroup="mailCredentials" TextMode="MultiLine" Height="267px" Width="520px"></asp:TextBox>
+                        <br />
                         <asp:RequiredFieldValidator ValidationGroup="mailCredentials" ID="RequiredFieldValidator1" runat="server" ControlToValidate="tbxMailBody" ErrorMessage="This field can't be empty" ForeColor="Red"></asp:RequiredFieldValidator>
                         <%--  <asp:Label ID="lblSum" runat="server" Text="Summernote"></asp:Label>--%>
                         <br />
                         <br />
-                        <asp:FileUpload ID="fileAttachment" runat="server" AllowMultiple="true" />
+                        <asp:FileUpload ID="fileAttachment" ToolTip="Add Attachments" runat="server" AllowMultiple="true" />
                         <br />
                         <br />
-                        <asp:TextBox ID="tbxPassword" TextMode="Password" ValidationGroup="mailCredentials" runat="server" placeholder="enter your registered mail's password here" Width="450px"></asp:TextBox>
-                        <asp:RequiredFieldValidator ValidationGroup="mailCredentials" ID="RequiredFieldValidator2" runat="server" ControlToValidate="tbxPassword" ErrorMessage="*This field cant be empty" ForeColor="Red"></asp:RequiredFieldValidator>
+                        <asp:TextBox ID="tbxPassword" TextMode="Password" ValidationGroup="mailCredentials" runat="server" placeholder="enter your registered mail's password here" Width="300px"></asp:TextBox>
+                        <br />
+                        <asp:RequiredFieldValidator ValidationGroup="mailCredentials" ID="RequiredFieldValidator2" runat="server" ControlToValidate="tbxPassword" ErrorMessage="This field can't be empty" ForeColor="Red"></asp:RequiredFieldValidator>
                         <br />
                         <asp:Button ID="btnSend" class="btnstyle" Text="Send" runat="server" OnClick="btnSend_Click" />
                         <br />
@@ -168,6 +172,7 @@ a {
             </div>
         </div>
     </div>
+    
     <script src="../script/jquery-1.11.2.js"></script>
     <script type="text/javascript">
         var templateCode;

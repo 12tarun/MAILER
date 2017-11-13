@@ -72,6 +72,29 @@ public partial class UserPanel_Default : System.Web.UI.Page
                 if (rbTemplates.Text == "noDesignTemplate")
                     item.Selected = true;
             }
+
+            foreach (ListItem i in rbTemplates.Items)
+            {
+                if (Convert.ToInt32(i.Value) == 7)
+                
+                    i.Selected = true;
+
+            }
+            string filePath, body;
+
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["constr"].ConnectionString))
+            {
+                con.Open();
+                SqlCommand getTemplatePath = new SqlCommand("select filePath from tblTemplates where templateId='" + rbTemplates.SelectedItem.Value + "'", con);
+                filePath = getTemplatePath.ExecuteScalar().ToString();
+            }
+            using (StreamReader reader = new StreamReader(Server.MapPath(filePath)))
+            {
+                body = reader.ReadToEnd();
+            }
+            hfTemplateCode.Value = body;
+            divTemplatePreview.InnerHtml = body;
+
         }
 
     }
@@ -165,11 +188,11 @@ public partial class UserPanel_Default : System.Web.UI.Page
                         BinaryReader binaryReader = new BinaryReader(stream);
                         byte[] bytes = binaryReader.ReadBytes((int)stream.Length);
 
-                        SqlCommand saveFileAttachments = new SqlCommand("insert into tblFileAttachments(sentMailId,fileName,fileSize,fileData) values(@sentMailId,@fileName,@fileSize,@fileData)",con);
-                        saveFileAttachments.Parameters.AddWithValue("@sentMailId",sentMailId);
-                        saveFileAttachments.Parameters.AddWithValue("@fileName",uploadedFile.FileName);
-                        saveFileAttachments.Parameters.AddWithValue("@fileSize",uploadedFile.ContentLength);
-                        saveFileAttachments.Parameters.AddWithValue("@fileData",bytes);
+                        SqlCommand saveFileAttachments = new SqlCommand("insert into tblFileAttachments(sentMailId,fileName,fileSize,fileData) values(@sentMailId,@fileName,@fileSize,@fileData)", con);
+                        saveFileAttachments.Parameters.AddWithValue("@sentMailId", sentMailId);
+                        saveFileAttachments.Parameters.AddWithValue("@fileName", uploadedFile.FileName);
+                        saveFileAttachments.Parameters.AddWithValue("@fileSize", uploadedFile.ContentLength);
+                        saveFileAttachments.Parameters.AddWithValue("@fileData", bytes);
                         saveFileAttachments.ExecuteNonQuery();
                     }
                 }
@@ -198,7 +221,7 @@ public partial class UserPanel_Default : System.Web.UI.Page
                 catch (Exception ex)
                 {
                     lblMailStatus.Text = ex.Message;
-                    lblMailStatus.Text+= "Wrong Password!";
+                    lblMailStatus.Text += "Wrong Password!";
                     SqlCommand deleteMailRecipient = new SqlCommand("delete from tblMailRecipient where sentMailId='" + sentMailId + "'", con);
                     deleteMailRecipient.ExecuteNonQuery();
                     SqlCommand deleteMail = new SqlCommand("delete from tblSentMails where sentMailId='" + sentMailId + "'", con);
@@ -249,7 +272,7 @@ public partial class UserPanel_Default : System.Web.UI.Page
                 {
                     foreach (HttpPostedFile uploadedFile in fileAttachment.PostedFiles)
                     {
-                        Attachment data = new Attachment(Server.MapPath(uploadedFile.FileName));
+                        Attachment data = new Attachment(uploadedFile.InputStream, uploadedFile.FileName);
                         mail.Attachments.Add(data);
                     }
                 }
@@ -275,8 +298,8 @@ public partial class UserPanel_Default : System.Web.UI.Page
         hfTemplateCode.Value = body;
         divTemplatePreview.InnerHtml = body;
 
-       // lblSum.Text = tbxMailBody.Text;
+        // lblSum.Text = tbxMailBody.Text;
     }
-
+    
 }
 
