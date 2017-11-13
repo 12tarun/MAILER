@@ -6,6 +6,85 @@
             width: 645px;
             height: 135px;
         }
+
+/*.dropdown {
+  position: absolute;
+  top:50%;
+  transform: translateY(-50%);
+}
+
+a {
+  color: #fff;
+}
+
+.dropdown dd,
+.dropdown dt {
+  margin: 0px;
+  padding: 0px;
+}
+
+.dropdown ul {
+  margin: -1px 0 0 0;
+}
+
+.dropdown dd {
+  position: relative;
+}
+
+.dropdown a,
+.dropdown a:visited {
+  color: #fff;
+  text-decoration: none;
+  outline: none;
+  font-size: 12px;
+}
+
+.dropdown dt a {
+  background-color: #4F6877;
+  display: block;
+  padding: 8px 20px 5px 10px;
+  min-height: 25px;
+  line-height: 24px;
+  overflow: hidden;
+  border: 0;
+  width: 272px;
+}
+
+.dropdown dt a span,
+.multiSel span {
+  cursor: pointer;
+  display: inline-block;
+  padding: 0 3px 2px 0;
+}
+
+.dropdown dd ul {
+  background-color: #4F6877;
+  border: 0;
+  color: #fff;
+  display: none;
+  left: 0px;
+  padding: 2px 15px 2px 5px;
+  position: absolute;
+  top: 2px;
+  width: 280px;
+  list-style: none;
+  height: 100px;
+  overflow: auto;
+}
+
+.dropdown span.value {
+  display: none;
+}
+
+.dropdown dd ul li a {
+  padding: 5px;
+  display: block;
+}
+
+.dropdown dd ul li a:hover {
+  background-color: #fff;
+}*/
+
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
@@ -19,26 +98,35 @@
                         <h3>
                             <asp:CheckBox ID="cbSelectAll" Text="Select All" OnCheckedChanged="cbSelectAll_CheckedChanged" runat="server" AutoPostBack="true" ToolTip="Check this checkbox to select all categories" /></h3>
                         <br />
-                        <asp:Repeater ID="rptrCategory" runat="server">
-                            <ItemTemplate>
-                                <span>
-                                    <h4>
-                                        <asp:CheckBox ID="cbCategory" runat="server" OnCheckedChanged="cbCategory_CheckedChanged" AutoPostBack="true" Text='<%# Eval("categoryName") %>' />
-                                    </h4>
-                                </span>
-                                <asp:Repeater ID="rptrRecipient" runat="server">
-                                    <ItemTemplate>
-                                        <span>
-                                            <h4>
-                                                <asp:CheckBox ToolTip='<%# Eval("email") %>' runat="server" ID="cbRecipient" OnCheckedChanged="cbRecipient_CheckedChanged" AutoPostBack="true" Text='<%# Eval("name") %>' />
-                                                <asp:HiddenField ID="hfRecipientId" Value='<%# Eval("recipientId") %>' runat="server" />
-                                            </h4>
-                                        </span>
-                                    </ItemTemplate>
-                                </asp:Repeater>
-                                <br />
-                            </ItemTemplate>
-                        </asp:Repeater>
+                        <dl class="dropdown">
+                            <asp:Repeater ID="rptrCategory" runat="server">
+                                <ItemTemplate>
+                                    <dt>
+                                        <a href="#">
+                                            <span class="hida">
+                                                <asp:CheckBox ID="cbCategory" runat="server" OnCheckedChanged="cbCategory_CheckedChanged" AutoPostBack="true" Text='<%# Eval("categoryName") %>' />
+                                            </span>
+                                            <p class="multiSel"></p>
+                                        </a>
+                                    </dt>
+                                    <dd>
+                                        <div class="mutliSelect">
+                                            <ul>
+                                                <asp:Repeater ID="rptrRecipient" runat="server">
+                                                    
+                                                    <ItemTemplate>
+                                                        <li>
+                                                            <asp:CheckBox ToolTip='<%# Eval("email") %>' runat="server" ID="cbRecipient" OnCheckedChanged="cbRecipient_CheckedChanged" AutoPostBack="true" Text='<%# Eval("name") %>' />
+                                                            <asp:HiddenField ID="hfRecipientId" Value='<%# Eval("recipientId") %>' runat="server" />
+                                                        </li>                                                     
+                                                    </ItemTemplate>
+                                                </asp:Repeater>
+                                            </ul>
+                                        </div>
+                                        <br />
+                                </ItemTemplate>
+                            </asp:Repeater>
+                        </dl>
                     </ContentTemplate>
 
                 </asp:UpdatePanel>
@@ -54,16 +142,16 @@
                     <div class="col-6 compose-area">
                         <h1>Mail Credentials</h1>
                         <asp:Label ID="lbltemplate" runat="server" Text="Select Template"></asp:Label>
-                                <asp:RadioButtonList AutoPostBack="true" runat="server" ID="rbTemplates" OnSelectedIndexChanged="rbTemplates_SelectedIndexChanged" RepeatLayout="Table" RepeatDirection="Horizontal" RepeatColumns="4"></asp:RadioButtonList>
-                                <asp:HiddenField ID="hfTemplateCode" runat="server" />
-                       
+                        <asp:RadioButtonList AutoPostBack="true" runat="server" ID="rbTemplates" OnSelectedIndexChanged="rbTemplates_SelectedIndexChanged" RepeatLayout="Table" RepeatDirection="Horizontal" RepeatColumns="4"></asp:RadioButtonList>
+                        <asp:HiddenField ID="hfTemplateCode" runat="server" />
+
                         <br />
                         <asp:TextBox ID="tbxMailSubject" runat="server" placeholder="subject"></asp:TextBox>
                         <br />
                         <%--<asp:Label ID="lblSummernote" runat="server" Text="Image" AssociatedControlID="txtSummernote" CssClass="control-label col-md-3"></asp:Label>--%>
                         <asp:TextBox ID="tbxMailBody" runat="server" placeholder="enter mail body" ValidationGroup="mailCredentials" TextMode="MultiLine" Height="267px" Width="450px"></asp:TextBox>
                         <asp:RequiredFieldValidator ValidationGroup="mailCredentials" ID="RequiredFieldValidator1" runat="server" ControlToValidate="tbxMailBody" ErrorMessage="This field can't be empty" ForeColor="Red"></asp:RequiredFieldValidator>
-                      <%--  <asp:Label ID="lblSum" runat="server" Text="Summernote"></asp:Label>--%>
+                        <%--  <asp:Label ID="lblSum" runat="server" Text="Summernote"></asp:Label>--%>
                         <br />
                         <br />
                         <asp:FileUpload ID="fileAttachment" runat="server" AllowMultiple="true" />
@@ -72,7 +160,7 @@
                         <asp:TextBox ID="tbxPassword" TextMode="Password" ValidationGroup="mailCredentials" runat="server" placeholder="enter your registered mail's password here" Width="450px"></asp:TextBox>
                         <asp:RequiredFieldValidator ValidationGroup="mailCredentials" ID="RequiredFieldValidator2" runat="server" ControlToValidate="tbxPassword" ErrorMessage="*This field cant be empty" ForeColor="Red"></asp:RequiredFieldValidator>
                         <br />
-                        <asp:Button ID="btnSend" Text="Send" runat="server" OnClick="btnSend_Click" />
+                        <asp:Button ID="btnSend" class="btnstyle" Text="Send" runat="server" OnClick="btnSend_Click" />
                         <br />
                         <asp:Label ID="lblMailStatus" ForeColor="Blue" runat="server"></asp:Label>
                     </div>
@@ -97,8 +185,42 @@
             hiddenStatusFlag = document.getElementById('<%= hfTemplateCode.ClientID%>').value.replace("{body}", tbxMailBody);
             document.getElementById('<%= divTemplatePreview.ClientID%>').innerHTML = hiddenStatusFlag;
         }
+
+        $(".dropdown dt a").on('click', function () {
+            $(".dropdown dd ul").slideToggle('fast');
+        });
+
+        $(".dropdown dd ul li a").on('click', function () {
+            $(".dropdown dd ul").hide();
+        });
+
+        function getSelectedValue(id) {
+            return $("#" + id).find("dt a span.value").html();
+        }
+
+        $(document).bind('click', function (e) {
+            var $clicked = $(e.target);
+            if (!$clicked.parents().hasClass("dropdown")) $(".dropdown dd ul").hide();
+        });
+
+        $('.mutliSelect input[type="checkbox"]').on('click', function () {
+
+            var title = $(this).closest('.mutliSelect').find('input[type="checkbox"]').val(),
+              title = $(this).val() + ",";
+
+            if ($(this).is(':checked')) {
+                var html = '<span title="' + title + '">' + title + '</span>';
+                $('.multiSel').append(html);
+                $(".hida").hide();
+            } else {
+                $('span[title="' + title + '"]').remove();
+                var ret = $(".hida");
+                $('.dropdown dt a').append(ret);
+
+            }
+        });
     </script>
-<%--    <script src="../script/jquery-1.11.2.js"></script>
+    <%--    <script src="../script/jquery-1.11.2.js"></script>
     <script>
         $(function () {
             // Set up your summernote instance
