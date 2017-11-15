@@ -155,6 +155,7 @@ public partial class UserPanel_Default : System.Web.UI.Page
             return;
         using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["constr"].ConnectionString))
         {
+            string status;
             int selectedRecipientCount = 0;
             con.Open();
             string mailSubject;
@@ -167,7 +168,9 @@ public partial class UserPanel_Default : System.Web.UI.Page
                     if (cbRecipient.Checked) selectedRecipientCount++;
                 }
             }
-            if (selectedRecipientCount == 0) lblMailStatus.Text = "Please select atleast one recipient ";
+            if (selectedRecipientCount == 0)
+                ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('Please select atleast one recipient to send the mail', 'Warning','labelStatusAlert');", true);
+
             else
             {
                 //saving the sent maildata into database
@@ -215,20 +218,25 @@ public partial class UserPanel_Default : System.Web.UI.Page
                             }
                         }
                     }
-                    lblMailStatus.Text = "All the emails were sent successfully!";
+                   ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('All the mails were sent succesfuly', 'Success','labelStatusAlert');", true);
+
                     tbxMailBody.Text = "";
                 }
                 catch (Exception ex)
                 {
-                    lblMailStatus.Text = ex.Message;
+                    lblMailStatus.Text=status = ex.Message;
                     lblMailStatus.Text += "Wrong Password!";
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('Wrong Password', 'Error','labelStatusAlert');", true);
+
                     SqlCommand deleteMailRecipient = new SqlCommand("delete from tblMailRecipient where sentMailId='" + sentMailId + "'", con);
                     deleteMailRecipient.ExecuteNonQuery();
                     SqlCommand deleteAttachment = new SqlCommand("delete from tblFileAttachments where sentMailId='" + sentMailId + "'", con);
                     deleteAttachment.ExecuteNonQuery();
                     SqlCommand deleteMail = new SqlCommand("delete from tblSentMails where sentMailId='" + sentMailId + "'", con);
                     deleteMail.ExecuteNonQuery();
+                   
                 }
+
             }
         }
     }

@@ -1,5 +1,4 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Registration.aspx.cs" Inherits="Registration" %>
-
 <!DOCTYPE html>
 <!--This is Registration file -->
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -11,6 +10,27 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous" />
     <link href="https://fonts.googleapis.com/css?family=Varela+Round|Roboto|Muli|Raleway" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="../CSS/landingPage.css" />
+    <script type="text/javascript">
+        function ShowMessage(message, messagetype,divison) {
+            var cssclass;
+            switch (messagetype) {
+                case 'Success':
+                    cssclass = 'alert-success'
+                    break;
+                case 'Error':
+                    cssclass = 'alert-danger';
+                    console.log("Function call succesful");
+                    
+                    break;
+                case 'Warning':
+                    cssclass = 'alert-warning'
+                    break;
+                default:
+                    cssclass = 'alert-info'
+            }
+            $('#' + divison).html('<div class="alert ' + cssclass + '"><a href="#" class="close" data-dismiss="alert">&times;</a><strong>' + messagetype + '!</strong>' + message + '</div>');
+        }
+    </script>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -104,12 +124,14 @@
                                         </div>
 
                                         <asp:Button ID="btnRegister" Text="register" class="btn btn-dark submit" runat="server" OnClick="btnRegister_Click" />
+                                    <div id="registrationStatusAlert">
                                     </div>
                                     </div>
                                 </ContentTemplate>
                             </asp:UpdatePanel>
                         </div>
                     </div>
+                </div>
                 </div>
             </div>
             <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
@@ -141,6 +163,7 @@
                                         <div class="form-check">
                                         </div>
                                         <asp:Button class="btn btn-dark btnstyle" ID="btnLogin" runat="server" OnClick="btnLogin_Click" Text="Login" />
+                                        <div id="loginStatusAlert"></div>
                                         <asp:Label ID="lblWarning" runat="server" Display="Dynamic" ForeColor="Red"></asp:Label>
                                     </div>
                                 </ContentTemplate>

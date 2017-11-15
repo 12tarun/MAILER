@@ -198,6 +198,7 @@ a {
                         <br />
                         <asp:Button ID="btnSend" class="btnstyle" Text="Send" runat="server" OnClick="btnSend_Click" />
                         <br />
+                        <div id="labelStatusAlert"></div>
                         <asp:Label ID="lblMailStatus" ForeColor="Blue" runat="server"></asp:Label>
                     </div>
                 </div>

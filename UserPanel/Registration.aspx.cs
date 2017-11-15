@@ -145,12 +145,13 @@ public partial class Registration : System.Web.UI.Page
                         userId = Convert.ToInt32(cmd.ExecuteScalar());
                     }
                 }
-                string message = string.Empty;
-                message = "Registration successful! Activation email has been sent.";
+                string Message = string.Empty;
+                Message = "Registration successful! Activation email has been sent.";
                 SendActivationEmail(userId);
                 tbxFullname.Text = tbxUsername.Text = tbxPassword.Text = tbxComfirmPassword.Text = tbxEmail.Text = "";
                 lblIncorrectCaptcha.Visible = false;
-                ClientScript.RegisterStartupScript(GetType(), "alert", "alert('" + message + "');", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('" + Message + "', 'Success','registrationStatusAlert');", true);
+
                 fillCaptcha();
             }
         }
@@ -289,17 +290,23 @@ public partial class Registration : System.Web.UI.Page
                     userId = Convert.ToInt32(cmd.ExecuteScalar());
                     con.Close();
                 }
+                string Message;
                 switch (userId)
                 {
                     case -1:
                         lblWarning.Visible = true;
                         lblWarning.Text = "Email Id and/or password is incorrect.";
+                         Message = "Email Id/or password is incoorect";
                         lblWarning.ForeColor = System.Drawing.Color.Red;
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('" + Message + "', 'Error','registrationStatusAlert');", true);
+
                         break;
                     case -2:
                         lblWarning.Visible = true;
-                        lblWarning.Text = "Account has not been activated.";
+                        lblWarning.Text = Message="Account has not been activated.";
                         lblWarning.ForeColor = System.Drawing.Color.Red;
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('" + Message + "', 'Error','registrationStatusAlert');", true);
+
                         break;
                     default:
                         Session["LoggedIn"] = userId;
