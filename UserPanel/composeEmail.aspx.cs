@@ -224,6 +224,8 @@ public partial class UserPanel_Default : System.Web.UI.Page
                     lblMailStatus.Text += "Wrong Password!";
                     SqlCommand deleteMailRecipient = new SqlCommand("delete from tblMailRecipient where sentMailId='" + sentMailId + "'", con);
                     deleteMailRecipient.ExecuteNonQuery();
+                    SqlCommand deleteAttachment = new SqlCommand("delete from tblFileAttachments where sentMailId='" + sentMailId + "'", con);
+                    deleteAttachment.ExecuteNonQuery();
                     SqlCommand deleteMail = new SqlCommand("delete from tblSentMails where sentMailId='" + sentMailId + "'", con);
                     deleteMail.ExecuteNonQuery();
                 }
@@ -245,14 +247,14 @@ public partial class UserPanel_Default : System.Web.UI.Page
             string userEmail = getUserEmail.ExecuteScalar().ToString();
             SqlCommand getTemplateFilePath = new SqlCommand("select filePath from tblTemplates where templateId='" + rbTemplates.SelectedItem.Value + "'", con);
             string templateFilePath = getTemplateFilePath.ExecuteScalar().ToString();
-            //using (StreamReader reader = new StreamReader(Server.MapPath(templateFilePath)))
-            //{
-            //    //inserting the value of placeholders as per the mail
-            //    body = reader.ReadToEnd();
-            //    body = body.Replace("{RecipientName}", recipientName);
-            //    body = body.Replace("{body}", tbxMailBody.Text);
-            //}
-            body = divTemplatePreview.InnerHtml;
+            using (StreamReader reader = new StreamReader(Server.MapPath(templateFilePath)))
+            {
+                //inserting the value of placeholders as per the mail
+                body = reader.ReadToEnd();
+                body = body.Replace("{RecipientName}", recipientName);
+                body = body.Replace("{body}", tbxMailBody.Text);
+            }
+
             con.Close();
             con.Open();
             string enteredPassword = tbxPassword.Text;
@@ -297,9 +299,7 @@ public partial class UserPanel_Default : System.Web.UI.Page
         }
         hfTemplateCode.Value = body;
         divTemplatePreview.InnerHtml = body;
-
         // lblSum.Text = tbxMailBody.Text;
     }
-    
 }
 
