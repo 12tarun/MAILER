@@ -109,7 +109,8 @@ a {
         });
     </script>-->
     <script>tinymce.init({
-selector: 'textarea',
+    selector: 'textarea',
+    height:200,
     setup: function (editor) {
         editor.on('focus', function (e) {
             console.log("hello");
@@ -180,12 +181,12 @@ selector: 'textarea',
                         <asp:TextBox ID="tbxMailSubject" runat="server" Width="300px" placeholder="subject"></asp:TextBox>
                         <br />
                         <br />
-                        <%--<asp:Label ID="lblSummernote" runat="server" Text="Image" AssociatedControlID="txtSummernote" CssClass="control-label col-md-3"></asp:Label>--%>
+                       
                         <asp:TextBox ID="tbxMailBody"  runat="server" placeholder="enter mail body" ValidationGroup="mailCredentials" TextMode="MultiLine" Height="267px" Width="520px">Hello world</asp:TextBox>
                         <br />
                         <asp:RequiredFieldValidator ValidationGroup="mailCredentials" ID="RequiredFieldValidator1" runat="server" ControlToValidate="tbxMailBody" ErrorMessage="This field can't be empty" ForeColor="Red"></asp:RequiredFieldValidator>
-                        <asp:Button ID="btnRefresh" runat="server" OnClientClick="setHTML" />
-                        <%--  <asp:Label ID="lblSum" runat="server" Text="Summernote"></asp:Label>--%>
+                        
+                       
                         <br />
                         <br />
                         <asp:FileUpload ID="fileAttachment" ToolTip="Add Attachments" runat="server" AllowMultiple="true" />
