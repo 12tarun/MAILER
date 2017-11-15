@@ -298,14 +298,14 @@ public partial class Registration : System.Web.UI.Page
                         lblWarning.Text = "Email Id and/or password is incorrect.";
                          Message = "Email Id/or password is incoorect";
                         lblWarning.ForeColor = System.Drawing.Color.Red;
-                        ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('" + Message + "', 'Error','registrationStatusAlert');", true);
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('" + Message + "', 'Error','loginStatusAlert');", true);
 
                         break;
                     case -2:
                         lblWarning.Visible = true;
                         lblWarning.Text = Message="Account has not been activated.";
                         lblWarning.ForeColor = System.Drawing.Color.Red;
-                        ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('" + Message + "', 'Error','registrationStatusAlert');", true);
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('" + Message + "', 'Error','loginStatusAlert');", true);
 
                         break;
                     default:

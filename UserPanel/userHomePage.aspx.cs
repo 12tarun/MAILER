@@ -27,17 +27,7 @@ public partial class UserPanel_Default : System.Web.UI.Page
             //adding data to the drop down list in input category name.
             if (!IsPostBack)
             {
-                string userID = Session["LoggedIn"].ToString();
-                string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
-                using (SqlConnection con = new SqlConnection(constr))
-                {
-                    SqlCommand com = new SqlCommand("SELECT categoryName,categoryId FROM tblCategory WHERE userId='" + userID + "'", con);
-                    con.Open();
-                    ddlCategoryName.DataSource = com.ExecuteReader();
-                    ddlCategoryName.DataTextField = "categoryName";
-                    ddlCategoryName.DataValueField = "categoryId";
-                    ddlCategoryName.DataBind();
-                }
+                bindDataToDropdown();
             }
         }
     }
@@ -59,7 +49,7 @@ public partial class UserPanel_Default : System.Web.UI.Page
             int temp = Convert.ToInt32(checkCategory.ExecuteScalar());
             if (temp == 1)
             {
-                lblCategoryAlreadyAdded.Visible = true;
+                ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('Category Already Registered', 'Error','categoryAdderStatus');", true);
             }
             else
             {
@@ -67,7 +57,8 @@ public partial class UserPanel_Default : System.Web.UI.Page
                 insertCategory.Parameters.AddWithValue("@userId", userId);
                 insertCategory.Parameters.AddWithValue("@categoryName", tbxCategoryName.Text.Trim());
                 insertCategory.ExecuteNonQuery();
-                Response.Redirect("~/UserPanel/userHomePage.aspx");
+                ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('Category Added Succesfuly','Success','categoryAdderStatus');", true);
+                bindDataToDropdown();
             }
         }
     }
@@ -99,7 +90,8 @@ public partial class UserPanel_Default : System.Web.UI.Page
             }
             if (temp != 0)
             {
-                lblEmailAlreadyExists.Visible = true;
+
+                ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('Email Already Registered','Error','recipientAdderStatus');", true);
             }
             else
             {
@@ -112,11 +104,12 @@ public partial class UserPanel_Default : System.Web.UI.Page
                 tbxRecipientEmail.Text = tbxRecipientName.Text = "";
                 tbxRecipientEmail.Text = tbxRecipientName.Text = "";
                 lblEmailAlreadyExists.Visible = false;
+                ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('Recipient Added Succesfuly','Success','recipientAdderStatus');", true);
             }
         }
     }
 
-    
+
 
     //Uploading recipients through MS-Excel Sheet
 
@@ -126,7 +119,7 @@ public partial class UserPanel_Default : System.Web.UI.Page
 
         string cs = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
         string excelfile = FileUploadExcel.PostedFile.FileName;
-        
+
         if (excelfile.EndsWith("xls") || excelfile.EndsWith("xlsx"))
         {
             lblWrongExcel.Visible = false;
@@ -139,9 +132,9 @@ public partial class UserPanel_Default : System.Web.UI.Page
             FileUploadExcel.SaveAs(path);
 
             string categoryName = "";
-            for(int j=0; j< excelfile.Length;j++)
+            for (int j = 0; j < excelfile.Length; j++)
             {
-                if(excelfile[j] == '.')
+                if (excelfile[j] == '.')
                 {
                     break;
                 }
@@ -166,7 +159,7 @@ public partial class UserPanel_Default : System.Web.UI.Page
                         con.Close();
                     }
                 }
-                if(temp == 1)
+                if (temp == 1)
                 {
                     using (SqlCommand cmd = new SqlCommand("SELECT categoryId FROM tblCategory WHERE categoryName ='" + categoryName + "'"))
                     {
@@ -182,7 +175,7 @@ public partial class UserPanel_Default : System.Web.UI.Page
                 }
                 else
                 {
-       
+
                     string query = "INSERT INTO tblCategory(userId, categoryName) VALUES(@userId,@categoryName)";
                     using (SqlConnection connect = new SqlConnection(cs))
                     {
@@ -235,7 +228,7 @@ public partial class UserPanel_Default : System.Web.UI.Page
                         goto here;
                     }
                 }
-            here:
+                here:
                 foreach (var item in datacheckUpload)
                 {
                     if (item.name != "")
@@ -274,16 +267,16 @@ public partial class UserPanel_Default : System.Web.UI.Page
                     }
                 }
                 workbook.Close(true, null, null);
-
                 Marshal.ReleaseComObject(worksheet);
                 Marshal.ReleaseComObject(workbook);
                 Marshal.ReleaseComObject(application);
             }
-            Response.Redirect("~/UserPanel/userHomePage.aspx");
+            bindDataToDropdown();
+            ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('Excel File Uploaded Succesfuly','Success','templateStatus');", true);
         }
         else
         {
-            lblWrongExcel.Visible = true;
+            ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('Only .xls, xlsx file is acceptable','Error','templateStatus');", true);
         }
     }
 
@@ -292,18 +285,18 @@ public partial class UserPanel_Default : System.Web.UI.Page
         if (FileUploadTemplate.HasFile)
         {
             string fileExtension = System.IO.Path.GetExtension(FileUploadTemplate.FileName);
-            if (fileExtension.ToLower() != ".html") lblTemplateStatus.Text = "Please select a html file";
+            if (fileExtension.ToLower() != ".html") ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('Please select a HTML file only','Error','templateStatus');", true);
             else
             {
-                Boolean bodyPlaceHolder, namePlaceHolder;
+                Boolean bodyPlaceHolder;
                 int fileSize = FileUploadTemplate.PostedFile.ContentLength;
-                if (fileSize >= 2097152) lblTemplateStatus.Text = "Maximum File Size (2MB) Exceeded";
+                if (fileSize >= 2097152) ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('FileSize Exceeded maximum size','Error','templateStatus');", true);
                 else
                 {
                     string templateBody, templateFilePath = HttpContext.Current.Request.PhysicalApplicationPath + FileUploadTemplate.FileName;
                     using (StreamReader reader = new StreamReader(FileUploadTemplate.PostedFile.InputStream))
                     {
-                        templateBody = reader.ReadToEnd();                        bodyPlaceHolder = templateBody.Contains("{body}");
+                        templateBody = reader.ReadToEnd(); bodyPlaceHolder = templateBody.Contains("{body}");
 
                     }
                     if (bodyPlaceHolder)
@@ -311,7 +304,7 @@ public partial class UserPanel_Default : System.Web.UI.Page
                         string filePath = "~/htmlTemplates/" + FileUploadTemplate.FileName;
 
                         FileUploadTemplate.SaveAs(Server.MapPath(filePath));
-                        lblTemplateStatus.Text = "File Uploaded Succedsfully";
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('File Uploaded Succesfuly','Success','templateStatus');", true);
                         using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["constr"].ConnectionString))
                         {
                             con.Open();
@@ -326,12 +319,26 @@ public partial class UserPanel_Default : System.Web.UI.Page
                             }
                         }
                     }
-                    else lblTemplateStatus.Text = "Uploaded File does not contain the required placeholders({body})";
+                    else ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('Uploaded  file does not contain the required placeholder {body}','Error','templateStatus');", true);
                 }
             }
 
         }
-        else lblTemplateStatus.Text = "Please select a template";
+        else ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('Please select a template','Error','templateStatus');", true);
 
+    }
+    protected void bindDataToDropdown()
+    {
+        string userID = Session["LoggedIn"].ToString();
+        string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+        using (SqlConnection con = new SqlConnection(constr))
+        {
+            SqlCommand com = new SqlCommand("SELECT categoryName,categoryId FROM tblCategory WHERE userId='" + userID + "'", con);
+            con.Open();
+            ddlCategoryName.DataSource = com.ExecuteReader();
+            ddlCategoryName.DataTextField = "categoryName";
+            ddlCategoryName.DataValueField = "categoryId";
+            ddlCategoryName.DataBind();
+        }
     }
 }

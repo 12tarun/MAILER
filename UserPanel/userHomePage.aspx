@@ -1,8 +1,13 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/UserPanel/userPanel.master" AutoEventWireup="true" CodeFile="userHomePage.aspx.cs" Inherits="UserPanel_Default" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/UserPanel/userPanel.master" ValidateRequest="false"  AutoEventWireup="true" CodeFile="userHomePage.aspx.cs" Inherits="UserPanel_Default" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../CSS/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     <div class="container-fluid child-page">
         <div class="container content txt-style">
             <script type="text/javascript">
@@ -25,13 +30,17 @@
                         <asp:TextBox ValidationGroup="Category" runat="server" ID="tbxCategoryName" placeholder="Enter Category Name"></asp:TextBox>
                     </div>
                     <asp:RequiredFieldValidator Display="Dynamic" ValidationGroup="Category" runat="server" ID="RFVCategoryName" ControlToValidate="tbxCategoryName" ErrorMessage="Category name required" ForeColor="Red"></asp:RequiredFieldValidator>
+                    
                     <div>
                         <asp:Button class="btnstyle" runat="server" ID="btnCategoryAdder" Text="Submit" OnClick="btnCategoryAdder_Click" />
                     </div>
+
                     <div>
                         <asp:Label ID="lblCategoryAlreadyAdded" runat="server" Text="Category already added!" ForeColor="Red" Visible="false"></asp:Label>
                     </div>
-                </div>
+                  </div>
+               <div id="categoryAdderStatus"></div>
+                
                 <br />
                 <div>
                     <h3>Add Recipient</h3>
@@ -53,6 +62,7 @@
                     <asp:Label ID="lblEmailAlreadyExists" Text="Email already exists in this category" Visible="false" ForeColor="Red" runat="server"></asp:Label>
                     <asp:Button class="btnstyle" ID="btnRecipientAdd" runat="server" OnClick="btnRecipientAdd_Click" Text="Add" />
                 </div>
+                <div id="recipientAdderStatus"></div>
                 <br />
                 <div>
                     <h4>Add recipients through MS-Excel</h4>
@@ -68,7 +78,7 @@
                 <asp:Label ID="lblUploadTemplate" runat="server" Visible="false" Text="Select Template File"></asp:Label>
                 <asp:FileUpload ID="FileUploadTemplate" runat="server" />
                 <asp:Button ID="btnTemplateUpload" class="btnstyle" runat="server" Text="Upload" OnClick="btnTemplateUpload_Click" />
-                <asp:Label ID="lblTemplateStatus" ForeColor="Red" runat="server"></asp:Label>
+               <div id="templateStatus"></div>
             </div>
         </div>
     </div>

@@ -76,7 +76,7 @@ public partial class UserPanel_Default : System.Web.UI.Page
             foreach (ListItem i in rbTemplates.Items)
             {
                 if (Convert.ToInt32(i.Value) == 7)
-                
+
                     i.Selected = true;
 
             }
@@ -155,7 +155,6 @@ public partial class UserPanel_Default : System.Web.UI.Page
             return;
         using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["constr"].ConnectionString))
         {
-            string status;
             int selectedRecipientCount = 0;
             con.Open();
             string mailSubject;
@@ -187,15 +186,10 @@ public partial class UserPanel_Default : System.Web.UI.Page
                 {
                     foreach (HttpPostedFile uploadedFile in fileAttachment.PostedFiles)
                     {
-                        Stream stream = uploadedFile.InputStream;
-                        BinaryReader binaryReader = new BinaryReader(stream);
-                        byte[] bytes = binaryReader.ReadBytes((int)stream.Length);
-
-                        SqlCommand saveFileAttachments = new SqlCommand("insert into tblFileAttachments(sentMailId,fileName,fileSize,fileData) values(@sentMailId,@fileName,@fileSize,@fileData)", con);
+                        SqlCommand saveFileAttachments = new SqlCommand("insert into tblFileAttachments(sentMailId,fileName,fileSize) values(@sentMailId,@fileName,@fileSize)", con);
                         saveFileAttachments.Parameters.AddWithValue("@sentMailId", sentMailId);
                         saveFileAttachments.Parameters.AddWithValue("@fileName", uploadedFile.FileName);
                         saveFileAttachments.Parameters.AddWithValue("@fileSize", uploadedFile.ContentLength);
-                        saveFileAttachments.Parameters.AddWithValue("@fileData", bytes);
                         saveFileAttachments.ExecuteNonQuery();
                     }
                 }
@@ -218,23 +212,21 @@ public partial class UserPanel_Default : System.Web.UI.Page
                             }
                         }
                     }
-                   ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('All the mails were sent succesfuly', 'Success','labelStatusAlert');", true);
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('All the mails were sent succesfuly', 'Success','labelStatusAlert');", true);
 
                     tbxMailBody.Text = "";
                 }
                 catch (Exception ex)
                 {
-                    lblMailStatus.Text=status = ex.Message;
-                    lblMailStatus.Text += "Wrong Password!";
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('Wrong Password', 'Error','labelStatusAlert');", true);
 
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('Wrong Password', 'Error','labelStatusAlert');", true);
                     SqlCommand deleteMailRecipient = new SqlCommand("delete from tblMailRecipient where sentMailId='" + sentMailId + "'", con);
                     deleteMailRecipient.ExecuteNonQuery();
                     SqlCommand deleteAttachment = new SqlCommand("delete from tblFileAttachments where sentMailId='" + sentMailId + "'", con);
                     deleteAttachment.ExecuteNonQuery();
                     SqlCommand deleteMail = new SqlCommand("delete from tblSentMails where sentMailId='" + sentMailId + "'", con);
                     deleteMail.ExecuteNonQuery();
-                   
+
                 }
 
             }

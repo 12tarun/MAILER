@@ -13,6 +13,7 @@
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="../CSS/style.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="../script/jquery-1.11.2.js"></script>
     <script>
 function ShowMessage(message, messagetype,divison) {
             var cssclass;
@@ -32,7 +33,9 @@ function ShowMessage(message, messagetype,divison) {
                     cssclass = 'alert-info'
             }
             $('#' + divison).html('<div class="alert ' + cssclass + '"><a href="#" class="close" data-dismiss="alert">&times;</a><strong>' + messagetype + '!</strong>' + message + '</div>');
-        }
+            console.log('function call succesful');
+            console.log(divison);
+}
     </script>
 </head>
 <body>

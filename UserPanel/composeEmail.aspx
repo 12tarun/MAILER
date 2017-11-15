@@ -1,7 +1,6 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/UserPanel/userPanel.master" ValidateRequest="false" AutoEventWireup="true" CodeFile="composeEmail.aspx.cs" Inherits="UserPanel_Default" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
-
     <style type="text/css">
         #divtemplatePreview {
             width: 645px;
@@ -119,7 +118,8 @@ a {
     }
 });
     </script>
-    <div class="container-fluid child-page">
+     
+             <div class="container-fluid child-page">
         <div class="row">
             <div class="col-3 sel-rec">
                 <h1>Select Recipients</h1>
