@@ -91,7 +91,7 @@ public partial class UserPanel_Default : System.Web.UI.Page
             if (temp != 0)
             {
 
-                ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('Email Already Registered','Error','recipientAdderStatus');", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('Email Already Registered!','Error','recipientAdderStatus');", true);
             }
             else
             {
@@ -104,7 +104,7 @@ public partial class UserPanel_Default : System.Web.UI.Page
                 tbxRecipientEmail.Text = tbxRecipientName.Text = "";
                 tbxRecipientEmail.Text = tbxRecipientName.Text = "";
                 lblEmailAlreadyExists.Visible = false;
-                ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('Recipient Added Succesfuly','Success','recipientAdderStatus');", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage(' Recipient Added Succesfully.','Success','recipientAdderStatus');", true);
             }
         }
     }
@@ -272,11 +272,11 @@ public partial class UserPanel_Default : System.Web.UI.Page
                 Marshal.ReleaseComObject(application);
             }
             bindDataToDropdown();
-            ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('Excel File Uploaded Succesfuly','Success','excelFileUploadStatus');", true);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage(' Excel File Uploaded Succesfully.','Success','excelFileUploadStatus');", true);
         }
         else
         {
-            ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('Only .xls, xlsx file is acceptable','Error','excelFileUploadStatus');", true);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage(' Only .xls, xlsx file is acceptable.','Error','excelFileUploadStatus');", true);
         }
     }
 
@@ -285,12 +285,12 @@ public partial class UserPanel_Default : System.Web.UI.Page
         if (FileUploadTemplate.HasFile)
         {
             string fileExtension = System.IO.Path.GetExtension(FileUploadTemplate.FileName);
-            if (fileExtension.ToLower() != ".html") ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('Please select a HTML file only','Error','templateStatus');", true);
+            if (fileExtension.ToLower() != ".html") ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage(' Please select HTML file only.','Error','templateStatus');", true);
             else
             {
                 Boolean bodyPlaceHolder;
                 int fileSize = FileUploadTemplate.PostedFile.ContentLength;
-                if (fileSize >= 2097152) ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('FileSize Exceeded maximum size','Error','templateStatus');", true);
+                if (fileSize >= 2097152) ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage(' FileSize Exceeded maximum size.','Error','templateStatus');", true);
                 else
                 {
                     string templateBody, templateFilePath = HttpContext.Current.Request.PhysicalApplicationPath + FileUploadTemplate.FileName;
@@ -304,7 +304,7 @@ public partial class UserPanel_Default : System.Web.UI.Page
                         string filePath = "~/htmlTemplates/" + FileUploadTemplate.FileName;
 
                         FileUploadTemplate.SaveAs(Server.MapPath(filePath));
-                        ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('File Uploaded Succesfuly','Success','templateStatus');", true);
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage(' File Uploaded Succesfully.','Success','templateStatus');", true);
                         using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["constr"].ConnectionString))
                         {
                             con.Open();
@@ -319,12 +319,12 @@ public partial class UserPanel_Default : System.Web.UI.Page
                             }
                         }
                     }
-                    else ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('Uploaded  file does not contain the required placeholder {body}','Error','templateStatus');", true);
+                    else ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage(' Uploaded file does not contain the required placeholder {body}','Error','templateStatus');", true);
                 }
             }
 
         }
-        else ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('Please select a template','Error','templateStatus');", true);
+        else ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage(' Please select a template.','Error','templateStatus');", true);
 
     }
     protected void bindDataToDropdown()

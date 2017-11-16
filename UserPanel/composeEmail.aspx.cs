@@ -212,7 +212,7 @@ public partial class UserPanel_Default : System.Web.UI.Page
                             }
                         }
                     }
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('All the mails were sent succesfuly', 'Success','labelStatusAlert');", true);
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage(' All the emails were sent succesfully.', 'Success','labelStatusAlert');", true);
 
                     tbxMailBody.Text = "";
                 }

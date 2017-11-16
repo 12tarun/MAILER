@@ -146,7 +146,7 @@ public partial class Registration : System.Web.UI.Page
                     }
                 }
                 string Message = string.Empty;
-                Message = "Registration successful! Activation email has been sent.";
+                Message = " Registration successful! Activation email has been sent to your registered email id.";
                 SendActivationEmail(userId);
                 tbxFullname.Text = tbxUsername.Text = tbxPassword.Text = tbxComfirmPassword.Text = tbxEmail.Text = tbxCaptcha.Text = "";
                 lblIncorrectCaptcha.Visible = false;
@@ -298,12 +298,12 @@ public partial class Registration : System.Web.UI.Page
                 switch (userId)
                 {
                     case -1:
-                        Message = "Email Id/or password is incoorect";
+                        Message = " EmailId and/or password is incorrect.";
                         ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('" + Message + "', 'Error','loginStatusAlert');", true);
 
                         break;
                     case -2:
-                        ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('Account is not verified yet', 'Error','loginStatusAlert');", true);
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage(' Account not activated. Click on activation link sent to your registered email id within 24hrs to activate your account.', 'Error','loginStatusAlert');", true);
 
                         break;
                     default:

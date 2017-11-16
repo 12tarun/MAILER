@@ -19,8 +19,6 @@
                     break;
                 case 'Error':
                     cssclass = 'alert-danger';
-                    console.log("Function call succesful");
-                    
                     break;
                 case 'Warning':
                     cssclass = 'alert-warning'

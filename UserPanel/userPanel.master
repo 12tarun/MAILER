@@ -23,8 +23,6 @@
                     break;
                 case 'Error':
                     cssclass = 'alert-danger';
-                    console.log("Function call succesful");
-
                     break;
                 case 'Warning':
                     cssclass = 'alert-warning'
@@ -33,20 +31,11 @@
                     cssclass = 'alert-info'
             }
             $('#' + divison).html('<div class="alert ' + cssclass + '"><a href="#" class="close" data-dismiss="alert">&times;</a><strong>' + messagetype + '!</strong>' + message + '</div>');
-            console.log('function call succesful');
-            console.log(divison);
-
-        }
-        preventDefault(evt)
-        {
-            
-            return false;
-            
         }
     </script>
 </head>
 <body>
-    <form id="form1" onsubmit="return preventDefault()" runat="server">
+    <form id="form1" runat="server">
         <div class="container-fluid">
             <div class="bg-img">
                 <nav class="navbar" id="navBar">
