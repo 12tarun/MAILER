@@ -30,7 +30,7 @@
                 default:
                     cssclass = 'alert-info'
             }
-            $('#' + divison).html('<div class="alert ' + cssclass + '"><a href="#" class="close" data-dismiss="alert">&times;</a><strong>' + messagetype + '!</strong>' + message + '</div>');
+            $('#' + divison).html('<div class="alert ' + cssclass + ' " style="width:50%;left:0;right:0;margin:auto;"><a href="#" class="close" data-dismiss="alert">&times;</a><strong>' + messagetype + '!</strong>' + message + '</div>');
         }
     </script>
 </head>

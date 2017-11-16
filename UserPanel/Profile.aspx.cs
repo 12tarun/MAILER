@@ -165,7 +165,7 @@ public partial class UserPanel_Default : System.Web.UI.Page
         }
         else
         {
-            lblWrongExtension.Visible = true;
+            ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage(' Only .jpg or .png is acceptable.', 'Error','profilepicAlert');", true);
         }
     }
 

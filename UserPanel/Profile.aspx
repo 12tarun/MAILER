@@ -27,6 +27,7 @@
             <asp:fileupload id="fileUploadDP" runat="server" />
             <asp:button id="btnDP" class="btnstyle" runat="server" text="Edit" onclick="btnDP_Click" />
             <br />
+            <div id="profilepicAlert"></div>
             <br />
             <asp:label id="lblWrongExtension" text="Only .jpg or .png file is acceptable." visible="false" runat="server" forecolor="Red"></asp:label>
             <br />

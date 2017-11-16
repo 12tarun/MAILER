@@ -29,7 +29,7 @@ public partial class UserPanel_Default : System.Web.UI.Page
         {
             e.Row.Cells[0].Text = Regex.Replace(e.Row.Cells[0].Text, tbxSearch.Text.Trim(), delegate (Match match)
             {
-                return string.Format("<span style = 'background-color:#D9EDF7'>{0}</span>", match.Value);
+                return string.Format("<span style = 'background-color:#FFA727;color:#000'>{0}</span>", match.Value);
             }, RegexOptions.IgnoreCase);
         }
     }
