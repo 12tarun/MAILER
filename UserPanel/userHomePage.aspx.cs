@@ -272,11 +272,11 @@ public partial class UserPanel_Default : System.Web.UI.Page
                 Marshal.ReleaseComObject(application);
             }
             bindDataToDropdown();
-            ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('Excel File Uploaded Succesfuly','Success','templateStatus');", true);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('Excel File Uploaded Succesfuly','Success','excelFileUploadStatus');", true);
         }
         else
         {
-            ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('Only .xls, xlsx file is acceptable','Error','templateStatus');", true);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('Only .xls, xlsx file is acceptable','Error','excelFileUploadStatus');", true);
         }
     }
 

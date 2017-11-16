@@ -39,7 +39,7 @@
                         <asp:Label ID="lblCategoryAlreadyAdded" runat="server" Text="Category already added!" ForeColor="Red" Visible="false"></asp:Label>
                     </div>
                   </div>
-               <div id="categoryAdderStatus"></div>
+               <div id="categoryAdderStatus" style="padding-top:20px"></div>
                 
                 <br />
                 <div>
@@ -62,7 +62,7 @@
                     <asp:Label ID="lblEmailAlreadyExists" Text="Email already exists in this category" Visible="false" ForeColor="Red" runat="server"></asp:Label>
                     <asp:Button class="btnstyle" ID="btnRecipientAdd" runat="server" OnClick="btnRecipientAdd_Click" Text="Add" />
                 </div>
-                <div id="recipientAdderStatus"></div>
+                <div id="recipientAdderStatus" style="padding-top:20px"></div>
                 <br />
                 <div>
                     <h4>Add recipients through MS-Excel</h4>
@@ -72,13 +72,14 @@
                     <asp:FileUpload ID="FileUploadExcel" Style="justify-content: center" runat="server" />
                     <asp:Button ID="btnUploadExcel" class="btnstyle" runat="server" Text="Upload" OnClick="btnUploadExcel_Click" />
                     <asp:Label ID="lblWrongExcel" Text="Only .xls, xlsx file is acceptable" Visible="false" ForeColor="Red" runat="server"></asp:Label>
+                <div id="excelFileUploadStatus" style="padding:20px" ></div>
                 </div>
                 <br />
                 <h4>Upload your own template</h4>
                 <asp:Label ID="lblUploadTemplate" runat="server" Visible="false" Text="Select Template File"></asp:Label>
                 <asp:FileUpload ID="FileUploadTemplate" runat="server" />
                 <asp:Button ID="btnTemplateUpload" class="btnstyle" runat="server" Text="Upload" OnClick="btnTemplateUpload_Click" />
-               <div id="templateStatus"></div>
+               <div id="templateStatus" style="padding-top:20px"></div>
             </div>
         </div>
     </div>

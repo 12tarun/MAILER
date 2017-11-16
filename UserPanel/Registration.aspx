@@ -124,7 +124,7 @@
                                         </div>
 
                                         <asp:Button ID="btnRegister" Text="register" class="btn btn-dark submit" runat="server" OnClick="btnRegister_Click" />
-                                    <div id="registrationStatusAlert">
+                                    <div id="registrationStatusAlert" style="padding-top:20px">
                                     </div>
                                     </div>
                                 </ContentTemplate>
@@ -163,7 +163,7 @@
                                         <div class="form-check">
                                         </div>
                                         <asp:Button class="btn btn-dark btnstyle" ID="btnLogin" runat="server" OnClick="btnLogin_Click" Text="Login" />
-                                        <div id="loginStatusAlert"></div>
+                                        <div id="loginStatusAlert" style="padding-top:20px"></div>
                                         <asp:Label ID="lblWarning" runat="server" Display="Dynamic" ForeColor="Red"></asp:Label>
                                     </div>
                                 </ContentTemplate>
