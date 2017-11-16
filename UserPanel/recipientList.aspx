@@ -13,6 +13,7 @@
                     <asp:ScriptManager runat="server"></asp:ScriptManager>
                     <asp:TextBox ID="tbxSearch" placeholder="Enter Recipient Name" Width="200px" OnTextChanged="tbxSearch_TextChanged" AutoPostBack="true" runat="server"></asp:TextBox>
                     <asp:Button ID="btnSearch" class="btnstyle" runat="server" Text="Search" OnClick="btnSearch_Click" />
+                    <div id="recipeintSearchStatus" style="padding-top:20px; margin-right:100px;margin-left:100px;"></div>
                     <br />
                     <br />
                     <asp:GridView ID="grdView" class="table table-responsive" runat="server" AllowPaging="true" AutoGenerateColumns="false" OnRowDataBound="grdView_RowDataBound" OnPageIndexChanging="grdView_PageIndexChanging">
@@ -34,5 +35,6 @@
             </div>
         </div>
     </div>
+   
 </asp:Content>
 

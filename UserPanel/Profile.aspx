@@ -17,6 +17,7 @@
             <asp:button id="btnEnterFullName" class="btnstyle" onclick="btnEnterFullName_Click" visible="false" text="Update" runat="server" />
             <br />
             <asp:button id="btnEditFullName" class="btnstyle" text="Edit" runat="server" onclick="btnEditFullName_Click" />
+           <div id="status"></div>
             <br />
             <br />
             <h2>Profile Picture</h2>

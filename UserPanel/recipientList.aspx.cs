@@ -42,6 +42,7 @@ public partial class UserPanel_Default : System.Web.UI.Page
 
     private void BindGrid()
     {
+        int recipientCount = 0;
         using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["constr"].ConnectionString))
         {
             con.Open();
@@ -72,11 +73,14 @@ public partial class UserPanel_Default : System.Web.UI.Page
                         datarow["Email"] = drRecipients["email"];
                         datarow["Category"] = categoryName;
                         table.Rows.Add(datarow);
+                        recipientCount++;
+
                     }
                 }
             }
             grdView.DataSource = table;
             grdView.DataBind();
+            if(recipientCount==0) ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('No items matched your search','Info','recipeintSearchStatus');", true);
         }
 
 

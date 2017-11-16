@@ -85,7 +85,7 @@ public partial class Registration : System.Web.UI.Page
 
     }
 
-    private void deleteExpiredRegistrations(DateTime dtCreate,int userId)
+    private void deleteExpiredRegistrations(DateTime dtCreate, int userId)
     {
         DateTime dtNow = DateTime.Now;
         DateTime dtExp = dtCreate.AddDays(1);
@@ -116,10 +116,10 @@ public partial class Registration : System.Web.UI.Page
             return;
 
         int userId = 0;
-  
-        
+
+
         string captcha = Session["captcha"].ToString();
-        if ( captcha != tbxCaptcha.Text.Trim() || tbxCaptcha.Text == "")
+        if (captcha != tbxCaptcha.Text.Trim() || tbxCaptcha.Text == "")
         {
             lblIncorrectCaptcha.Visible = true;
             lblIncorrectCaptcha.Text = "Invalid Captcha Code";
@@ -145,12 +145,13 @@ public partial class Registration : System.Web.UI.Page
                         userId = Convert.ToInt32(cmd.ExecuteScalar());
                     }
                 }
-                string message = string.Empty;
-                message = "Registration successful! Activation email has been sent.";
+                string Message = string.Empty;
+                Message = "Registration successful! Activation email has been sent.";
                 SendActivationEmail(userId);
-                tbxFullname.Text = tbxUsername.Text = tbxPassword.Text = tbxComfirmPassword.Text = tbxEmail.Text = "";
+                tbxFullname.Text = tbxUsername.Text = tbxPassword.Text = tbxComfirmPassword.Text = tbxEmail.Text = tbxCaptcha.Text = "";
                 lblIncorrectCaptcha.Visible = false;
-                ClientScript.RegisterStartupScript(GetType(), "alert", "alert('" + message + "');", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('" + Message + "', 'Success','registrationStatusAlert');", true);
+
                 fillCaptcha();
             }
         }
@@ -167,7 +168,7 @@ public partial class Registration : System.Web.UI.Page
 
     private void SendActivationEmail(int userId)
     {
-        
+
         string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
         string activationCode = Guid.NewGuid().ToString();
         using (SqlConnection con = new SqlConnection(constr))
@@ -261,6 +262,10 @@ public partial class Registration : System.Web.UI.Page
     protected void btnRefresh_Click(object sender, EventArgs e)
     {
         fillCaptcha();
+        string password = tbxPassword.Text;
+        tbxPassword.Attributes.Add("value", password);
+        string confirmPassword = tbxComfirmPassword.Text;
+        tbxComfirmPassword.Attributes.Add("value", tbxComfirmPassword.Text);
     }
 
     protected void btnLogin_Click(object sender, EventArgs e)
@@ -289,17 +294,17 @@ public partial class Registration : System.Web.UI.Page
                     userId = Convert.ToInt32(cmd.ExecuteScalar());
                     con.Close();
                 }
+                string Message;
                 switch (userId)
                 {
                     case -1:
-                        lblWarning.Visible = true;
-                        lblWarning.Text = "Email Id and/or password is incorrect.";
-                        lblWarning.ForeColor = System.Drawing.Color.Red;
+                        Message = "Email Id/or password is incoorect";
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('" + Message + "', 'Error','loginStatusAlert');", true);
+
                         break;
                     case -2:
-                        lblWarning.Visible = true;
-                        lblWarning.Text = "Account has not been activated.";
-                        lblWarning.ForeColor = System.Drawing.Color.Red;
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('Account is not verified yet', 'Error','loginStatusAlert');", true);
+
                         break;
                     default:
                         Session["LoggedIn"] = userId;

@@ -1,7 +1,6 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/UserPanel/userPanel.master" ValidateRequest="false" AutoEventWireup="true" CodeFile="composeEmail.aspx.cs" Inherits="UserPanel_Default" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
-
     <style type="text/css">
         #divtemplatePreview {
             width: 645px;
@@ -119,7 +118,8 @@ a {
     }
 });
     </script>
-    <div class="container-fluid child-page">
+     
+             <div class="container-fluid child-page">
         <div class="row">
             <div class="col-3 sel-rec">
                 <h1>Select Recipients</h1>
@@ -135,6 +135,7 @@ a {
                                     <dt>
                                         <a href="#">
                                             <span class="hida">
+                                                
                                                 <asp:CheckBox ID="cbCategory" ForeColor="White" runat="server" OnCheckedChanged="cbCategory_CheckedChanged" AutoPostBack="true" Text='<%# Eval("categoryName") %>' />
                                             </span>
                                             <p class="multiSel"></p>
@@ -198,6 +199,7 @@ a {
                         <br />
                         <asp:Button ID="btnSend" class="btnstyle" Text="Send" runat="server" OnClick="btnSend_Click" />
                         <br />
+                        <div id="labelStatusAlert" style="padding-top:20px"></div>
                         <asp:Label ID="lblMailStatus" ForeColor="Blue" runat="server"></asp:Label>
                     </div>
                 </div>
