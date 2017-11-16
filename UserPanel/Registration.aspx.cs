@@ -44,7 +44,7 @@ public partial class Registration : System.Web.UI.Page
             string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
             using (SqlConnection con = new SqlConnection(constr))
             {
-                using (SqlCommand cmd = new SqlCommand("SELECT createdDate,userId FROM tblUsers WHERE verification ='" + 0 + "'"))
+                using (SqlCommand cmd = new SqlCommand("SELECT recipientId FROM tblMailRecipient WHERE sentMailId ='" + 0 + "'"))
                 {
                     using (SqlDataAdapter sda = new SqlDataAdapter())
                     {

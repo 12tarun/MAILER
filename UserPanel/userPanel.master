@@ -42,7 +42,7 @@
                                 <h3><a class="nav-link" href="userHomePage.aspx">SETTINGS</a></h3>
                             </li>
                             <li class="nav-item">
-                                <h3><a class="nav-link" href="sentMails.aspx">OUTBOX</a></h3>
+                                <h3><a class="nav-link" href="sentMails.aspx">SENT MAILS</a></h3>
                             </li>
                             <li class="nav-item">
                                 <h3><a class="nav-link" href="recipientList.aspx">RECIPIENT LIST</a></h3>

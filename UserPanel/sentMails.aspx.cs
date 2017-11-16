@@ -30,36 +30,48 @@ public partial class UserPanel_Default : System.Web.UI.Page
                 dt.Columns.Add("Body");
                 dt.Columns.Add("templateId");
                 dt.Columns.Add("Date");
-              
+
                 con.Open();
                 SqlDataReader rdr = cmd.ExecuteReader();
                 while (rdr.Read())
                 {
+                    DataRow dr = dt.NewRow();
                     string recipientName = "";
                     using (SqlConnection con2 = new SqlConnection(ConfigurationManager.ConnectionStrings["constr"].ConnectionString))
                     {
                         con2.Open();
                         SqlCommand getRecipientsName = new SqlCommand("select recipientId from tblMailRecipient  where sentMailId='" + Convert.ToInt32(rdr["sentMailId"]) + "'", con2);
                         SqlDataReader rdr2 = getRecipientsName.ExecuteReader();
-                        DataRow dr = dt.NewRow();
+       
                         while (rdr2.Read())
                         {
                             using (SqlConnection con3 = new SqlConnection(ConfigurationManager.ConnectionStrings["constr"].ConnectionString))
                             {
                                 con3.Open();
                                 SqlCommand getRecipientName = new SqlCommand("select name from tblRecipients where recipientId='" + Convert.ToInt32(rdr2["recipientId"]) + "'", con3);
-                                recipientName += getRecipientName.ExecuteScalar().ToString()+"," ;
-
-                                dr["sentMailId"] = rdr["sentMailId"];
-                                dr["Subject"] = rdr["subject"];
-                                dr["Body"] = rdr["body"];
-                                dr["templateId"] = rdr["templateId"];
-                                dr["Date"] = rdr["sendDate"];
+                                recipientName += getRecipientName.ExecuteScalar().ToString() + ",";
                             }
                         }
-                        dr["Recipient"] = recipientName;
-                        dt.Rows.Add(dr);
                     }
+                    string body = rdr["body"].ToString();
+                    int length = body.IndexOf("\n", 0) + 1;
+                    if ( body.IndexOf("\n", 0) != -1)
+                    {
+                        body = body.Substring(0,length);
+                    }
+
+                    dr["sentMailId"] = rdr["sentMailId"];
+                    dr["Subject"] = rdr["subject"];
+                    dr["Body"] = body;
+                    dr["templateId"] = rdr["templateId"];
+                    dr["Date"] = rdr["sendDate"];
+                    string replace = recipientName;
+                    StringBuilder sb = new StringBuilder(replace);
+                    sb[replace.Length - 1] = ' ';
+                    string newString = sb.ToString();
+                    recipientName = newString;
+                    dr["Recipient"] = recipientName;
+                    dt.Rows.Add(dr);
                 }
 
                 DataTable reversedDt = new DataTable();
@@ -72,7 +84,7 @@ public partial class UserPanel_Default : System.Web.UI.Page
                 gvMails.DataSource = reversedDt;
                 gvMails.DataBind();
             }
-        } 
+        }
     }
 
     protected void lnkBtnPreview_Click(object sender, EventArgs e)
@@ -82,12 +94,22 @@ public partial class UserPanel_Default : System.Web.UI.Page
 
         Label lblRecipientValue = (Label)row.FindControl("lblRecipient");
         Label lblBodyValue = (Label)row.FindControl("lblBodyValue");
+        //int length = lblBodyValue.ToString().IndexOf("\n", 0) + 1;
+        //if ( lblBodyValue.ToString().IndexOf("\n", 0) != -1)
+        //{
+        //    lblBodyValue.Text = lblBodyValue.ToString().Substring(0,length);
+        //}
+        //else
+        //{
+        //    lblBodyValue.Text = lblBodyValue.ToString();
+        //}
+        
         Label lblTemplateIdValue = (Label)row.FindControl("lblTemplateId");
         Label lblSentMailId = (Label)row.FindControl("lblSentMailId");
         Session["sentMailId"] = lblSentMailId.Text;
-        
+
         Session["recipientName"] = lblRecipientValue.Text.ToString();
-        Session["body"] = lblBodyValue.Text.ToString();
+       // Session["body"] = lblBodyValue.Text.ToString();
         Session["templateId"] = lblTemplateIdValue.Text.ToString();
 
         Response.Redirect("~/UserPanel/PreviewEmail.aspx");

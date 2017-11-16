@@ -6,7 +6,7 @@
      <div class="container-fluid child-page">
         <div class="container content txt-style">
             <i class="fa fa-envelope-open" style="font-size:50px" aria-hidden="true"></i>
-            <h1>OUTBOX</h1>
+            <h1>SENT MAILS</h1>
     <asp:GridView ID="gvMails" AllowPaging="true" AutoGenerateColumns="False" runat="server" OnPageIndexChanging="gvMails_PageIndexChanging" class="table table-responsive">
         <Columns>
             <asp:TemplateField HeaderStyle-Width="150px" HeaderText="Recipient">
@@ -29,10 +29,10 @@
                 </ItemTemplate>
             </asp:TemplateField>
 
-            <asp:TemplateField HeaderStyle-Width="500px" HeaderText="Body">
+            <asp:TemplateField HeaderStyle-Width="500px" ItemStyle-Height="50px" HeaderText="Body">
                 <ItemTemplate >
-                    <%#Eval("Body").ToString().Length > 125 ? (Eval("Body").ToString().Substring(0,125))+"........": Eval("Body") %>
-                    <asp:Label Id="lblBodyValue" Visible="false" Text='<%#Bind("Body") %>' runat="server"></asp:Label>
+                    <%--<%#Eval("Body").ToString().Length > 125 ? (Eval("Body").ToString().Substring(0,125))+"........": Eval("Body") %>--%>
+                    <asp:Label Id="lblBodyValue" Text='<%# Bind("Body")%>' runat="server"></asp:Label>
                 </ItemTemplate>
             </asp:TemplateField>
 
