@@ -21,6 +21,8 @@ public partial class UserPanel_Default : System.Web.UI.Page
 
         if (!IsPostBack)
         {
+            lblSubject.Text = Session["subject"].ToString();
+
             int sentMailId = Convert.ToInt32(Session["sentMailId"]);
             string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
             using (SqlConnection con = new SqlConnection(constr))

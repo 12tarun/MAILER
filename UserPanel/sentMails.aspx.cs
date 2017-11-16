@@ -54,11 +54,25 @@ public partial class UserPanel_Default : System.Web.UI.Page
                         }
                     }
                     string body = rdr["body"].ToString();
-                    int length = body.IndexOf("\n", 0) + 1;
+                 //   string subject = rdr["subject"].ToString();
+                    int bodyLength = body.IndexOf("\n", 0) + 1;
+                   // int subjectLength = subject.IndexOf("\n", 0) + 1;
                     if ( body.IndexOf("\n", 0) != -1)
                     {
-                        body = body.Substring(0,length);
+                        body = body.Substring(0,bodyLength);
                     }
+                    if(body.Length >= 50 )
+                    {
+                        body = body.Substring(0, 50);
+                    }
+                    //if (subject.IndexOf("\n", 0) != -1)
+                    //{
+                    //    subject = subject.Substring(0, subjectLength);
+                    //}
+                    //if(subject.Length >= 20)
+                    //{
+                    //    subject = subject.Substring(0, 20);
+                    //}
 
                     dr["sentMailId"] = rdr["sentMailId"];
                     dr["Subject"] = rdr["subject"];
@@ -93,23 +107,13 @@ public partial class UserPanel_Default : System.Web.UI.Page
         GridViewRow row = (GridViewRow)btn.NamingContainer;
 
         Label lblRecipientValue = (Label)row.FindControl("lblRecipient");
-        Label lblBodyValue = (Label)row.FindControl("lblBodyValue");
-        //int length = lblBodyValue.ToString().IndexOf("\n", 0) + 1;
-        //if ( lblBodyValue.ToString().IndexOf("\n", 0) != -1)
-        //{
-        //    lblBodyValue.Text = lblBodyValue.ToString().Substring(0,length);
-        //}
-        //else
-        //{
-        //    lblBodyValue.Text = lblBodyValue.ToString();
-        //}
-        
+        Label lblSubject = (Label)row.FindControl("lblSubject");       
         Label lblTemplateIdValue = (Label)row.FindControl("lblTemplateId");
         Label lblSentMailId = (Label)row.FindControl("lblSentMailId");
         Session["sentMailId"] = lblSentMailId.Text;
 
         Session["recipientName"] = lblRecipientValue.Text.ToString();
-       // Session["body"] = lblBodyValue.Text.ToString();
+        Session["subject"] = lblSubject.Text.ToString();
         Session["templateId"] = lblTemplateIdValue.Text.ToString();
 
         Response.Redirect("~/UserPanel/PreviewEmail.aspx");

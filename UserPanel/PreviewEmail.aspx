@@ -15,6 +15,9 @@
             </asp:Repeater>
             <br />
             <br />
+            <h6 style="float:left">SUBJECT: <asp:Label ID="lblSubject" runat="server"></asp:Label> </h6>
+            <br />
+            <br />
             <div class="row">
                 <div class="col-5">
                     <div id="emailPreview" runat="server"></div>
