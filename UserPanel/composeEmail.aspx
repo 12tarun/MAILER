@@ -135,6 +135,7 @@ a {
                                     <dt>
                                         <a href="#">
                                             <span class="hida">
+                                                
                                                 <asp:CheckBox ID="cbCategory" ForeColor="White" runat="server" OnCheckedChanged="cbCategory_CheckedChanged" AutoPostBack="true" Text='<%# Eval("categoryName") %>' />
                                             </span>
                                             <p class="multiSel"></p>

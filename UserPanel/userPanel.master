@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="../script/jquery-1.11.2.js"></script>
     <script>
-function ShowMessage(message, messagetype,divison) {
+        function ShowMessage(message, messagetype, divison) {
             var cssclass;
             switch (messagetype) {
                 case 'Success':
@@ -24,7 +24,7 @@ function ShowMessage(message, messagetype,divison) {
                 case 'Error':
                     cssclass = 'alert-danger';
                     console.log("Function call succesful");
-                    
+
                     break;
                 case 'Warning':
                     cssclass = 'alert-warning'
@@ -35,11 +35,18 @@ function ShowMessage(message, messagetype,divison) {
             $('#' + divison).html('<div class="alert ' + cssclass + '"><a href="#" class="close" data-dismiss="alert">&times;</a><strong>' + messagetype + '!</strong>' + message + '</div>');
             console.log('function call succesful');
             console.log(divison);
-}
+
+        }
+        preventDefault(evt)
+        {
+            
+            return false;
+            
+        }
     </script>
 </head>
 <body>
-    <form id="form1" runat="server">
+    <form id="form1" onsubmit="return preventDefault()" runat="server">
         <div class="container-fluid">
             <div class="bg-img">
                 <nav class="navbar" id="navBar">
