@@ -57,7 +57,7 @@ public partial class UserPanel_Default : System.Web.UI.Page
                 insertCategory.Parameters.AddWithValue("@userId", userId);
                 insertCategory.Parameters.AddWithValue("@categoryName", tbxCategoryName.Text.Trim());
                 insertCategory.ExecuteNonQuery();
-                ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('Category Added Succesfuly','Success','categoryAdderStatus');", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('Category Added Successfully.','Success','categoryAdderStatus');", true);
                 bindDataToDropdown();
             }
         }
@@ -104,7 +104,7 @@ public partial class UserPanel_Default : System.Web.UI.Page
                 tbxRecipientEmail.Text = tbxRecipientName.Text = "";
                 tbxRecipientEmail.Text = tbxRecipientName.Text = "";
                 lblEmailAlreadyExists.Visible = false;
-                ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage(' Recipient Added Succesfully.','Success','recipientAdderStatus');", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage(' Recipient Added Successfully.','Success','recipientAdderStatus');", true);
             }
         }
     }

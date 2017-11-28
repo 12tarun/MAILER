@@ -192,6 +192,7 @@ public partial class Registration : System.Web.UI.Page
             string body = "Hello " + tbxFullname.Text.Trim() + ",";
             body += "<br /><br />Please click the following link to activate your account";
             body += "<br /><a href = http://localhost:56617/UserPanel/Activation.aspx?activationCode=" + activationCode + ">Click here to activate your account.</a>";
+           // body += "<br /><a href = http://8ae1a7ae.ngrok.io/UserPanel/Activation.aspx?activationCode=" + activationCode + ">Click here to activate your account.</a>";
             body += "<br /><br />Thanks";
             body += "<br/><br>NOTE: Link expires after 24 hours.";
             mm.Body = body;
