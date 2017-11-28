@@ -179,10 +179,9 @@ a {
                         <asp:HiddenField ID="hfTemplateCode" runat="server" />
 
                         <br />
-                        <asp:TextBox ID="tbxMailSubject" runat="server" Width="300px" placeholder="subject"></asp:TextBox>
+                        <asp:TextBox ID="tbxMailSubject" runat="server" Width="300px" onkeydown="return (event.keyCode!=13);" placeholder="subject"></asp:TextBox>
                         <br />
-                        <br />
-                       
+                        <br />                   
                         <asp:TextBox ID="tbxMailBody"  runat="server" placeholder="enter mail body" ValidationGroup="mailCredentials" TextMode="MultiLine" Height="267px" Width="520px"></asp:TextBox>
                         <br />
                         <asp:RequiredFieldValidator ValidationGroup="mailCredentials" ID="RequiredFieldValidator1" runat="server" ControlToValidate="tbxMailBody" ErrorMessage="This field can't be empty" ForeColor="Red"></asp:RequiredFieldValidator>

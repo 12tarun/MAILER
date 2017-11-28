@@ -1,4 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Registration.aspx.cs" Inherits="Registration" %>
+
 <!DOCTYPE html>
 <!--This is Registration file -->
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -11,7 +12,7 @@
     <link href="https://fonts.googleapis.com/css?family=Varela+Round|Roboto|Muli|Raleway" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="../CSS/landingPage.css" />
     <script type="text/javascript">
-        function ShowMessage(message, messagetype,divison) {
+        function ShowMessage(message, messagetype, divison) {
             var cssclass;
             switch (messagetype) {
                 case 'Success':
@@ -122,54 +123,68 @@
                                         </div>
 
                                         <asp:Button ID="btnRegister" Text="register" class="btn btn-dark submit" runat="server" OnClick="btnRegister_Click" />
-                                    <div id="registrationStatusAlert" style="padding-top:20px">
-                                    </div>
-                                    </div>
-                                </ContentTemplate>
-                            </asp:UpdatePanel>
-                        </div>
-                    </div>
-                </div>
-                </div>
-            </div>
-            <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="ModalLabel">LOG IN</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <asp:UpdatePanel ID="updatePanelLogin" runat="server">
-                                <ContentTemplate>
-                                    <div class="container">
-                                        <div class="input-group">
-                                            <span for="InputEmail" class="input-group-addon" id="basic-addon1">@</span>
-                                            <asp:TextBox ID="tbxLoginEmail" class="form-control" runat="server" ValidationGroup="login" placeholder="Enter Email Id"></asp:TextBox>
+                                        <div id="registrationStatusAlert" style="padding-top: 20px">
                                         </div>
-                                        <asp:RequiredFieldValidator Display="Dynamic" ID="RFValidatorLoginEmail" ValidationGroup="login" runat="server" ErrorMessage="Please enter an email id" ControlToValidate="tbxLoginEmail" ForeColor="Red"></asp:RequiredFieldValidator>
-                                        <small id="emailHelp" class="form-text text-muted"></small>
-                                        <div class="input-group">
-                                            <span for="InputPassword" class="input-group-addon" id="basic-addon1"><i class="fa fa-key" aria-hidden="true"></i></span>
-                                            <asp:TextBox class="form-control" ID="tbxLoginPassword" runat="server" ValidationGroup="login" TextMode="Password" placeholder="Enter Password"></asp:TextBox>
-                                        </div>
-                                        <asp:RequiredFieldValidator Display="Dynamic" ID="RFValidatorLoginPassword" ValidationGroup="login" runat="server" ControlToValidate="tbxLoginPassword" ErrorMessage="Please enter the password" ForeColor="Red"></asp:RequiredFieldValidator>
-                                        <br />
-                                        <asp:LinkButton ID="LnkBtnForgotPassword" runat="server" OnClick="LnkBtnForgotPassword_Click" Text="forgot password?"></asp:LinkButton>
-                                        <div class="form-check">
-                                        </div>
-                                        <asp:Button class="btn btn-dark btnstyle" ID="btnLogin" runat="server" OnClick="btnLogin_Click" Text="Login" />
-                                        <div id="loginStatusAlert" style="padding-top:20px"></div>
-                                        <asp:Label ID="lblWarning" runat="server" Display="Dynamic" ForeColor="Red"></asp:Label>
                                     </div>
                                 </ContentTemplate>
                             </asp:UpdatePanel>
+                            <asp:UpdateProgress ID="updateProgress1" runat="server">
+                                <ProgressTemplate>
+                                    <div style="position: fixed; text-align: center; height: 100%; width: 100%; top: 0; right: 0; left: 0; z-index: 9999999; background-color: #000000; opacity: 0.7;">
+                                        <asp:Image ID="imgUpdateProgress1" runat="server" ImageUrl="~/images/ajax-loader.gif" AlternateText="Loading ..." ToolTip="Loading ..." Style="padding: 10px; position: fixed; top: 45%; left: 50%;" />
+                                    </div>
+                                </ProgressTemplate>
+                            </asp:UpdateProgress>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="ModalLabel">LOG IN</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <asp:UpdatePanel ID="updatePanelLogin" runat="server">
+                            <ContentTemplate>
+                                <div class="container">
+                                    <div class="input-group">
+                                        <span for="InputEmail" class="input-group-addon" id="basic-addon1">@</span>
+                                        <asp:TextBox ID="tbxLoginEmail" class="form-control" runat="server" ValidationGroup="login" placeholder="Enter Email Id"></asp:TextBox>
+                                    </div>
+                                    <asp:RequiredFieldValidator Display="Dynamic" ID="RFValidatorLoginEmail" ValidationGroup="login" runat="server" ErrorMessage="Please enter an email id" ControlToValidate="tbxLoginEmail" ForeColor="Red"></asp:RequiredFieldValidator>
+                                    <small id="emailHelp" class="form-text text-muted"></small>
+                                    <div class="input-group">
+                                        <span for="InputPassword" class="input-group-addon" id="basic-addon1"><i class="fa fa-key" aria-hidden="true"></i></span>
+                                        <asp:TextBox class="form-control" ID="tbxLoginPassword" runat="server" ValidationGroup="login" TextMode="Password" placeholder="Enter Password"></asp:TextBox>
+                                    </div>
+                                    <asp:RequiredFieldValidator Display="Dynamic" ID="RFValidatorLoginPassword" ValidationGroup="login" runat="server" ControlToValidate="tbxLoginPassword" ErrorMessage="Please enter the password" ForeColor="Red"></asp:RequiredFieldValidator>
+                                    <br />
+                                    <asp:LinkButton ID="LnkBtnForgotPassword" runat="server" OnClick="LnkBtnForgotPassword_Click" Text="forgot password?"></asp:LinkButton>
+                                    <div class="form-check">
+                                    </div>
+                                    <asp:Button class="btn btn-dark btnstyle" ID="btnLogin" runat="server" OnClick="btnLogin_Click" Text="Login" />
+                                    <div id="loginStatusAlert" style="padding-top: 20px"></div>
+                                    <asp:Label ID="lblWarning" runat="server" Display="Dynamic" ForeColor="Red"></asp:Label>
+                                </div>
+                            </ContentTemplate>
+                        </asp:UpdatePanel>
+                        <asp:UpdateProgress ID="updateProgress" runat="server">
+                            <ProgressTemplate>
+                                <div style="position: fixed; text-align: center; height: 100%; width: 100%; top: 0; right: 0; left: 0; z-index: 9999999; background-color: #000000; opacity: 0.7;">
+                                    <asp:Image ID="imgUpdateProgress" runat="server" ImageUrl="~/images/ajax-loader.gif" AlternateText="Loading ..." ToolTip="Loading ..." Style="padding: 10px; position: fixed; top: 45%; left: 50%;" />
+                                </div>
+                            </ProgressTemplate>
+                        </asp:UpdateProgress>
+                    </div>
+                </div>
+            </div>
+        </div>
     </form>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>

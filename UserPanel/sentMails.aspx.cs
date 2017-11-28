@@ -42,7 +42,7 @@ public partial class UserPanel_Default : System.Web.UI.Page
                         con2.Open();
                         SqlCommand getRecipientsName = new SqlCommand("select recipientId from tblMailRecipient  where sentMailId='" + Convert.ToInt32(rdr["sentMailId"]) + "'", con2);
                         SqlDataReader rdr2 = getRecipientsName.ExecuteReader();
-
+       
                         while (rdr2.Read())
                         {
                             using (SqlConnection con3 = new SqlConnection(ConfigurationManager.ConnectionStrings["constr"].ConnectionString))
@@ -54,14 +54,14 @@ public partial class UserPanel_Default : System.Web.UI.Page
                         }
                     }
                     string body = rdr["body"].ToString();
-                    //   string subject = rdr["subject"].ToString();
+                 //   string subject = rdr["subject"].ToString();
                     int bodyLength = body.IndexOf("\n", 0) + 1;
-                    // int subjectLength = subject.IndexOf("\n", 0) + 1;
-                    if (body.IndexOf("\n", 0) != -1)
+                   // int subjectLength = subject.IndexOf("\n", 0) + 1;
+                    if ( body.IndexOf("\n", 0) != -1)
                     {
-                        body = body.Substring(0, bodyLength);
+                        body = body.Substring(0,bodyLength);
                     }
-                    if (body.Length >= 50)
+                    if(body.Length >= 50 )
                     {
                         body = body.Substring(0, 50);
                     }
@@ -107,7 +107,7 @@ public partial class UserPanel_Default : System.Web.UI.Page
         GridViewRow row = (GridViewRow)btn.NamingContainer;
 
         Label lblRecipientValue = (Label)row.FindControl("lblRecipient");
-        Label lblSubject = (Label)row.FindControl("lblSubject");
+        Label lblSubject = (Label)row.FindControl("lblSubject");       
         Label lblTemplateIdValue = (Label)row.FindControl("lblTemplateId");
         Label lblSentMailId = (Label)row.FindControl("lblSentMailId");
         Session["sentMailId"] = lblSentMailId.Text;
