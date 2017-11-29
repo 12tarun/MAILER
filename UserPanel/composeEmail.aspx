@@ -33,7 +33,7 @@
     height: 200,
     setup: function (editor) {
         editor.on('focus', function (e) {
-            console.log("hello");
+            
             setInterval(setHTML, 100);
         });
     }
@@ -58,26 +58,26 @@
                                     <div class="dropdown">
                                         <asp:CheckBox ID="cbCategory" ForeColor="White" runat="server" OnCheckedChanged="cbCategory_CheckedChanged" AutoPostBack="true" Text='<%# Eval("categoryName") %>' />
 
-                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                           
-                                        </button>
+                                        <span id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                           <i class="fa fa-caret-down" aria-hidden="true"></i>
+                                        </span>
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                            <a class="dropdown-item" href="#">
+                                            
                                                 <ul>
                                                     <asp:Repeater ID="rptrRecipient" runat="server">
                                                         <ItemTemplate>
-                                                            <div>
+                                                            <a class="dropdown-item" href="#">
 
 
-                                                                <asp:CheckBox ToolTip='<%# Eval("email") %>' runat="server" ID="cbRecipient" OnCheckedChanged="cbRecipient_CheckedChanged" AutoPostBack="true" Text='<%# Eval("name") %>' />
+                                                                <asp:CheckBox ToolTip='<%# Eval("email") %>' runat="server" ID="cbRecipient" OnCheckedChanged="cbRecipient_CheckedChanged" AutoPostBack="false" Text='<%# Eval("name") %>' />
                                                                 <asp:HiddenField ID="hfRecipientId" Value='<%# Eval("recipientId") %>' runat="server" />
 
 
-                                                            </div>
+                                                            </a>
                                                         </ItemTemplate>
                                                     </asp:Repeater>
                                                 </ul>
-                                            </a>
+                                            
                                         </div>
                                     </div>
                                     <br />
@@ -133,12 +133,21 @@
     <br />
     <script src="../script/jquery-1.11.2.js"></script>
     <script type="text/javascript">
-
         function setHTML() {
             var tbxBody = tinyMCE.activeEditor.getContent({ format: 'html' });
             hiddenStatusFlag = document.getElementById('<%= hfTemplateCode.ClientID%>').value.replace("{body}", tbxBody);
             document.getElementById('<%= divTemplatePreview.ClientID%>').innerHTML = hiddenStatusFlag;
         }
+
+        //$(document).on('click', '.dropdown-menu', function (e) {
+        //    console.log("hello");
+        //    e.stopPropagation(); // it will not propagate the action to parent for closing
+        //});
+
+        $('.dropdown-menu a.dropdown-item').click(function (e) {
+            console.log("hello");
+            e.stopPropagation();
+        });
         //$(document).ready(function () {
         //    $("ul.dropdown-menu input[type=checkbox]").each(function () {
         //        $(this).change(function () {
