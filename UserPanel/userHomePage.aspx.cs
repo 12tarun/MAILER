@@ -297,7 +297,6 @@ public partial class UserPanel_Default : System.Web.UI.Page
                     using (StreamReader reader = new StreamReader(FileUploadTemplate.PostedFile.InputStream))
                     {
                         templateBody = reader.ReadToEnd(); bodyPlaceHolder = templateBody.Contains("{body}");
-
                     }
                     if (bodyPlaceHolder)
                     {
@@ -313,6 +312,14 @@ public partial class UserPanel_Default : System.Web.UI.Page
                             saveTemplate.Parameters.AddWithValue("@userId", Convert.ToInt32(Session["LoggedIn"]));
                             saveTemplate.Parameters.AddWithValue("@filePath", filePath);
                             saveTemplate.ExecuteNonQuery();
+                            int i = templateBody.IndexOf("<body");
+                            i += 5;
+                           while(true)
+                            {
+                                if (templateBody[i] != '>')
+                                    templateBody=templateBody.Remove(i, 1);
+                                else break;                                
+                            }
                             using (StreamWriter sw = File.AppendText(Server.MapPath(filePath)))
                             {
                                 sw.WriteLine(templateBody);
