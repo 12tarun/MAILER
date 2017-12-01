@@ -67,17 +67,12 @@
                                                     <asp:Repeater ID="rptrRecipient" runat="server">
                                                         <ItemTemplate>
                                                             <a class="dropdown-item" href="#">
-
-
                                                                 <asp:CheckBox ToolTip='<%# Eval("email") %>' runat="server" ID="cbRecipient" OnCheckedChanged="cbRecipient_CheckedChanged" AutoPostBack="false" Text='<%# Eval("name") %>' />
                                                                 <asp:HiddenField ID="hfRecipientId" Value='<%# Eval("recipientId") %>' runat="server" />
-
-
                                                             </a>
                                                         </ItemTemplate>
                                                     </asp:Repeater>
-                                                </ul>
-                                            
+                                                </ul>                                           
                                         </div>
                                     </div>
                                     <br />
@@ -87,8 +82,6 @@
                     </ContentTemplate>
                 </asp:UpdatePanel>
             </div>
-
-
             <div class="col-9">
                 <div class="row">
                     <div class="col-6 txt-style">
@@ -99,13 +92,37 @@
                     </div>
                     <div class="col-6 compose-area">
                         <h1>Mail Credentials</h1>
+                       
                         <asp:Label ID="lbltemplate" runat="server" Text="Select Template"></asp:Label>
                         <asp:RadioButtonList AutoPostBack="true" runat="server" ID="rbTemplates" OnSelectedIndexChanged="rbTemplates_SelectedIndexChanged" RepeatLayout="Table" RepeatDirection="Horizontal" RepeatColumns="4"></asp:RadioButtonList>
                         <asp:HiddenField ID="hfTemplateCode" runat="server" />
+                         <div class=" row select-ar">
+                                <div class="col-3 header">
+                                    <p>Select Header</p>
+                                    <img onclick="selecth(event)" src="http://svgshare.com/i/446.svg" />
+                                    <img onclick="selecth(event)" src="http://svgshare.com/i/458.svg" />
+                                    <img onclick="selecth(event)" src="http://svgshare.com/i/447.svg" />
+                                </div> 
+                                <div class="col-3 footer">
+                                    <p>Select Footer</p>
+                                    <img onclick="selectf(event)" src="http://svgshare.com/i/435.svg" />
+                                    <img onclick="selectf(event)" src="http://svgshare.com/i/44H.svg" />
+                                    <img onclick="selectf(event)" src="http://svgshare.com/i/43a.svg" />
+                                </div>
+                                <div class="col-3 bkground">
+                                    <p>Select Background</p>
+                                    <img onclick="selectb(event)" src="http://svgshare.com/i/436.svg" />
+                                    <img onclick="selectb(event)" src="http://svgshare.com/i/43b.svg" />
+                                    <img onclick="selectb(event)" src="http://svgshare.com/i/43c.svg" />
+                                    <img onclick="selectb(event)" src="http://svgshare.com/i/43G.svg" />
+                                </div>
+                            </div>  
 
                         <br />
                         <asp:TextBox ID="tbxMailSubject" runat="server" Width="300px" onkeydown="return (event.keyCode!=13);" placeholder="subject"></asp:TextBox>
+                           
                         <br />
+                        <asp:Button runat="server" ID="btnRecipientNamePH" OnClick="btnRecipientNamePH_Click" Text="Add RecipientName" class="btnstyle"  Width="200px"/>
                         <br />
                         <asp:TextBox ID="tbxMailBody" runat="server" placeholder="enter mail body" ValidationGroup="mailCredentials" TextMode="MultiLine" Height="267px" Width="520px"></asp:TextBox>
                         <br />
@@ -134,10 +151,39 @@
     <script src="../script/jquery-1.11.2.js"></script>
     <script type="text/javascript">
         function setHTML() {
+
             var tbxBody = tinyMCE.activeEditor.getContent({ format: 'html' });
-            hiddenStatusFlag = document.getElementById('<%= hfTemplateCode.ClientID%>').value.replace("{body}", tbxBody);
-            document.getElementById('<%= divTemplatePreview.ClientID%>').innerHTML = hiddenStatusFlag;
+            document.getElementById('<%= divTemplatePreview.ClientID%>').innerHTML = templateCode.replace("{body}", tbxBody);
+
         }
+        var selhid, selfid, selbid;
+        var templateCode = document.getElementById('<%= hfTemplateCode.ClientID%>').value;
+        function selecth(eheader) {
+            selprevhID = selhid;
+            selhid = eheader.target.src;
+            templateCode = templateCode.replace("{header}", "<img  src=" + selhid + "  />");
+            templateCode = templateCode.replace(selprevhID, selhid);
+            document.getElementById('<%= divTemplatePreview.ClientID%>').innerHTML = templateCode;
+        }
+
+        function selectf(efooter) {
+            selprevfId = selfid;
+            selfid = efooter.target.src;
+            var tbxBody = tinyMCE.activeEditor.getContent({ format: 'html' });
+            templateCode = templateCode.replace("{footer}", "<img  src=" + selfid + "  />");
+            templateCode = templateCode.replace(selprevfId, selfid);
+            document.getElementById('<%= divTemplatePreview.ClientID%>').innerHTML = templateCode;
+        }
+
+        function selectb(ebackground) {
+            selprevbID = selbid;
+            selbid = ebackground.target.src;
+            templateCode = templateCode.replace("{body}", "<img  src=" + selbid + "  />");
+            templateCode = templateCode.replace(selprevbID, selbid);
+            document.getElementById('<%= divTemplatePreview.ClientID%>').innerHTML = templateCode;
+
+        }
+
 
         //$(document).on('click', '.dropdown-menu', function (e) {
         //    console.log("hello");
