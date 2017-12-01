@@ -30,6 +30,11 @@
             $('#' + divison).html('<div class="alert ' + cssclass + '"><a href="#" class="close" data-dismiss="alert">&times;</a><strong>' + messagetype + '!</strong>' + message + '</div>');
         }
     </script>
+    <style>
+        .modal-content{
+            border:none;
+        }
+    </style>
 </head>
 <body>
     <form id="form1" runat="server">

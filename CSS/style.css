@@ -163,14 +163,12 @@
     margin: 0px;
     padding-left: 28px;
     overflow-y: auto;
-    height: 100%;
 }
 
 .compose-area {
     background-color: rgba(0,0,0,0.9);
     color: #fff;
     margin: 0px;
-    height: 100%;
     overflow-y: auto;
 }
 

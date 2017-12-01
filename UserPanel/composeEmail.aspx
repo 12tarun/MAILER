@@ -38,11 +38,20 @@
         });
     }
 });
+
+        //tinymce.init({
+        //    selector: 'textarea',  // change this value according to your HTML
+        //    file_browser_callback: function (field_name, url, type, win) {
+        //        win.document.getElementById(field_name).value = 'my browser value';
+        //    }
+        //});
+
     </script>
 
     <div class="container-fluid child-page">
         <div class="row">
             <div class="col-3 sel-rec">
+                
                 <h1>Select Recipients</h1>
                 <asp:ScriptManager runat="server"></asp:ScriptManager>
                 <asp:UpdatePanel ID="updatePanelCheckbox" runat="server">
@@ -93,6 +102,7 @@
                 <div class="row">
                     <div class="col-6 txt-style">
                         <div class="temp-prev">
+                            <div id="labelStatusAlert" style="padding-top:0px"></div>
                             <h1>Template Preview</h1>
                             <span id="divTemplatePreview" runat="server"></span>
                         </div>
@@ -102,15 +112,14 @@
                         <asp:Label ID="lbltemplate" runat="server" Text="Select Template"></asp:Label>
                         <asp:RadioButtonList AutoPostBack="true" runat="server" ID="rbTemplates" OnSelectedIndexChanged="rbTemplates_SelectedIndexChanged" RepeatLayout="Table" RepeatDirection="Horizontal" RepeatColumns="4"></asp:RadioButtonList>
                         <asp:HiddenField ID="hfTemplateCode" runat="server" />
-
                         <br />
                         <asp:TextBox ID="tbxMailSubject" runat="server" Width="300px" onkeydown="return (event.keyCode!=13);" placeholder="subject"></asp:TextBox>
                         <br />
+                        <asp:Button runat="server" Text="Add Recipient Name" ID="btnAddRecipientName" OnClick="btnAddRecipientName_Click" Width="180px" class="btnstyle" />
                         <br />
                         <asp:TextBox ID="tbxMailBody" runat="server" placeholder="enter mail body" ValidationGroup="mailCredentials" TextMode="MultiLine" Height="267px" Width="520px"></asp:TextBox>
                         <br />
                         <asp:RequiredFieldValidator ValidationGroup="mailCredentials" ID="RequiredFieldValidator1" runat="server" ControlToValidate="tbxMailBody" ErrorMessage="This field can't be empty" ForeColor="Red"></asp:RequiredFieldValidator>
-                        <br />
                         <br />
                         <asp:FileUpload ID="fileAttachment" ToolTip="Add Attachments" runat="server" AllowMultiple="true" />
                         <br />
@@ -121,7 +130,6 @@
                         <br />
                         <asp:Button ID="btnSend" class="btnstyle" Text="Send" runat="server" OnClick="btnSend_Click" />
                         <br />
-                        <div id="labelStatusAlert" style="padding-top: 20px"></div>
                         <asp:Label ID="lblMailStatus" ForeColor="Blue" runat="server"></asp:Label>
                     </div>
                 </div>
@@ -145,7 +153,6 @@
         //});
 
         $('.dropdown-menu a.dropdown-item').click(function (e) {
-            console.log("hello");
             e.stopPropagation();
         });
         //$(document).ready(function () {

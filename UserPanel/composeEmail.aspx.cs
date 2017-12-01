@@ -251,8 +251,8 @@ public partial class UserPanel_Default : System.Web.UI.Page
             {
                 //inserting the value of placeholders as per the mail
                 body = reader.ReadToEnd();
-                body = body.Replace("{RecipientName}", recipientName);
                 body = body.Replace("{body}", tbxMailBody.Text);
+                body = body.Replace("{RecipientName}", recipientName);
             }
 
             con.Close();
@@ -300,6 +300,11 @@ public partial class UserPanel_Default : System.Web.UI.Page
         hfTemplateCode.Value = body;
         divTemplatePreview.InnerHtml = body;
         // lblSum.Text = tbxMailBody.Text;
+    }
+
+    protected void btnAddRecipientName_Click(object sender, EventArgs e)
+    {
+        tbxMailBody.Text += "{RecipientName}";
     }
 }
 
