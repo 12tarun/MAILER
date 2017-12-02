@@ -56,14 +56,23 @@ public partial class UserPanel_Default : System.Web.UI.Page
                     string body = rdr["body"].ToString();
                  //   string subject = rdr["subject"].ToString();
                     int bodyLength = body.IndexOf("\n", 0) + 1;
+
                    // int subjectLength = subject.IndexOf("\n", 0) + 1;
                     if ( body.IndexOf("\n", 0) != -1)
                     {
                         body = body.Substring(0,bodyLength);
+                        if(body.Contains("<img") == true)
+                        {
+                            body = body.Substring(0, body.IndexOf("<img"));
+                        }
                     }
-                    if(body.Length >= 50 )
+                    else if(body.Length >= 50 )
                     {
                         body = body.Substring(0, 50);
+                        if (body.Contains("<img") == true)
+                        {
+                            body = body.Substring(0, body.IndexOf("<img"));
+                        }
                     }
                     //if (subject.IndexOf("\n", 0) != -1)
                     //{

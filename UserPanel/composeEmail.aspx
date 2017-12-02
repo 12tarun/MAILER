@@ -11,18 +11,15 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <script src="../scripts/tinymce/tinymce.min.js"></script>
   <script>
-
 //      tinymce.init({
 //    selector: 'textarea',
 //    height: 200,
 //    setup: function (editor) {
 //        editor.on('focus', function (e) {
-
 //            setInterval(setHTML, 100);
 //        });
 //    }
 //});
-
     </script>
 
     <div class="container-fluid child-page">
@@ -122,13 +119,10 @@
             hiddenStatusFlag = document.getElementById('<%= hfTemplateCode.ClientID%>').value.replace("{body}", tbxBody);
             document.getElementById('<%= divTemplatePreview.ClientID%>').innerHTML = hiddenStatusFlag;
         }
-
         //$(document).on('click', '.dropdown-menu', function (e) {
         //    console.log("hello");
         //    e.stopPropagation(); // it will not propagate the action to parent for closing
         //});
-
-
           
         tinymce.init({
             selector: 'textarea',
@@ -156,12 +150,9 @@
               '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
               '//www.tinymce.com/css/codepen.min.css'
             ]
-
   
-
         });
     
-
         $('.dropdown-menu a.dropdown-item').click(function (e) {
             e.stopPropagation();
         });
