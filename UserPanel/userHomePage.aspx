@@ -19,6 +19,11 @@
             </script>
             <div class="container rec-container txt-style">
                 <div class="justify-content-center">
+                    <div id="categoryAdderStatus"></div>
+                    <div id="recipientAdderStatus"></div>
+                     <div id="excelFileUploadStatus"></div>
+                    <div id="templateStatus"></div>
+                    <br />
                     <i style="font-size: 50px" class="fa fa-users" aria-hidden="true"></i>
                     <br>
                     <h1>SETTINGS</h1>
@@ -29,18 +34,14 @@
                         <asp:Label runat="server" ID="lblCategoryName" Visible="false" Text="Category Name"></asp:Label>
                         <asp:TextBox ValidationGroup="Category" runat="server" ID="tbxCategoryName" placeholder="Enter Category Name"></asp:TextBox>
                     </div>
-                    <asp:RequiredFieldValidator Display="Dynamic" ValidationGroup="Category" runat="server" ID="RFVCategoryName" ControlToValidate="tbxCategoryName" ErrorMessage="Category name required" ForeColor="Red"></asp:RequiredFieldValidator>
-                    
+                    <asp:RequiredFieldValidator Display="Dynamic" ValidationGroup="Category" runat="server" ID="RFVCategoryName" ControlToValidate="tbxCategoryName" ErrorMessage="Category name required" ForeColor="Red"></asp:RequiredFieldValidator>                  
                     <div>
                         <asp:Button class="btnstyle" runat="server" ID="btnCategoryAdder" Text="Submit" OnClick="btnCategoryAdder_Click" />
                     </div>
-
                     <div>
                         <asp:Label ID="lblCategoryAlreadyAdded" runat="server" Text="Category already added!" ForeColor="Red" Visible="false"></asp:Label>
                     </div>
                   </div>
-               <div id="categoryAdderStatus" style="padding-top:20px"></div>
-                
                 <br />
                 <div>
                     <h3>Add Recipient</h3>
@@ -62,7 +63,6 @@
                     <asp:Label ID="lblEmailAlreadyExists" Text="Email already exists in this category" Visible="false" ForeColor="Red" runat="server"></asp:Label>
                     <asp:Button class="btnstyle" ID="btnRecipientAdd" runat="server" OnClick="btnRecipientAdd_Click" Text="Add" />
                 </div>
-                <div id="recipientAdderStatus" style="padding-top:20px"></div>
                 <br />
                 <div>
                     <h4>Add recipients through MS-Excel</h4>
@@ -71,15 +71,13 @@
                     </div>
                     <asp:FileUpload ID="FileUploadExcel" Style="justify-content: center" runat="server" />
                     <asp:Button ID="btnUploadExcel" class="btnstyle" runat="server" Text="Upload" OnClick="btnUploadExcel_Click" />
-                    <asp:Label ID="lblWrongExcel" Text="Only .xls, xlsx file is acceptable" Visible="false" ForeColor="Red" runat="server"></asp:Label>
-                <div id="excelFileUploadStatus" style="padding:20px" ></div>
+                    <asp:Label ID="lblWrongExcel" Text="Only .xls, xlsx file is acceptable" Visible="false" ForeColor="Red" runat="server"></asp:Label>              
                 </div>
                 <br />
                 <h4>Upload your own template</h4>
                 <asp:Label ID="lblUploadTemplate" runat="server" Visible="false" Text="Select Template File"></asp:Label>
                 <asp:FileUpload ID="FileUploadTemplate" runat="server" />
-                <asp:Button ID="btnTemplateUpload" class="btnstyle" runat="server" Text="Upload" OnClick="btnTemplateUpload_Click" />
-               <div id="templateStatus" style="padding-top:20px"></div>
+                <asp:Button ID="btnTemplateUpload" class="btnstyle" runat="server" Text="Upload" OnClick="btnTemplateUpload_Click" />             
             </div>
         </div>
     </div>

@@ -10,39 +10,6 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <script src="../scripts/tinymce/tinymce.min.js"></script>
-    <script>
-        tinymce.init({
-            selector: 'textarea',
-            height: 180,
-            theme: 'modern',
-            setup: function (editor) {
-                editor.on('focus', function (e) {
-            
-                    setInterval(setHTML, 100);
-                });
-            },
-            plugins: [
-    "advlist autolink lists link image charmap print preview anchor",
-    "searchreplace visualblocks code fullscreen",
-    "insertdatetime media table contextmenu paste"
-            ],
-          //  plugins: 'print preview fullpage powerpaste searchreplace autolink directionality advcode visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists textcolor wordcount tinymcespellchecker a11ychecker imagetools mediaembed  linkchecker contextmenu colorpicker textpattern help',
-            toolbar1: 'formatselect | bold italic strikethrough forecolor backcolor | link | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | removeformat',
-            image_advtab: true,
-            templates: [
-              { title: 'Test template 1', content: 'Test 1' },
-              { title: 'Test template 2', content: 'Test 2' }
-            ],
-            content_css: [
-              '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
-              '//www.tinymce.com/css/codepen.min.css'
-            ]
-
-  
-
-        });
-    </script>
-
   <script>
 
 //      tinymce.init({
@@ -125,6 +92,7 @@
                         <br />
                         <asp:TextBox ID="tbxMailSubject" runat="server" Width="300px" onkeydown="return (event.keyCode!=13);" placeholder="subject"></asp:TextBox>
                         <br />
+                        <br />
                         <asp:Button runat="server" Text="Add Recipient Name" ID="btnAddRecipientName" OnClick="btnAddRecipientName_Click" Width="180px" class="btnstyle" />
                         <br />
                         <asp:TextBox ID="tbxMailBody" runat="server" placeholder="enter mail body" ValidationGroup="mailCredentials" TextMode="MultiLine" Height="267px" Width="520px"></asp:TextBox>
@@ -134,12 +102,10 @@
                         <asp:FileUpload ID="fileAttachment" ToolTip="Add Attachments" runat="server" AllowMultiple="true" />
                         <br />
                         <br />
-                        <asp:TextBox ID="tbxPassword" TextMode="Password" ValidationGroup="mailCredentials" runat="server" placeholder="enter your registered mail's password here" Width="300px"></asp:TextBox>
-                        <br />
-                        <asp:RequiredFieldValidator Display="Dynamic" ValidationGroup="mailCredentials" ID="RequiredFieldValidator2" runat="server" ControlToValidate="tbxPassword" ErrorMessage="This field can't be empty" ForeColor="Red"></asp:RequiredFieldValidator>
-                        <br />
+                        <asp:TextBox ID="tbxPassword" TextMode="Password" ValidationGroup="mailCredentials" runat="server" placeholder="enter your registered email's password here" Width="310px"></asp:TextBox>
                         <asp:Button ID="btnSend" class="btnstyle" Text="Send" runat="server" OnClick="btnSend_Click" />
                         <br />
+                        <asp:RequiredFieldValidator Display="Dynamic" ValidationGroup="mailCredentials" ID="RequiredFieldValidator2" runat="server" ControlToValidate="tbxPassword" ErrorMessage="This field can't be empty" ForeColor="Red"></asp:RequiredFieldValidator>
                         <asp:Label ID="lblMailStatus" ForeColor="Blue" runat="server"></asp:Label>
                     </div>
                 </div>
@@ -161,6 +127,40 @@
         //    console.log("hello");
         //    e.stopPropagation(); // it will not propagate the action to parent for closing
         //});
+
+
+          
+        tinymce.init({
+            selector: 'textarea',
+            height: 180,
+            theme: 'modern',
+            setup: function (editor) {
+                editor.on('focus', function (e) {
+            
+                    setInterval(setHTML, 100);
+                });
+            },
+            plugins: [
+    "advlist autolink lists link image charmap print preview anchor",
+    "searchreplace visualblocks code fullscreen",
+    "insertdatetime media table contextmenu paste"
+            ],
+          //  plugins: 'print preview fullpage powerpaste searchreplace autolink directionality advcode visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists textcolor wordcount tinymcespellchecker a11ychecker imagetools mediaembed  linkchecker contextmenu colorpicker textpattern help',
+            toolbar1: 'formatselect | bold italic strikethrough forecolor backcolor | link | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | removeformat',
+            image_advtab: true,
+            templates: [
+              { title: 'Test template 1', content: 'Test 1' },
+              { title: 'Test template 2', content: 'Test 2' }
+            ],
+            content_css: [
+              '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
+              '//www.tinymce.com/css/codepen.min.css'
+            ]
+
+  
+
+        });
+    
 
         $('.dropdown-menu a.dropdown-item').click(function (e) {
             e.stopPropagation();
