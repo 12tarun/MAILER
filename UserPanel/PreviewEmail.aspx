@@ -5,6 +5,8 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <div class="container-fluid child-page">
         <div class="container content txt-style">
+           <asp:button runat="server" ID="btnBack" Text="back" class="btnstyle" style="float:right" OnClick="btnBack_Click"></asp:button>
+            <br />
             <p style="float:left"> To: > < </p>
             <asp:Repeater ID="rptrMailRecipientName" runat="server">
                 <ItemTemplate>

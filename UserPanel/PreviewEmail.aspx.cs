@@ -151,7 +151,7 @@ public partial class UserPanel_Default : System.Web.UI.Page
                 }
             }
         }
-    
+
 
     //public string SortCommaSeparatedString(string name)
     //{
@@ -164,4 +164,9 @@ public partial class UserPanel_Default : System.Web.UI.Page
     //    }
     //    return returnValue.Remove(returnValue.Length - 1, 1);
     //}
+
+    protected void btnBack_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("~/UserPanel/sentMails.aspx");
+    }
 }

@@ -10,12 +10,23 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <script src="../scripts/tinymce/tinymce.min.js"></script>
-    <!--<script type="text/javascript">
+    <script>
         tinymce.init({
             selector: 'textarea',
             height: 180,
             theme: 'modern',
-            plugins: 'print preview fullpage powerpaste searchreplace autolink directionality advcode visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists textcolor wordcount tinymcespellchecker a11ychecker imagetools mediaembed  linkchecker contextmenu colorpicker textpattern help',
+            setup: function (editor) {
+                editor.on('focus', function (e) {
+            
+                    setInterval(setHTML, 100);
+                });
+            },
+            plugins: [
+    "advlist autolink lists link image charmap print preview anchor",
+    "searchreplace visualblocks code fullscreen",
+    "insertdatetime media table contextmenu paste"
+            ],
+          //  plugins: 'print preview fullpage powerpaste searchreplace autolink directionality advcode visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists textcolor wordcount tinymcespellchecker a11ychecker imagetools mediaembed  linkchecker contextmenu colorpicker textpattern help',
             toolbar1: 'formatselect | bold italic strikethrough forecolor backcolor | link | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | removeformat',
             image_advtab: true,
             templates: [
@@ -26,25 +37,24 @@
               '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
               '//www.tinymce.com/css/codepen.min.css'
             ]
-        });
-    </script>-->
-    <script>tinymce.init({
-    selector: 'textarea',
-    height: 200,
-    setup: function (editor) {
-        editor.on('focus', function (e) {
-            
-            setInterval(setHTML, 100);
-        });
-    }
-});
 
-        //tinymce.init({
-        //    selector: 'textarea',  // change this value according to your HTML
-        //    file_browser_callback: function (field_name, url, type, win) {
-        //        win.document.getElementById(field_name).value = 'my browser value';
-        //    }
-        //});
+  
+
+        });
+    </script>
+
+  <script>
+
+//      tinymce.init({
+//    selector: 'textarea',
+//    height: 200,
+//    setup: function (editor) {
+//        editor.on('focus', function (e) {
+
+//            setInterval(setHTML, 100);
+//        });
+//    }
+//});
 
     </script>
 
@@ -126,7 +136,7 @@
                         <br />
                         <asp:TextBox ID="tbxPassword" TextMode="Password" ValidationGroup="mailCredentials" runat="server" placeholder="enter your registered mail's password here" Width="300px"></asp:TextBox>
                         <br />
-                        <asp:RequiredFieldValidator ValidationGroup="mailCredentials" ID="RequiredFieldValidator2" runat="server" ControlToValidate="tbxPassword" ErrorMessage="This field can't be empty" ForeColor="Red"></asp:RequiredFieldValidator>
+                        <asp:RequiredFieldValidator Display="Dynamic" ValidationGroup="mailCredentials" ID="RequiredFieldValidator2" runat="server" ControlToValidate="tbxPassword" ErrorMessage="This field can't be empty" ForeColor="Red"></asp:RequiredFieldValidator>
                         <br />
                         <asp:Button ID="btnSend" class="btnstyle" Text="Send" runat="server" OnClick="btnSend_Click" />
                         <br />
