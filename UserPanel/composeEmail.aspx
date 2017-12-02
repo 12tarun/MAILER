@@ -28,7 +28,7 @@
             ]
         });
     </script>-->
-    <script>tinymce.init({
+    <%-- <script>tinymce.init({
     selector: 'textarea',
     height: 200,
     setup: function (editor) {
@@ -38,8 +38,39 @@
         });
     }
 });
-    </script>
+    </script>--%>
+    <script>
+        var interval;
+        tinymce.init({
+            selector: 'textarea',
+            height: 180,
+            theme: 'modern',
+            plugins: 'print preview fullpage powerpaste searchreplace autolink directionality advcode visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists textcolor wordcount tinymcespellchecker a11ychecker imagetools mediaembed  linkchecker contextmenu colorpicker textpattern help',
+            setup: function (editor) {
+                editor.on('focusin', function (e) {
 
+                    var interval = setInterval(setHTML, 100);
+                });
+                editor.on('focusout', function (e) {
+                    clearInterval(interval);
+                });
+            },
+            plugins: [
+                "advlist autolink lists link image charmap print preview anchor",
+                "searchreplace visualblocks code fullscreen",
+                "insertdatetime media table contextmenu paste"
+            ],
+            //  plugins: 'print preview fullpage powerpaste searchreplace autolink directionality advcode visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists textcolor wordcount tinymcespellchecker a11ychecker imagetools mediaembed  linkchecker contextmenu colorpicker textpattern help',
+            toolbar1: 'formatselect | bold italic strikethrough forecolor backcolor | link | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | removeformat',
+            image_advtab: true,
+            templates: [
+                '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
+                '//www.tinymce.com/css/codepen.min.css'
+            ]
+
+        });
+
+    </script>
     <div class="container-fluid child-page">
         <div class="row">
             <div class="col-3 sel-rec">
@@ -59,20 +90,20 @@
                                         <asp:CheckBox ID="cbCategory" ForeColor="White" runat="server" OnCheckedChanged="cbCategory_CheckedChanged" AutoPostBack="true" Text='<%# Eval("categoryName") %>' />
 
                                         <span id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                           <i class="fa fa-caret-down" aria-hidden="true"></i>
+                                            <i class="fa fa-caret-down" aria-hidden="true"></i>
                                         </span>
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                            
-                                                <ul>
-                                                    <asp:Repeater ID="rptrRecipient" runat="server">
-                                                        <ItemTemplate>
-                                                            <a class="dropdown-item" href="#">
-                                                                <asp:CheckBox ToolTip='<%# Eval("email") %>' runat="server" ID="cbRecipient" OnCheckedChanged="cbRecipient_CheckedChanged" AutoPostBack="false" Text='<%# Eval("name") %>' />
-                                                                <asp:HiddenField ID="hfRecipientId" Value='<%# Eval("recipientId") %>' runat="server" />
-                                                            </a>
-                                                        </ItemTemplate>
-                                                    </asp:Repeater>
-                                                </ul>                                           
+
+                                            <ul>
+                                                <asp:Repeater ID="rptrRecipient" runat="server">
+                                                    <ItemTemplate>
+                                                        <a class="dropdown-item" href="#">
+                                                            <asp:CheckBox ToolTip='<%# Eval("email") %>' runat="server" ID="cbRecipient" OnCheckedChanged="cbRecipient_CheckedChanged" AutoPostBack="false" Text='<%# Eval("name") %>' />
+                                                            <asp:HiddenField ID="hfRecipientId" Value='<%# Eval("recipientId") %>' runat="server" />
+                                                        </a>
+                                                    </ItemTemplate>
+                                                </asp:Repeater>
+                                            </ul>
                                         </div>
                                     </div>
                                     <br />
@@ -92,37 +123,37 @@
                     </div>
                     <div class="col-6 compose-area">
                         <h1>Mail Credentials</h1>
-                       
+
                         <asp:Label ID="lbltemplate" runat="server" Text="Select Template"></asp:Label>
                         <asp:RadioButtonList AutoPostBack="true" runat="server" ID="rbTemplates" OnSelectedIndexChanged="rbTemplates_SelectedIndexChanged" RepeatLayout="Table" RepeatDirection="Horizontal" RepeatColumns="4"></asp:RadioButtonList>
                         <asp:HiddenField ID="hfTemplateCode" runat="server" />
-                         <div class=" row select-ar">
-                                <div class="col-3 header">
-                                    <p>Select Header</p>
-                                    <img onclick="selecth(event)" src="http://svgshare.com/i/446.svg" />
-                                    <img onclick="selecth(event)" src="http://svgshare.com/i/458.svg" />
-                                    <img onclick="selecth(event)" src="http://svgshare.com/i/447.svg" />
-                                </div> 
-                                <div class="col-3 footer">
-                                    <p>Select Footer</p>
-                                    <img onclick="selectf(event)" src="http://svgshare.com/i/435.svg" />
-                                    <img onclick="selectf(event)" src="http://svgshare.com/i/44H.svg" />
-                                    <img onclick="selectf(event)" src="http://svgshare.com/i/43a.svg" />
-                                </div>
-                                <div class="col-3 bkground">
-                                    <p>Select Background</p>
-                                    <img onclick="selectb(event)" src="http://svgshare.com/i/436.svg" />
-                                    <img onclick="selectb(event)" src="http://svgshare.com/i/43b.svg" />
-                                    <img onclick="selectb(event)" src="http://svgshare.com/i/43c.svg" />
-                                    <img onclick="selectb(event)" src="http://svgshare.com/i/43G.svg" />
-                                </div>
-                            </div>  
+                        <div class=" row select-ar">
+                            <div class="col-3 header">
+                                <p>Select Header</p>
+                                <img onclick="selecth(event)" src="http://svgshare.com/i/446.svg" />
+                                <img onclick="selecth(event)" src="http://svgshare.com/i/458.svg" />
+                                <img onclick="selecth(event)" src="http://svgshare.com/i/447.svg" />
+                            </div>
+                            <div class="col-3 footer">
+                                <p>Select Footer</p>
+                                <img onclick="selectf(event)" src="http://svgshare.com/i/435.svg" />
+                                <img onclick="selectf(event)" src="http://svgshare.com/i/44H.svg" />
+                                <img onclick="selectf(event)" src="http://svgshare.com/i/43a.svg" />
+                            </div>
+                            <div class="col-3 bkground">
+                                <p>Select Background</p>
+                                <img onclick="selectb(event)" src="http://svgshare.com/i/436.svg" />
+                                <img onclick="selectb(event)" src="http://svgshare.com/i/43b.svg" />
+                                <img onclick="selectb(event)" src="http://svgshare.com/i/43c.svg" />
+                                <img onclick="selectb(event)" src="http://svgshare.com/i/43G.svg" />
+                            </div>
+                        </div>
 
                         <br />
                         <asp:TextBox ID="tbxMailSubject" runat="server" Width="300px" onkeydown="return (event.keyCode!=13);" placeholder="subject"></asp:TextBox>
-                           
+
                         <br />
-                        <asp:Button runat="server" ID="btnRecipientNamePH" OnClick="btnRecipientNamePH_Click" Text="Add RecipientName" class="btnstyle"  Width="200px"/>
+                        <asp:Button runat="server" ID="btnRecipientNamePH" OnClick="btnRecipientNamePH_Click" Text="Add RecipientName" class="btnstyle" Width="200px" />
                         <br />
                         <asp:TextBox ID="tbxMailBody" runat="server" placeholder="enter mail body" ValidationGroup="mailCredentials" TextMode="MultiLine" Height="267px" Width="520px"></asp:TextBox>
                         <br />
@@ -139,7 +170,8 @@
                         <asp:Button ID="btnSend" class="btnstyle" Text="Send" runat="server" OnClick="btnSend_Click" />
                         <br />
                         <div id="labelStatusAlert" style="padding-top: 20px"></div>
-                        <asp:Label ID="lblMailStatus" ForeColor="Blue" runat="server"></asp:Label>
+                        <asp:Label ID="lblBackground" runat="server" Visible="false" Text=""></asp:Label>
+                        <asp:HiddenField ID="hfMailBody" runat="server" />
                     </div>
                 </div>
             </div>
@@ -151,10 +183,12 @@
     <script src="../script/jquery-1.11.2.js"></script>
     <script type="text/javascript">
         function setHTML() {
-
+            var previousBody = tbxBody;
             var tbxBody = tinyMCE.activeEditor.getContent({ format: 'html' });
-            document.getElementById('<%= divTemplatePreview.ClientID%>').innerHTML = templateCode.replace("{body}", tbxBody);
-
+            templateCode = templateCode.replace(previousBody, tbxBody);
+            var displayCode = templateCode.replace("{body}", tbxBody);
+            document.getElementById('<%= divTemplatePreview.ClientID%>').innerHTML = displayCode;            
+            document.getElementById('<%= hfMailBody.ClientID%>').value = templateCode;
         }
         var selhid, selfid, selbid;
         var templateCode = document.getElementById('<%= hfTemplateCode.ClientID%>').value;
@@ -172,16 +206,13 @@
             var tbxBody = tinyMCE.activeEditor.getContent({ format: 'html' });
             templateCode = templateCode.replace("{footer}", "<img  src=" + selfid + "  />");
             templateCode = templateCode.replace(selprevfId, selfid);
-            document.getElementById('<%= divTemplatePreview.ClientID%>').innerHTML = templateCode;
         }
 
         function selectb(ebackground) {
             selprevbID = selbid;
             selbid = ebackground.target.src;
-            templateCode = templateCode.replace("{body}", "<img  src=" + selbid + "  />");
+            templateCode = templateCode.replace("{background}", selbid);
             templateCode = templateCode.replace(selprevbID, selbid);
-            document.getElementById('<%= divTemplatePreview.ClientID%>').innerHTML = templateCode;
-
         }
 
 
@@ -191,7 +222,6 @@
         //});
 
         $('.dropdown-menu a.dropdown-item').click(function (e) {
-            console.log("hello");
             e.stopPropagation();
         });
         //$(document).ready(function () {
