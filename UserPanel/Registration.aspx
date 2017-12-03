@@ -77,20 +77,20 @@
                                 <ContentTemplate>
                                     <div class="input-group">
                                         <span for="InputUsername" class="input-group-addon" id="basic-addon1"><i class="fa fa-user" aria-hidden="true"></i></span>
-                                        <asp:TextBox class="form-control" ID="tbxFullname" runat="server" ValidationGroup="register" placeholder="Full Name"></asp:TextBox>
+                                        <asp:TextBox class="form-control" spellcheck="false" ID="tbxFullname" runat="server" ValidationGroup="register" placeholder="Full Name"></asp:TextBox>
                                     </div>
                                     <asp:RequiredFieldValidator ControlToValidate="tbxFullName" ValidationGroup="register" Display="Dynamic" ForeColor="Red" ID="RFValidatorFullName" runat="server" ErrorMessage="Full name required"></asp:RequiredFieldValidator>
                                     <br />
                                     <div class="input-group">
                                         <span class="input-group-addon" id="basic-addon1"><i class="fa fa-user" aria-hidden="true"></i></span>
-                                        <asp:TextBox class="form-control" ID="tbxUsername" runat="server" ValidationGroup="register" placeholder="Username" AutoPostBack="true" OnTextChanged="tbxUsername_TextChanged"></asp:TextBox>
+                                        <asp:TextBox class="form-control" ID="tbxUsername" spellcheck="false" runat="server" ValidationGroup="register" placeholder="Username" AutoPostBack="true" OnTextChanged="tbxUsername_TextChanged"></asp:TextBox>
                                     </div>
                                     <asp:RequiredFieldValidator Display="Dynamic" ID="RFValidatorUsername" ValidationGroup="register" ControlToValidate="tbxUsername" runat="server" ErrorMessage="Username required" ForeColor="red"></asp:RequiredFieldValidator>
                                     <br />
                                     <asp:Label ID="lblInvalidUsername" runat="server" Display="Dynamic" ForeColor="Red"></asp:Label>
                                     <div class="input-group">
                                         <span for="InputEmail" class="input-group-addon" id="basic-addon1">@</span>
-                                        <asp:TextBox class="form-control" ID="tbxEmail" runat="server" ValidationGroup="register" placeholder="Email" AutoPostBack="true" OnTextChanged="tbxEmail_TextChanged"></asp:TextBox>
+                                        <asp:TextBox class="form-control" autocomplete="false" spellcheck="false" ID="tbxEmail" runat="server" ValidationGroup="register" placeholder="Email" AutoPostBack="true" OnTextChanged="tbxEmail_TextChanged"></asp:TextBox>
                                     </div>
                                     <asp:RequiredFieldValidator Display="Dynamic" ID="RFValidatorEmail" ValidationGroup="register" runat="server" ControlToValidate="tbxEmail" ErrorMessage="Email id required" ForeColor="Red"></asp:RequiredFieldValidator>
                                     <asp:RegularExpressionValidator Display="Dynamic" ID="REValidatorEmail" runat="server" ValidationGroup="register" ForeColor="Red" ErrorMessage="Invalid email id" ControlToValidate="tbxEmail" ValidationExpression="^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$" />
@@ -160,7 +160,7 @@
                                 <div class="container">
                                     <div class="input-group">
                                         <span for="InputEmail" class="input-group-addon" id="basic-addon1">@</span>
-                                        <asp:TextBox ID="tbxLoginEmail" class="form-control" runat="server" ValidationGroup="login" placeholder="Enter Email Id"></asp:TextBox>
+                                        <asp:TextBox ID="tbxLoginEmail" spellcheck="false" autocomplete="off" class="form-control" runat="server" ValidationGroup="login" placeholder="Enter Email Id"></asp:TextBox>
                                     </div>
                                     <asp:RequiredFieldValidator Display="Dynamic" ID="RFValidatorLoginEmail" ValidationGroup="login" runat="server" ErrorMessage="Please enter an email id" ControlToValidate="tbxLoginEmail" ForeColor="Red"></asp:RequiredFieldValidator>
                                     <small id="emailHelp" class="form-text text-muted"></small>

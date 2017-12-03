@@ -9,7 +9,9 @@
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-    <script src="../scripts/tinymce/tinymce.min.js"></script>
+    <script src="../scripts/tinymce/tinymce.min.js">
+        
+    </script>
   <script>
 //      tinymce.init({
 //    selector: 'textarea',
@@ -116,13 +118,17 @@
     <script type="text/javascript">
         function setHTML() {
             var tbxBody = tinyMCE.activeEditor.getContent({ format: 'html' });
+           // var temp = window.parent.tinymce.get('mceu_51-inp').getContent();
+            // console.log(temp);
+         //   var tempo = tinyMCE.activeEditor.getContent('mceu_51-inp');
+         //   console.log(tempo);
             hiddenStatusFlag = document.getElementById('<%= hfTemplateCode.ClientID%>').value.replace("{body}", tbxBody);
             document.getElementById('<%= divTemplatePreview.ClientID%>').innerHTML = hiddenStatusFlag;
         }
         //$(document).on('click', '.dropdown-menu', function (e) {
         //    console.log("hello");
         //    e.stopPropagation(); // it will not propagate the action to parent for closing
-        //});
+        //});mceu_51-inp
           
         tinymce.init({
             selector: 'textarea',
