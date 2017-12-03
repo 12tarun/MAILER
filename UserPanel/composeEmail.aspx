@@ -136,7 +136,7 @@
                             </div>
                             <div class="col-3 footer">
                                 <p>Select Footer</p>
-                                <img onclick="selectf(event)" src="../Images/footer1.svg" />
+                                <img onclick="selectf(event)" src="https://imgur.com/hOkXMYj.png" />
                                 <img onclick="selectf(event)" src="../Images/footer2.svg" />
                                 <img onclick="selectf(event)" src="../Images/footer3.svg" />
                             </div>
@@ -170,11 +170,9 @@
                         <asp:Button ID="btnSend" class="btnstyle" Text="Send" runat="server" OnClick="btnSend_Click" />
                         <br />
                         <div id="labelStatusAlert" style="padding-top: 20px"></div>
-                        <asp:Label ID="lblBackground" runat="server" Visible="false" Text=""></asp:Label>
+                       
                         <asp:HiddenField ID="hfMailBody" runat="server" />
-                        <asp:HiddenField ID="hfHeaderSrc" runat="server" />
-                        <asp:HiddenField ID="hfFooterSrc" runat="server" />
-                        <asp:HiddenField ID="hfBackgroundSrc" runat="server" />
+                       
                     </div>
                 </div>
             </div>
@@ -200,7 +198,6 @@
             selhid = eheader.target.src;
             templateCode = templateCode.replace("{header}", "<img  src=" + selhid + "  />");
             templateCode = templateCode.replace(selprevhID, selhid);
-            document.getElementById('<%= hfHeaderSrc.ClientID%>').value = selhid;
             document.getElementById('<%= divTemplatePreview.ClientID%>').innerHTML = templateCode;            
         }
 
@@ -210,7 +207,6 @@
             var tbxBody = tinyMCE.activeEditor.getContent({ format: 'html' });
             templateCode = templateCode.replace("{footer}", "<img  src=" + selfid + "  />");
             templateCode = templateCode.replace(selprevfId, selfid);
-            document.getElementById('<%= hfFooterSrc.ClientID%>').value = selfid;
             document.getElementById('<%= divTemplatePreview.ClientID%>').innerHTML = templateCode;            
         }
 
@@ -219,7 +215,6 @@
             selbid = ebackground.target.src;
             templateCode = templateCode.replace("{background}", selbid);
             templateCode = templateCode.replace(selprevbID, selbid);
-            document.getElementById('<%= hfBackgroundSrc.ClientID%>').value = selbid;
             document.getElementById('<%= divTemplatePreview.ClientID%>').innerHTML = templateCode;            
         }
        
