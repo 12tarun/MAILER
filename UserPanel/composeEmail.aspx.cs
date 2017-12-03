@@ -252,9 +252,9 @@ public partial class UserPanel_Default : System.Web.UI.Page
                 //inserting the value of placeholders as per the mail
                 body = reader.ReadToEnd();
                 body = body.Replace("{body}", tbxMailBody.Text);
-              //  body = mceu_91.value.tostring();
+                //  body = mceu_91.value.tostring();
                 //byte[] imagedata = (byte[])mceu_63 - inp
-            
+
                 body = body.Replace("{RecipientName}", recipientName);
             }
 
@@ -311,4 +311,3 @@ public partial class UserPanel_Default : System.Web.UI.Page
         tbxMailBody.Text += "{RecipientName}";
     }
 }
-
