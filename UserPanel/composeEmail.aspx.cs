@@ -300,8 +300,6 @@ public partial class UserPanel_Default : System.Web.UI.Page
         {
             body = reader.ReadToEnd();
         }
-        
-      //  mce-textbox.mceu_78 - inp
 
         hfTemplateCode.Value = body;
         divTemplatePreview.InnerHtml = body;

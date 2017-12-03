@@ -119,9 +119,8 @@
         function setHTML() {
             var tbxBody = tinyMCE.activeEditor.getContent({ format: 'html' });
             // var temp = window.parent.tinymce.get('mceu_51-inp').getContent();
-            // console.log(temp);
             //   var tempo = tinyMCE.activeEditor.getContent('mceu_51-inp');
-            //   console.log(tempo);
+     
             hiddenStatusFlag = document.getElementById('<%= hfTemplateCode.ClientID%>').value.replace("{body}", tbxBody);
             document.getElementById('<%= divTemplatePreview.ClientID%>').innerHTML = hiddenStatusFlag;
         }
@@ -136,10 +135,9 @@
             theme: 'modern',
             init_instance_callback: function (editor) {
                 editor.on('focus', function (e) {
-                    interval = setInterval(setHTML, 100);                 
+                    interval = setInterval(setHTML, 100);
                 });
-                editor.on('blur', function (e)
-                {
+                editor.on('blur', function (e) {
                     clearInterval(interval);
                 });
             },
