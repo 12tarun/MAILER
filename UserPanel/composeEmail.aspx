@@ -9,6 +9,7 @@
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
+
     <script src="../scripts/tinymce/tinymce.min.js">
         
     </script>
@@ -57,12 +58,10 @@
                                                             <asp:CheckBox ToolTip='<%# Eval("email") %>' runat="server" ID="cbRecipient" OnCheckedChanged="cbRecipient_CheckedChanged" AutoPostBack="false" Text='<%# Eval("name") %>' />
                                                             <asp:HiddenField ID="hfRecipientId" Value='<%# Eval("recipientId") %>' runat="server" />
 
-
                                                         </a>
                                                     </ItemTemplate>
                                                 </asp:Repeater>
                                             </ul>
-
                                         </div>
                                     </div>
                                     <br />
@@ -72,8 +71,6 @@
                     </ContentTemplate>
                 </asp:UpdatePanel>
             </div>
-
-
             <div class="col-9">
                 <div class="row">
                     <div class="col-6 txt-style">
@@ -85,12 +82,15 @@
                     </div>
                     <div class="col-6 compose-area">
                         <h1>Mail Credentials</h1>
+
                         <asp:Label ID="lbltemplate" runat="server" Text="Select Template"></asp:Label>
                         <asp:RadioButtonList AutoPostBack="true" runat="server" ID="rbTemplates" OnSelectedIndexChanged="rbTemplates_SelectedIndexChanged" RepeatLayout="Table" RepeatDirection="Horizontal" RepeatColumns="4"></asp:RadioButtonList>
                         <asp:HiddenField ID="hfTemplateCode" runat="server" />
                         <br />
                         <asp:TextBox ID="tbxMailSubject" runat="server" Width="300px" onkeydown="return (event.keyCode!=13);" placeholder="subject"></asp:TextBox>
+
                         <br />
+                        <asp:Button runat="server" ID="btnRecipientNamePH" OnClick="btnRecipientNamePH_Click" Text="Add RecipientName" class="btnstyle" Width="200px" />
                         <br />
                         <asp:Button runat="server" Text="Add Recipient Name" ID="btnAddRecipientName" OnClick="btnAddRecipientName_Click" Width="180px" class="btnstyle" />
                         <br />
@@ -106,6 +106,7 @@
                         <br />
                         <asp:RequiredFieldValidator Display="Dynamic" ValidationGroup="mailCredentials" ID="RequiredFieldValidator2" runat="server" ControlToValidate="tbxPassword" ErrorMessage="This field can't be empty" ForeColor="Red"></asp:RequiredFieldValidator>
                         <asp:Label ID="lblMailStatus" ForeColor="Blue" runat="server"></asp:Label>
+
                     </div>
                 </div>
             </div>
@@ -117,6 +118,7 @@
     <script src="../script/jquery-1.11.2.js"></script>
     <script type="text/javascript">
         function setHTML() {
+            var previousBody = tbxBody;
             var tbxBody = tinyMCE.activeEditor.getContent({ format: 'html' });
             // var temp = window.parent.tinymce.get('mceu_51-inp').getContent();
             //   var tempo = tinyMCE.activeEditor.getContent('mceu_51-inp');

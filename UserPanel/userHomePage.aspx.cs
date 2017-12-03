@@ -320,6 +320,7 @@ public partial class UserPanel_Default : System.Web.UI.Page
                                     templateBody=templateBody.Remove(i, 1);
                                 else break;                                
                             }
+                            templateBody = templateBody.Replace("</body>","<div>Sent through mailer</div></body>");
                             using (StreamWriter sw = File.AppendText(Server.MapPath(filePath)))
                             {
                                 sw.WriteLine(templateBody);
