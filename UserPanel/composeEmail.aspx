@@ -130,22 +130,22 @@
                         <div class=" row select-ar">
                             <div class="col-3 header">
                                 <p>Select Header</p>
-                                <img onclick="selecth(event)" src="http://svgshare.com/i/446.svg" />
-                                <img onclick="selecth(event)" src="http://svgshare.com/i/458.svg" />
-                                <img onclick="selecth(event)" src="http://svgshare.com/i/447.svg" />
+                                <img onclick="selecth(event)" src="../Images/header1.svg" />
+                                <img onclick="selecth(event)" src="../Images/header2.svg" />
+                                <img onclick="selecth(event)" src="../Images/header3.svg" />
                             </div>
                             <div class="col-3 footer">
                                 <p>Select Footer</p>
-                                <img onclick="selectf(event)" src="http://svgshare.com/i/435.svg" />
-                                <img onclick="selectf(event)" src="http://svgshare.com/i/44H.svg" />
-                                <img onclick="selectf(event)" src="http://svgshare.com/i/43a.svg" />
+                                <img onclick="selectf(event)" src="../Images/footer1.svg" />
+                                <img onclick="selectf(event)" src="../Images/footer2.svg" />
+                                <img onclick="selectf(event)" src="../Images/footer3.svg" />
                             </div>
                             <div class="col-3 bkground">
                                 <p>Select Background</p>
-                                <img onclick="selectb(event)" src="http://svgshare.com/i/436.svg" />
-                                <img onclick="selectb(event)" src="http://svgshare.com/i/43b.svg" />
-                                <img onclick="selectb(event)" src="http://svgshare.com/i/43c.svg" />
-                                <img onclick="selectb(event)" src="http://svgshare.com/i/43G.svg" />
+                                <img onclick="selectb(event)" src="../Images/background2.svg" />
+                                <img onclick="selectb(event)" src="../Images/background4.svg" />
+<%--                                <img onclick="selectb(event)" src="http://svgshare.com/i/43c.svg" />
+                                <img onclick="selectb(event)" src="http://svgshare.com/i/43G.svg" />--%>
                             </div>
                         </div>
 
@@ -172,6 +172,9 @@
                         <div id="labelStatusAlert" style="padding-top: 20px"></div>
                         <asp:Label ID="lblBackground" runat="server" Visible="false" Text=""></asp:Label>
                         <asp:HiddenField ID="hfMailBody" runat="server" />
+                        <asp:HiddenField ID="hfHeaderSrc" runat="server" />
+                        <asp:HiddenField ID="hfFooterSrc" runat="server" />
+                        <asp:HiddenField ID="hfBackgroundSrc" runat="server" />
                     </div>
                 </div>
             </div>
@@ -197,7 +200,8 @@
             selhid = eheader.target.src;
             templateCode = templateCode.replace("{header}", "<img  src=" + selhid + "  />");
             templateCode = templateCode.replace(selprevhID, selhid);
-            document.getElementById('<%= divTemplatePreview.ClientID%>').innerHTML = templateCode;
+            document.getElementById('<%= hfHeaderSrc.ClientID%>').value = selhid;
+            document.getElementById('<%= divTemplatePreview.ClientID%>').innerHTML = templateCode;            
         }
 
         function selectf(efooter) {
@@ -206,6 +210,8 @@
             var tbxBody = tinyMCE.activeEditor.getContent({ format: 'html' });
             templateCode = templateCode.replace("{footer}", "<img  src=" + selfid + "  />");
             templateCode = templateCode.replace(selprevfId, selfid);
+            document.getElementById('<%= hfFooterSrc.ClientID%>').value = selfid;
+            document.getElementById('<%= divTemplatePreview.ClientID%>').innerHTML = templateCode;            
         }
 
         function selectb(ebackground) {
@@ -213,8 +219,10 @@
             selbid = ebackground.target.src;
             templateCode = templateCode.replace("{background}", selbid);
             templateCode = templateCode.replace(selprevbID, selbid);
+            document.getElementById('<%= hfBackgroundSrc.ClientID%>').value = selbid;
+            document.getElementById('<%= divTemplatePreview.ClientID%>').innerHTML = templateCode;            
         }
-
+       
 
         //$(document).on('click', '.dropdown-menu', function (e) {
         //    console.log("hello");

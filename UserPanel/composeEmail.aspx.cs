@@ -218,15 +218,15 @@ public partial class UserPanel_Default : System.Web.UI.Page
                 }
                 catch (Exception ex)
                 {
-
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('Wrong Password', 'Error','labelStatusAlert');", true);
+                    string mailStatus = ex.Message;
+                    ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('"+mailStatus+"')", true);
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('wrong password', 'Error','labelStatusAlert');", true);//kkkk
                     SqlCommand deleteMailRecipient = new SqlCommand("delete from tblMailRecipient where sentMailId='" + sentMailId + "'", con);
                     deleteMailRecipient.ExecuteNonQuery();
                     SqlCommand deleteAttachment = new SqlCommand("delete from tblFileAttachments where sentMailId='" + sentMailId + "'", con);
                     deleteAttachment.ExecuteNonQuery();
                     SqlCommand deleteMail = new SqlCommand("delete from tblSentMails where sentMailId='" + sentMailId + "'", con);
                     deleteMail.ExecuteNonQuery();
-
                 }
 
             }
@@ -247,22 +247,49 @@ public partial class UserPanel_Default : System.Web.UI.Page
             string userEmail = getUserEmail.ExecuteScalar().ToString();
             SqlCommand getTemplateFilePath = new SqlCommand("select filePath from tblTemplates where templateId='" + rbTemplates.SelectedItem.Value + "'", con);
             string templateFilePath = getTemplateFilePath.ExecuteScalar().ToString();
-            //using (StreamReader reader = new StreamReader(Server.MapPath(templateFilePath)))
-            //{
-            //    //inserting the value of placeholders as per the mail
-            //    body = reader.ReadToEnd();
-            //    body = body.Replace("{RecipientName}", recipientName);
-            //    body = body.Replace("{body}", tbxMailBody.Text);
-            //}
-            body = hfMailBody.Value;
-            body = body.Replace("{body}", tbxMailBody.Text);
+            using (StreamReader reader = new StreamReader(Server.MapPath(templateFilePath)))
+            {
+                //inserting the value of placeholders as per the mail
+                body = reader.ReadToEnd();
+                body = body.Replace("{RecipientName}", recipientName);
+                body = body.Replace("{body}", tbxMailBody.Text);
+            }
+            //AlternateView avhtml = AlternateView.CreateAlternateViewFromString(body, null, MediaTypeNames.Text.Html);
+            //body = body.Replace("{header}", "<img src=\"cid:header\">");
+            //body = body.Replace("{footer}", "<img src=\"cid:footer\">");
+            //body = body.Replace("{background}", "\"cid:background\">");
+            AlternateView avhtml=null;
+            if (Convert.ToInt32(rbTemplates.SelectedItem.Value) == 11)
+            {
+                string getHeaderPath = Path.GetFullPath(Server.MapPath("~/"+hfHeaderSrc.Value));
+                
+                LinkedResource inlineHeader = new LinkedResource("../"+hfHeaderSrc.Value);
+                LinkedResource inlineFooter = new LinkedResource(Server.MapPath("../'" + hfFooterSrc.Value + "'"));
+                LinkedResource inlineBackground = new LinkedResource(Server.MapPath("../'" + hfBackgroundSrc.Value + "'"));
+                inlineHeader.ContentId = Guid.NewGuid().ToString();
+                inlineFooter.ContentId = Guid.NewGuid().ToString();
+                inlineBackground.ContentId = Guid.NewGuid().ToString();
+                body = body.Replace("{header}", @"<img src='cid:" + inlineHeader.ContentId + @"'/>");
+                body = body.Replace("{footer}", @"<img src='cid:" + inlineFooter.ContentId + @"'/>");
+                body = body.Replace("{background}", @"'cid:" + inlineBackground.ContentId + @"'");
+                 avhtml = AlternateView.CreateAlternateViewFromString(body, null, MediaTypeNames.Text.Html);
+                avhtml.LinkedResources.Add(inlineHeader);
+                avhtml.LinkedResources.Add(inlineFooter);
+                avhtml.LinkedResources.Add(inlineBackground);
+            }
+
+            //body = hfMailBody.Value;
+            //body = body.Replace("{body}", tbxMailBody.Text);
             con.Close();
             con.Open();
             string enteredPassword = tbxPassword.Text;
             using (MailMessage mail = new MailMessage(userEmail, recipientEmail))
             {
                 mail.Subject = tbxMailSubject.Text;
-                mail.Body = body;
+                
+                if(Convert.ToInt32(rbTemplates.SelectedItem.Value)==11)
+                mail.AlternateViews.Add(avhtml);
+                else mail.Body = body;
                 mail.IsBodyHtml = true;
                 SmtpClient smtp = new SmtpClient();
                 smtp.Host = "smtp.gmail.com";
@@ -299,6 +326,7 @@ public partial class UserPanel_Default : System.Web.UI.Page
             body = reader.ReadToEnd();
         }
         hfTemplateCode.Value = body;
+        body = body.Replace("{body}","<h1>Start typing ur mail body here<h1>");
         divTemplatePreview.InnerHtml = body;
         // lblSum.Text = tbxMailBody.Text;
     }
