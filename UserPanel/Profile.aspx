@@ -5,43 +5,43 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <div class="container-fluid child-page">
         <div class="container content txt-style">
-            <i class="fa fa-user" style="font-size:50px" aria-hidden="true"></i>
+            <div id="profilepicAlert"></div>
+            <div id="usernameAlert"></div>
+            <br />
+            <i class="fa fa-user" style="font-size: 50px" aria-hidden="true"></i>
             <h1>PROFILE</h1>
             <h2>Full Name</h2>
-            <asp:label id="lblEditFullName" font-size="Large" runat="server"></asp:label>
+            <asp:Label ID="lblEditFullName" Font-Size="Large" runat="server"></asp:Label>
             <br />
-            <asp:textbox id="tbxEditFullName" runat="server" placeholder="Enter new fullname" visible="false"></asp:textbox>
+            <asp:TextBox ID="tbxEditFullName" runat="server" placeholder="Enter new fullname" Visible="false"></asp:TextBox>
             <br />
             <asp:RequiredFieldValidator ID="RFValidatorEditFullname" runat="server" Display="Dynamic" ValidationGroup="editFullName" ControlToValidate="tbxEditFullName" ErrorMessage="This field can't be empty" ForeColor="Red"></asp:RequiredFieldValidator>
             <br />
-            <asp:button id="btnEnterFullName" class="btnstyle" onclick="btnEnterFullName_Click" visible="false" text="Update" runat="server" />
+            <asp:Button ID="btnEnterFullName" class="btnstyle" OnClick="btnEnterFullName_Click" Visible="false" Text="Update" runat="server" />
             <br />
-            <asp:button id="btnEditFullName" class="btnstyle" text="Edit" runat="server" onclick="btnEditFullName_Click" />
-           <div id="status"></div>
+            <asp:Button ID="btnEditFullName" class="btnstyle" Text="Edit" runat="server" OnClick="btnEditFullName_Click" />
             <br />
             <br />
             <h2>Profile Picture</h2>
-            <asp:image id="imgEditProfilePicture" width="200px" height="250px" runat="server" />
+            <asp:Image ID="imgEditProfilePicture" Width="200px" Height="250px" runat="server" />
             <br />
             <br />
-            <asp:fileupload id="fileUploadDP" runat="server" />
-            <asp:button id="btnDP" class="btnstyle" runat="server" text="Edit" onclick="btnDP_Click" />
+            <asp:FileUpload ID="fileUploadDP" runat="server" />
+            <asp:Button ID="btnDP" class="btnstyle" runat="server" Text="Edit" OnClick="btnDP_Click" />
             <br />
-            <div id="profilepicAlert"></div>
-            <br />
-            <asp:label id="lblWrongExtension" text="Only .jpg or .png file is acceptable." visible="false" runat="server" forecolor="Red"></asp:label>
+            <asp:Label ID="lblWrongExtension" Text="Only .jpg or .png file is acceptable." Visible="false" runat="server" ForeColor="Red"></asp:Label>
             <br />
             <br />
             <h2>Username</h2>
-            <asp:label id="lblEditUsername" font-size="Large" runat="server"></asp:label>
+            <asp:Label ID="lblEditUsername" Font-Size="Large" runat="server"></asp:Label>
             <br />
             <br />
-            <asp:textbox id="tbxEditUsername" runat="server" placeholder="Enter new username" visible="false"></asp:textbox>
+            <asp:TextBox ID="tbxEditUsername" runat="server" placeholder="Enter new username" Visible="false"></asp:TextBox>
             <br />
             <asp:RequiredFieldValidator ID="RFValidatorEditUsername" runat="server" Display="Dynamic" ValidationGroup="editUsername" ControlToValidate="tbxEditUsername" ErrorMessage="This field can't be empty" ForeColor="Red"></asp:RequiredFieldValidator>
-            <asp:label id="lblInvalidUsername" visible="false" forecolor="Red" text="Username is already used" runat="server"></asp:label>
+            <asp:Label ID="lblInvalidUsername" Visible="false" ForeColor="Red" Text="Username is already used" runat="server"></asp:Label>
             <br />
-            <asp:button id="btnEditUsername" class="btnstyle" text="Edit" onclick="btnEditUsername_Click" runat="server" />
+            <asp:Button ID="btnEditUsername" class="btnstyle" Text="Edit" OnClick="btnEditUsername_Click" runat="server" />
         </div>
     </div>
 </asp:Content>

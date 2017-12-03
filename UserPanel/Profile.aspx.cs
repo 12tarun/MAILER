@@ -186,7 +186,8 @@ public partial class UserPanel_Default : System.Web.UI.Page
             int temp = Convert.ToInt32(checkUsername.ExecuteScalar().ToString());
             if (temp >= 1)
             {
-                lblInvalidUsername.Visible = true;
+                lblInvalidUsername.Visible = false;
+                ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('Username already exists.', 'Error','usernameAlert');", true);
             }
             else
             {
