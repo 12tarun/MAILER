@@ -106,7 +106,6 @@ public partial class UserPanel_Default : System.Web.UI.Page
         Page.Validate("editFullName");
         if (!Page.IsValid)
             return;
-
         int userId = Convert.ToInt32(Session["LoggedIn"]);
         string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
         using (SqlConnection con = new SqlConnection(constr))

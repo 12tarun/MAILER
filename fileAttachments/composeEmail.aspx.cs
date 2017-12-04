@@ -187,16 +187,12 @@ public partial class UserPanel_Default : System.Web.UI.Page
                 {
                     foreach (HttpPostedFile uploadedFile in fileAttachment.PostedFiles)
                     {
-                        Stream stream = uploadedFile.InputStream;
-                        BinaryReader binaryReader = new BinaryReader(stream);
-                        byte[] byteArray = binaryReader.ReadBytes((int)stream.Length);
-                        SqlCommand saveFileAttachments = new SqlCommand("insert into tblFileAttachments(sentMailId,fileName,fileSize,fileData) values(@sentMailId,@fileName,@fileSize,@fileData)", con);
+                        SqlCommand saveFileAttachments = new SqlCommand("insert into tblFileAttachments(sentMailId,fileName,fileSize) values(@sentMailId,@fileName,@fileSize)", con);
                         saveFileAttachments.Parameters.AddWithValue("@sentMailId", sentMailId);
                         saveFileAttachments.Parameters.AddWithValue("@fileName", uploadedFile.FileName);
                         saveFileAttachments.Parameters.AddWithValue("@fileSize", uploadedFile.ContentLength);
-                        saveFileAttachments.Parameters.AddWithValue("@fileData",byteArray);
                         saveFileAttachments.ExecuteNonQuery();
-                        string filePath = "~/fileAttachments/" + uploadedFile.FileName;
+                        string filePath = "~/fileAttachments" + uploadedFile.FileName;
                         uploadedFile.SaveAs(Server.MapPath(filePath));
                     }
                 }
@@ -268,7 +264,7 @@ public partial class UserPanel_Default : System.Web.UI.Page
             con.Close();
             con.Open();
             string enteredPassword = tbxPassword.Text;
-            using (MailMessage mail = new System.Net.Mail.MailMessage(userEmail, recipientEmail))
+            using (MailMessage mail = new MailMessage(userEmail, recipientEmail))
             {
                 mail.Subject = tbxMailSubject.Text;
                 mail.Body = body;
@@ -281,17 +277,13 @@ public partial class UserPanel_Default : System.Web.UI.Page
                 smtp.Credentials = NetworkCred;
                 smtp.Port = 587;
                 SqlCommand getFiles = new SqlCommand("select * from tblFileAttachments where sentMailId='"+Convert.ToInt32(Session["sentMailId"])+"'",con);
-                using (SqlDataReader dr = getFiles.ExecuteReader())
+                SqlDataReader dr = getFiles.ExecuteReader();
+                while(dr.Read())
                 {
-                    while (dr.Read())
-                    {
-                        string filePath = "~/fileAttachments/" + dr["fileName"].ToString();
-                        //Attachment data = new Attachment(Server.MapPath(filePath),dr["fileName"].ToString());
-                        //mail.Attachments.Add(data);
-                        //mail.Attachments.Add(new Attachment(Server.MapPath(filePath),dr["fileName"].ToString()));
-                        Attachment attach = new Attachment(Server.MapPath(filePath));
-                        mail.Attachments.Add(attach);
-                    }
+                    string filePath = "~/fileAttachments/"+dr["fileName"].ToString();
+                    //Attachment data = new Attachment(Server.MapPath(filePath),dr["fileName"].ToString());
+                    //mail.Attachments.Add(data);
+                    mail.Attachments.Add(new Attachment(Server.MapPath(filePath)));
                 }
                 smtp.Send(mail);
             }
