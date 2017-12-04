@@ -3,8 +3,8 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
     <style type="text/css">
         #divtemplatePreview {
-            width: 645px;
-            height: 135px;
+            width: 100%;
+            height: 40%;
         }
     </style>
 </asp:Content>
@@ -24,106 +24,181 @@
         //});
     </script>
 
+
     <div class="container-fluid child-page">
-        <div class="row">
-            <div class="col-3 sel-rec">
+        <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div id="modal-header" class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">SELECT RECIPIENTS</h5>
+                        <button type="button" class="close btnstyle" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
 
-                <h1>Select Recipients</h1>
-                <asp:ScriptManager runat="server"></asp:ScriptManager>
-                <asp:UpdatePanel ID="updatePanelCheckbox" runat="server">
-                    <ContentTemplate>
-                        <h3>
-                            <asp:CheckBox ID="cbSelectAll" Text="Select All" OnCheckedChanged="cbSelectAll_CheckedChanged" runat="server" AutoPostBack="true" ToolTip="Check this checkbox to select all categories" />
-                        </h3>
-                        <br />
-                        <div>
-                            <asp:Repeater ID="rptrCategory" runat="server">
-                                <ItemTemplate>
+                    <div id="modal-body" class="modal-body">
 
-                                    <div class="dropdown">
-                                        <asp:CheckBox ID="cbCategory" ForeColor="White" runat="server" OnCheckedChanged="cbCategory_CheckedChanged" AutoPostBack="true" Text='<%# Eval("categoryName") %>' />
+                        <asp:ScriptManager runat="server"></asp:ScriptManager>
+                        <asp:UpdatePanel ID="updatePanelCheckbox" runat="server">
+                            <ContentTemplate>
+                                <h3>
+                                    <asp:CheckBox ID="cbSelectAll" Text="Select All" OnCheckedChanged="cbSelectAll_CheckedChanged" runat="server" AutoPostBack="true" ToolTip="Check this checkbox to select all categories" />
+                                </h3>
+                                <br />
+                                <div>
+                                    <asp:Repeater ID="rptrCategory" runat="server">
+                                        <ItemTemplate>
 
-                                        <span id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fa fa-caret-down" aria-hidden="true"></i>
-                                        </span>
-                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <div class="dropdown">
+                                                <asp:CheckBox ID="cbCategory" ForeColor="Black" runat="server" OnCheckedChanged="cbCategory_CheckedChanged" AutoPostBack="true" Text='<%# Eval("categoryName") %>' />
 
-                                            <ul>
-                                                <asp:Repeater ID="rptrRecipient" runat="server">
-                                                    <ItemTemplate>
-                                                        <a class="dropdown-item" href="#">
+                                                <span id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="fa fa-caret-down" aria-hidden="true"></i>
+                                                </span>
+                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
-
-                                                            <asp:CheckBox ToolTip='<%# Eval("email") %>' runat="server" ID="cbRecipient" OnCheckedChanged="cbRecipient_CheckedChanged" AutoPostBack="false" Text='<%# Eval("name") %>' />
-                                                            <asp:HiddenField ID="hfRecipientId" Value='<%# Eval("recipientId") %>' runat="server" />
+                                                    <ul>
+                                                        <asp:Repeater ID="rptrRecipient" runat="server">
+                                                            <ItemTemplate>
+                                                                <a class="dropdown-item" href="#">
 
 
-                                                        </a>
-                                                    </ItemTemplate>
-                                                </asp:Repeater>
-                                            </ul>
+                                                                    <asp:CheckBox ToolTip='<%# Eval("email") %>' runat="server" ID="cbRecipient" OnCheckedChanged="cbRecipient_CheckedChanged" AutoPostBack="false" Text='<%# Eval("name") %>' />
+                                                                    <asp:HiddenField ID="hfRecipientId" Value='<%# Eval("recipientId") %>' runat="server" />
 
-                                        </div>
-                                    </div>
-                                    <br />
-                                </ItemTemplate>
-                            </asp:Repeater>
-                        </div>
-                    </ContentTemplate>
-                </asp:UpdatePanel>
+
+                                                                </a>
+                                                            </ItemTemplate>
+                                                        </asp:Repeater>
+                                                    </ul>
+
+                                                </div>
+                                            </div>
+                                            <br />
+                                        </ItemTemplate>
+                                    </asp:Repeater>
+                                </div>
+                            </ContentTemplate>
+                        </asp:UpdatePanel>
+                    </div>
+                    <div id="" class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        <%--   <div id="side-menu">
+            <h1>Select Recipients</h1>
+            
+            </>
+        </div>
+        <div id="openside">
+            <i id="open" onclick="open()" class="fa fa-chevron-circle-right" aria-hidden="true">SELECT-RECEPEINT</i>
+            <i id="close" onclick="close()" class="fa fa-chevron-circle-left" aria-hidden="true">SELECT-RECEPEINT</i>
+        </div>--%>
+
+        <div class="row compose">
+            <div class="col-3 txt-style left-side">
+                <div class="scroll-area">
+                                        <h3>TEXT FIELD</h3>
+                    <div class="padding">
+                        <asp:TextBox ID="tbxMailSubject" runat="server" Width="80%" placeholder="subject"></asp:TextBox>
+                    </div>
+
+                    <asp:TextBox ID="tbxMailBody" runat="server" placeholder="enter mail body" ValidationGroup="mailCredentials" TextMode="MultiLine" Height="267px" Width="100%"></asp:TextBox>
+
+                    <div class="padding">
+                        <asp:RequiredFieldValidator ValidationGroup="mailCredentials" ID="RequiredFieldValidator1" runat="server" ControlToValidate="tbxMailBody" ErrorMessage="This field can't be empty" ForeColor="Red"></asp:RequiredFieldValidator>
+                    </div>
+                    <div class="padding">
+                        <asp:FileUpload ID="fileAttachment" ToolTip="Add Attachments" runat="server" AllowMultiple="true" />
+                    </div>
+                    <div class="padding">
+                        <asp:TextBox ID="tbxPassword" TextMode="Password" ValidationGroup="mailCredentials" runat="server" placeholder="enter your registered mail's password here" Width="100%"></asp:TextBox>
+                        <asp:RequiredFieldValidator ValidationGroup="mailCredentials" ID="RequiredFieldValidator2" runat="server" ControlToValidate="tbxPassword" ErrorMessage="This field can't be empty" ForeColor="Red"></asp:RequiredFieldValidator>
+                    </div>
+                    <div>
+                        <asp:Button ID="btnSend" class="btn btn-primary btnstyle" Text="Send" runat="server" OnClick="btnSend_Click" />
+                        <button type="button" class="btn btnstyle btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg" style="width: 150px">
+                            Select Recipients
+                        </button>
+                    </div>
+                    <div id="labelStatusAlert" style="padding-top: 20px"></div>
+                    <asp:Label ID="lblMailStatus" ForeColor="Blue" runat="server"></asp:Label>
+                    <asp:HiddenField ID="hfMailBody" runat="server" />
+                </div>
+            </div>
+            <div class="col-6 txt-style">
+                <div class="temp-prev">
+                    <div class="scroll-area">
+                        <h1>Template Preview</h1>
+                        <span id="divTemplatePreview" runat="server"></span>
+                    </div>
+                </div>
             </div>
 
 
-            <div class="col-9">
-                <div class="row">
-                    <div class="col-6 txt-style">
-                        <div class="temp-prev">
-                            <div id="labelStatusAlert" style="padding-top: 0px"></div>
-                            <h1>Template Preview</h1>
-                            <span id="divTemplatePreview" runat="server"></span>
+            <div class="col-3 txt-style right-side">
+                <div class="scroll-area">
+                        <h3>SELECT TEMPELATE</h3>
+                    <asp:label id="lbltemplate" runat="server"></asp:label>
+                    <asp:radiobuttonlist autopostback="true" runat="server" id="rbTemplates" onselectedindexchanged="rbTemplates_SelectedIndexChanged" repeatlayout="Table" repeatdirection="Horizontal" repeatcolumns="1"></asp:radiobuttonlist>
+                    <asp:hiddenfield id="hfTemplateCode" runat="server" />
+
+                    <div id="accordion" role="tablist">
+                        <div class="card">
+                            <div class="card-header" role="tab" id="headingOne">
+                                <h5>
+                                    <a data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">SELECT HEADER
+                                    </a>
+                                </h5>
+                            </div>
+
+                            <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
+                                <div class="card-body">
+                                    <img onclick="selecth(event)" src="http://svgshare.com/i/446.svg" />
+                                    <img onclick="selecth(event)" src="http://svgshare.com/i/458.svg" />
+                                    <img onclick="selecth(event)" src="http://svgshare.com/i/447.svg" />
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-6 compose-area">
-                        <h1>Mail Credentials</h1>
-                        <asp:Label ID="lbltemplate" runat="server" Text="Select Template"></asp:Label>
-                        <asp:RadioButtonList AutoPostBack="true" runat="server" ID="rbTemplates" OnSelectedIndexChanged="rbTemplates_SelectedIndexChanged" RepeatLayout="Table" RepeatDirection="Horizontal" RepeatColumns="4"></asp:RadioButtonList>
-                        <asp:HiddenField ID="hfTemplateCode" runat="server" />
-                        <br />
-                        <asp:TextBox ID="tbxMailSubject" runat="server" Width="300px" onkeydown="return (event.keyCode!=13);" placeholder="subject"></asp:TextBox>
-                        <br />
-                        <br />
-                        <asp:Button runat="server" Text="Add Recipient Name" ID="btnAddRecipientName" OnClick="btnAddRecipientName_Click" Width="180px" class="btnstyle" />
-                        <br />
-                        <asp:TextBox ID="tbxMailBody" runat="server" placeholder="enter mail body" ValidationGroup="mailCredentials" TextMode="MultiLine" Height="267px" Width="520px"></asp:TextBox>
-                        <br />
-                        <asp:RequiredFieldValidator ValidationGroup="mailCredentials" ID="RequiredFieldValidator1" runat="server" ControlToValidate="tbxMailBody" ErrorMessage="This field can't be empty" ForeColor="Red"></asp:RequiredFieldValidator>
-                        <br />
-                        <asp:FileUpload ID="fileAttachment" ToolTip="Add Attachments" runat="server" AllowMultiple="true" />
-                        <br />
-                        <br />
-                        <asp:TextBox ID="tbxPassword" TextMode="Password" ValidationGroup="mailCredentials" runat="server" placeholder="enter your registered email's password here" Width="310px"></asp:TextBox>
-                        <asp:Button ID="btnSend" class="btnstyle" Text="Send" runat="server" OnClick="btnSend_Click" />
-                        <br />
-                        <asp:RequiredFieldValidator Display="Dynamic" ValidationGroup="mailCredentials" ID="RequiredFieldValidator2" runat="server" ControlToValidate="tbxPassword" ErrorMessage="This field can't be empty" ForeColor="Red"></asp:RequiredFieldValidator>
-                        <asp:Label ID="lblMailStatus" ForeColor="Blue" runat="server"></asp:Label>
+                        <div class="card">
+                            <div class="card-header" role="tab" id="headingTwo">
+                                <h5 class="mb-0">
+                                    <a class="collapsed" data-toggle="collapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">SELECT FOOTER
+                                    </a>
+                                </h5>
+                            </div>
+                            <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion">
+                                <div class="card-body">
+                                    <img onclick="selectf(event)" src="http://svgshare.com/i/435.svg" />
+                                    <img onclick="selectf(event)" src="http://svgshare.com/i/44H.svg" />
+                                    <img onclick="selectf(event)" src="http://svgshare.com/i/43a.svg" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header" role="tab" id="headingThree">
+                                <h5 class="mb-0">
+                                    <a class="collapsed" data-toggle="collapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">SELECT BACKGROUND
+                                    </a>
+                                </h5>
+                            </div>
+                            <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion">
+                                <div class="card-body">
+                                    <img onclick="selectb(event)" src="http://svgshare.com/i/43b.svg" />
+                                    <img onclick="selectb(event)" src="http://svgshare.com/i/43G.svg" />
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <br />
-    <br />
-    <br />
+
     <script src="../script/jquery-1.11.2.js"></script>
     <script type="text/javascript">
-        function setHTML() {
-            var tbxBody = tinyMCE.activeEditor.getContent({ format: 'html' });
-            // var temp = window.parent.tinymce.get('mceu_51-inp').getContent();
-            //   var tempo = tinyMCE.activeEditor.getContent('mceu_51-inp');
-     
-            hiddenStatusFlag = document.getElementById('<%= hfTemplateCode.ClientID%>').value.replace("{body}", tbxBody);
-            document.getElementById('<%= divTemplatePreview.ClientID%>').innerHTML = hiddenStatusFlag;
-        }
         //$(document).on('click', '.dropdown-menu', function (e) {
         //    console.log("hello");
         //    e.stopPropagation(); // it will not propagate the action to parent for closing
@@ -142,37 +217,56 @@
                 });
             },
             plugins: [
-    "advlist autolink lists link image charmap print preview anchor",
-    "searchreplace visualblocks code fullscreen",
-    "insertdatetime media table contextmenu paste"
+                "advlist autolink lists link image charmap print preview anchor",
+                "searchreplace visualblocks code fullscreen",
+                "insertdatetime media table contextmenu paste"
             ],
             //  plugins: 'print preview fullpage powerpaste searchreplace autolink directionality advcode visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists textcolor wordcount tinymcespellchecker a11ychecker imagetools mediaembed  linkchecker contextmenu colorpicker textpattern help',
             toolbar1: 'formatselect | bold italic strikethrough forecolor backcolor | link | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | removeformat',
             image_advtab: true,
             templates: [
-              { title: 'Test template 1', content: 'Test 1' },
-              { title: 'Test template 2', content: 'Test 2' }
+                { title: 'Test template 1', content: 'Test 1' },
+                { title: 'Test template 2', content: 'Test 2' }
             ],
             content_css: [
-              '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
-              '//www.tinymce.com/css/codepen.min.css'
+                '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
+                '//www.tinymce.com/css/codepen.min.css'
             ]
         });
         $('.dropdown-menu a.dropdown-item').click(function (e) {
             e.stopPropagation();
         });
-        //$(document).ready(function () {
-        //    $("ul.dropdown-menu input[type=checkbox]").each(function () {
-        //        $(this).change(function () {
-        //            var line = "";
-        //            $("ul.dropdown-menu input[type=checkbox]").each(function () {
-        //                if ($(this).is(":checked")) {
-        //                    line += $("+ span", this).text() + ";";
-        //                }
-        //            });
-        //            $("input.form-control").val(line);
-        //        });
-        //    });
-        //});
+        function setHTML() {
+            var previousBody = tbxBody;
+            var tbxBody = tinyMCE.activeEditor.getContent({ format: 'html' });
+            templateCode = templateCode.replace(previousBody, tbxBody);
+            var displayCode = templateCode.replace("{body}", tbxBody);
+            document.getElementById('<%= divTemplatePreview.ClientID%>').innerHTML = displayCode;
+            document.getElementById('<%= hfMailBody.ClientID%>').value = templateCode;
+        }
+        var selhid, selfid, selbid;
+        var templateCode = document.getElementById('<%= hfTemplateCode.ClientID%>').value;
+        function selecth(eheader) {
+            selprevhID = selhid;
+            selhid = eheader.target.src;
+            templateCode = templateCode.replace("{header}", "<img  src=" + selhid + "  />");
+            templateCode = templateCode.replace(selprevhID, selhid);
+            document.getElementById('<%= divTemplatePreview.ClientID%>').innerHTML = templateCode;
+        }
+        function selectf(efooter) {
+            selprevfId = selfid;
+            selfid = efooter.target.src;
+            var tbxBody = tinyMCE.activeEditor.getContent({ format: 'html' });
+            templateCode = templateCode.replace("{footer}", "<img  src=" + selfid + "  />");
+            templateCode = templateCode.replace(selprevfId, selfid);
+        }
+        function selectb(ebackground) {
+            selprevbID = selbid;
+            selbid = ebackground.target.src;
+            templateCode = templateCode.replace("{background}", selbid);
+            templateCode = templateCode.replace(selprevbID, selbid);
+        }
+
+
     </script>
 </asp:Content>
