@@ -28,6 +28,7 @@
     <div class="container-fluid child-page">
         <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
+                <a href="Registration.aspx">Registration.aspx</a>
                 <div class="modal-content">
                     <div id="modal-header" class="modal-header">
                         <h5 class="modal-title" id="exampleModalLongTitle">SELECT RECIPIENTS</h5>
