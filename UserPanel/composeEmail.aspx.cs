@@ -100,6 +100,7 @@ public partial class UserPanel_Default : System.Web.UI.Page
         if (Convert.ToInt32(rbTemplates.SelectedItem.Value) == 11)
             accordion.Visible = true;
         else accordion.Visible = false;
+        divTemplatePreview.InnerHtml = divTemplatePreview.InnerHtml.Replace("{body}","<h1>Start typing your mail body</h1>");
     }
 
     protected void cbCategory_CheckedChanged(object sender, EventArgs e)
@@ -175,12 +176,16 @@ public partial class UserPanel_Default : System.Web.UI.Page
 
             else
             {
+                string body;
                 //saving the sent maildata into database
                 if (tbxMailSubject.Text == "") mailSubject = "No subject";
                 else mailSubject = tbxMailSubject.Text;
                 SqlCommand saveEmail = new SqlCommand("spSaveMail", con);
                 saveEmail.CommandType = CommandType.StoredProcedure;
-                saveEmail.Parameters.AddWithValue("@body", tbxMailBody.Text);
+                if (Convert.ToInt32(rbTemplates.SelectedItem.Value) == 11)
+                    body = hfMailBody.Value;
+                else body = tbxMailBody.Text;
+                saveEmail.Parameters.AddWithValue("@body",body);
                 saveEmail.Parameters.AddWithValue("@templateId", rbTemplates.SelectedItem.Value);
                 saveEmail.Parameters.AddWithValue("@userId", Convert.ToInt32(Session["LoggedIn"]));
                 saveEmail.Parameters.AddWithValue("@subject", mailSubject);
@@ -322,13 +327,11 @@ public partial class UserPanel_Default : System.Web.UI.Page
         }
 
         hfTemplateCode.Value = body;
-        divTemplatePreview.InnerHtml = body;
+        divTemplatePreview.InnerHtml = body.Replace("{body}","<h1>Start typing your mail message</h1>"); ;
         // lblSum.Text = tbxMailBody.Text;
     }
 
-
-
-    protected void btnAddRecipientName_Click(object sender, EventArgs e)
+    protected void btnAddRecipientName_Click1(object sender, EventArgs e)
     {
         tbxMailBody.Text += "{RecipientName}";
     }

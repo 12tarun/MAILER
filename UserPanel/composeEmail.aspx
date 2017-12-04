@@ -104,7 +104,7 @@
                     <div class="padding">
                         <asp:TextBox ID="tbxMailSubject" runat="server" Width="80%" placeholder="subject"></asp:TextBox>
                     </div>
-
+                    <asp:Button  class="btnstyle" ID="btnAddRecipientName" runat="server" Text="Add Recipient Name" ToolTip="Corresponding mails will be sent with corresponding names" OnClick="btnAddRecipientName_Click1" />
                     <asp:TextBox ID="tbxMailBody" runat="server" placeholder="enter mail body" ValidationGroup="mailCredentials" TextMode="MultiLine" Height="267px" Width="100%"></asp:TextBox>
 
                     <div class="padding">
@@ -129,7 +129,7 @@
                 </div>
             </div>
             <div class="col-4 txt-style">
-                <div class="temp-prev">
+                <div class="temp-prev" style="text-align:left">
                         <h1>Template Preview</h1>
                     <div class="temp-area">
                         <span id="divTemplatePreview" runat="server"></span>
