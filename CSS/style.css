@@ -221,7 +221,6 @@
 .left-side {
     color: #fff;
     top: 0;
-    left: 0;
     height: 100%;
     padding: 0;
     background-color: rgba(0,0,0,0.85);
@@ -245,13 +244,18 @@
     margin-bottom: 50px;
 }
 
-.padding{
+.padding {
     padding: 10px;
 }
 
 .card-body {
     background-color: rgba(0,0,0,1)
 }
+
+ContentPlaceHolder1_divTemplatePreview {
+    max-height: 500px;
+}
+
 
 #ContentPlaceHolder1_rbTemplates {
     width: 100%;
@@ -268,8 +272,16 @@
 
 .temp-prev {
     padding-top: 0px;
+    margin-top: 0px;
     color: #fff;
     text-align: center;
+    max-height: 500px;
+    margin-bottom: 70px;
+    overflow-y: auto;
+}
+
+.temp-area {
+    overflow-y: auto;
 }
 
 .rec-container {

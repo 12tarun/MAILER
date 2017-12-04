@@ -4,7 +4,7 @@
     <style type="text/css">
         #divtemplatePreview {
             width: 100%;
-            height: 40%;
+            max-height: 500px;
         }
     </style>
 </asp:Content>
@@ -98,7 +98,7 @@
         </div>--%>
 
         <div class="row compose">
-            <div class="col-3 txt-style left-side">
+            <div class="col-4 txt-style left-side">
                 <div class="scroll-area">
                                         <h3>TEXT FIELD</h3>
                     <div class="padding">
@@ -128,24 +128,24 @@
                     <asp:HiddenField ID="hfMailBody" runat="server" />
                 </div>
             </div>
-            <div class="col-6 txt-style">
+            <div class="col-4 txt-style">
                 <div class="temp-prev">
-                    <div class="scroll-area">
                         <h1>Template Preview</h1>
+                    <div class="temp-area">
                         <span id="divTemplatePreview" runat="server"></span>
                     </div>
                 </div>
             </div>
 
 
-            <div class="col-3 txt-style right-side">
+            <div class="col-4 txt-style right-side">
                 <div class="scroll-area">
                         <h3>SELECT TEMPELATE</h3>
                     <asp:label id="lbltemplate" runat="server"></asp:label>
                     <asp:radiobuttonlist autopostback="true" runat="server" id="rbTemplates" onselectedindexchanged="rbTemplates_SelectedIndexChanged" repeatlayout="Table" repeatdirection="Horizontal" repeatcolumns="1"></asp:radiobuttonlist>
                     <asp:hiddenfield id="hfTemplateCode" runat="server" />
 
-                    <div id="accordion" role="tablist">
+                    <div runat="server" id="accordion" role="tablist">
                         <div class="card">
                             <div class="card-header" role="tab" id="headingOne">
                                 <h5>
@@ -156,9 +156,9 @@
 
                             <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
                                 <div class="card-body">
-                                    <img onclick="selecth(event)" src="http://svgshare.com/i/446.svg" />
-                                    <img onclick="selecth(event)" src="http://svgshare.com/i/458.svg" />
-                                    <img onclick="selecth(event)" src="http://svgshare.com/i/447.svg" />
+                                    <img style="width:100%" onclick="selecth(event)" src="https://imgur.com/g5jMshb.png" />
+                                    <img style="width:100%" onclick="selecth(event)" src="https://imgur.com/paNU89v.png" />
+                                    <img style="width:100%" onclick="selecth(event)" src="" />
                                 </div>
                             </div>
                         </div>
@@ -171,9 +171,10 @@
                             </div>
                             <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion">
                                 <div class="card-body">
-                                    <img onclick="selectf(event)" src="http://svgshare.com/i/435.svg" />
-                                    <img onclick="selectf(event)" src="http://svgshare.com/i/44H.svg" />
-                                    <img onclick="selectf(event)" src="http://svgshare.com/i/43a.svg" />
+                                    <img style="width:100%" onclick="selectf(event)" src="https://imgur.com/DeXPNzz.png" />
+                                    <img style="width:100%" onclick="selectf(event)" src="https://imgur.com/knGsWV1.png" />
+                                    <img style="width:100%" onclick="selectf(event)" src="https://imgur.com/C9p0Px4.png" />
+                                    <img style="width:100%" onclick="selectf(event)" src="https://imgur.com/Vhc1DV5.png" />
                                 </div>
                             </div>
                         </div>
@@ -186,8 +187,10 @@
                             </div>
                             <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion">
                                 <div class="card-body">
-                                    <img onclick="selectb(event)" src="http://svgshare.com/i/43b.svg" />
-                                    <img onclick="selectb(event)" src="http://svgshare.com/i/43G.svg" />
+                                    <img style="width:100%" onclick="selectb(event)" src="https://imgur.com/gCmf51d.png" />
+                                    <br />
+                                    <br />
+                                    <img style="width:100%" onclick="selectb(event)" src="https://imgur.com/jpRK6bX.png" />
                                 </div>
                             </div>
                         </div>
@@ -249,7 +252,7 @@
         function selecth(eheader) {
             selprevhID = selhid;
             selhid = eheader.target.src;
-            templateCode = templateCode.replace("{header}", "<img  src=" + selhid + "  />");
+            templateCode = templateCode.replace("{header}", selhid);
             templateCode = templateCode.replace(selprevhID, selhid);
             document.getElementById('<%= divTemplatePreview.ClientID%>').innerHTML = templateCode;
         }
@@ -257,14 +260,16 @@
             selprevfId = selfid;
             selfid = efooter.target.src;
             var tbxBody = tinyMCE.activeEditor.getContent({ format: 'html' });
-            templateCode = templateCode.replace("{footer}", "<img  src=" + selfid + "  />");
+            templateCode = templateCode.replace("{footer}", selfid);
             templateCode = templateCode.replace(selprevfId, selfid);
+            document.getElementById('<%= divTemplatePreview.ClientID%>').innerHTML = templateCode;
         }
         function selectb(ebackground) {
             selprevbID = selbid;
             selbid = ebackground.target.src;
             templateCode = templateCode.replace("{background}", selbid);
             templateCode = templateCode.replace(selprevbID, selbid);
+            document.getElementById('<%= divTemplatePreview.ClientID%>').innerHTML = templateCode;
         }
 
 
