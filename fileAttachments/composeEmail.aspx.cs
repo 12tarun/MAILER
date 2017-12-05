@@ -21,7 +21,7 @@ public partial class UserPanel_Default : System.Web.UI.Page
         {
             Response.Redirect("~/UserPanel/Registration.aspx");
         }
-       
+
         if (!IsPostBack)
         {
             using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["constr"].ConnectionString))
@@ -97,10 +97,6 @@ public partial class UserPanel_Default : System.Web.UI.Page
 
         }
 
-        if (Convert.ToInt32(rbTemplates.SelectedItem.Value) == 11)
-            accordion.Visible = true;
-        else accordion.Visible = false;
-        divTemplatePreview.InnerHtml = divTemplatePreview.InnerHtml.Replace("{body}","<h1>Start typing your mail body</h1>");
     }
 
     protected void cbCategory_CheckedChanged(object sender, EventArgs e)
@@ -176,16 +172,12 @@ public partial class UserPanel_Default : System.Web.UI.Page
 
             else
             {
-                string body;
                 //saving the sent maildata into database
                 if (tbxMailSubject.Text == "") mailSubject = "No subject";
                 else mailSubject = tbxMailSubject.Text;
                 SqlCommand saveEmail = new SqlCommand("spSaveMail", con);
                 saveEmail.CommandType = CommandType.StoredProcedure;
-                if (Convert.ToInt32(rbTemplates.SelectedItem.Value) == 11)
-                    body = hfMailBody.Value;
-                else body = tbxMailBody.Text;
-                saveEmail.Parameters.AddWithValue("@body",body);
+                saveEmail.Parameters.AddWithValue("@body", tbxMailBody.Text);
                 saveEmail.Parameters.AddWithValue("@templateId", rbTemplates.SelectedItem.Value);
                 saveEmail.Parameters.AddWithValue("@userId", Convert.ToInt32(Session["LoggedIn"]));
                 saveEmail.Parameters.AddWithValue("@subject", mailSubject);
@@ -195,15 +187,12 @@ public partial class UserPanel_Default : System.Web.UI.Page
                 {
                     foreach (HttpPostedFile uploadedFile in fileAttachment.PostedFiles)
                     {
-                        Stream stream = uploadedFile.InputStream;
-                        BinaryReader binaryReader = new BinaryReader(stream);
-                        byte[] byteArray = binaryReader.ReadBytes((int)stream.Length);
                         SqlCommand saveFileAttachments = new SqlCommand("insert into tblFileAttachments(sentMailId,fileName,fileSize) values(@sentMailId,@fileName,@fileSize)", con);
                         saveFileAttachments.Parameters.AddWithValue("@sentMailId", sentMailId);
                         saveFileAttachments.Parameters.AddWithValue("@fileName", uploadedFile.FileName);
                         saveFileAttachments.Parameters.AddWithValue("@fileSize", uploadedFile.ContentLength);
                         saveFileAttachments.ExecuteNonQuery();
-                        string filePath = "~/fileAttachments/" + uploadedFile.FileName;
+                        string filePath = "~/fileAttachments" + uploadedFile.FileName;
                         uploadedFile.SaveAs(Server.MapPath(filePath));
                     }
                 }
@@ -261,27 +250,21 @@ public partial class UserPanel_Default : System.Web.UI.Page
             string userEmail = getUserEmail.ExecuteScalar().ToString();
             SqlCommand getTemplateFilePath = new SqlCommand("select filePath from tblTemplates where templateId='" + rbTemplates.SelectedItem.Value + "'", con);
             string templateFilePath = getTemplateFilePath.ExecuteScalar().ToString();
+            using (StreamReader reader = new StreamReader(Server.MapPath(templateFilePath)))
+            {
+                //inserting the value of placeholders as per the mail
+                body = reader.ReadToEnd();
+                body = body.Replace("{body}", tbxMailBody.Text);
+              //  body = mceu_91.value.tostring();
+                //byte[] imagedata = (byte[])mceu_63 - inp
             
-            if(Convert.ToInt32(rbTemplates.SelectedItem.Value)==11)
-            {
-                body = hfMailBody.Value;
-                body = body.Replace("{body}",tbxMailBody.Text);
-            }
-            else
-            {
-                using (StreamReader reader = new StreamReader(Server.MapPath(templateFilePath)))
-                {
-                    //inserting the value of placeholders as per the mail
-                    body = reader.ReadToEnd();
-                    body = body.Replace("{body}", tbxMailBody.Text);
-                    body = body.Replace("{RecipientName}", recipientName);
-                }
+                body = body.Replace("{RecipientName}", recipientName);
             }
 
             con.Close();
             con.Open();
             string enteredPassword = tbxPassword.Text;
-            using (MailMessage mail = new System.Net.Mail.MailMessage(userEmail, recipientEmail))
+            using (MailMessage mail = new MailMessage(userEmail, recipientEmail))
             {
                 mail.Subject = tbxMailSubject.Text;
                 mail.Body = body;
@@ -293,18 +276,14 @@ public partial class UserPanel_Default : System.Web.UI.Page
                 smtp.UseDefaultCredentials = true;
                 smtp.Credentials = NetworkCred;
                 smtp.Port = 587;
-                SqlCommand getFiles = new SqlCommand("select * from tblFileAttachments where sentMailId='" + Convert.ToInt32(Session["sentMailId"]) + "'", con);
-                using (SqlDataReader dr = getFiles.ExecuteReader())
+                SqlCommand getFiles = new SqlCommand("select * from tblFileAttachments where sentMailId='"+Convert.ToInt32(Session["sentMailId"])+"'",con);
+                SqlDataReader dr = getFiles.ExecuteReader();
+                while(dr.Read())
                 {
-                    while (dr.Read())
-                    {
-                        string filePath = "~/fileAttachments/" + dr["fileName"].ToString();
-                        //Attachment data = new Attachment(Server.MapPath(filePath),dr["fileName"].ToString());
-                        //mail.Attachments.Add(data);
-                        //mail.Attachments.Add(new Attachment(Server.MapPath(filePath),dr["fileName"].ToString()));
-                        Attachment attach = new Attachment(Server.MapPath(filePath));
-                        mail.Attachments.Add(attach);
-                    }
+                    string filePath = "~/fileAttachments/"+dr["fileName"].ToString();
+                    //Attachment data = new Attachment(Server.MapPath(filePath),dr["fileName"].ToString());
+                    //mail.Attachments.Add(data);
+                    mail.Attachments.Add(new Attachment(Server.MapPath(filePath)));
                 }
                 smtp.Send(mail);
             }
@@ -327,11 +306,13 @@ public partial class UserPanel_Default : System.Web.UI.Page
         }
 
         hfTemplateCode.Value = body;
-        divTemplatePreview.InnerHtml = body.Replace("{body}","<h1>Start typing your mail message</h1>"); ;
+        divTemplatePreview.InnerHtml = body;
         // lblSum.Text = tbxMailBody.Text;
     }
 
-    protected void btnAddRecipientName_Click1(object sender, EventArgs e)
+
+
+    protected void btnAddRecipientName_Click(object sender, EventArgs e)
     {
         tbxMailBody.Text += "{RecipientName}";
     }
