@@ -22,7 +22,7 @@
             <br />
             <div class="row">
                 <div class="col-5">
-                    <div id="emailPreview" runat="server"></div>
+                    <div id="emailPreview" style="text-align:left" runat="server"></div>
                 </div>
                 <div class="col-7">
                     <asp:GridView runat="server" class="table table-responsive" ID="grdFileAttachments">

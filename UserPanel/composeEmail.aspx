@@ -94,7 +94,7 @@
                 <div class="scroll-area">
                     <h3>TEXT FIELD</h3>
                     <div class="padding">
-                        <asp:textbox id="tbxMailSubject" runat="server" width="80%" placeholder="subject"></asp:textbox>
+                        <asp:textbox id="tbxMailSubject" onkeydown = "return (event.keyCode!=13)" runat="server" width="80%" placeholder="subject"></asp:textbox>
                     </div>
                     <asp:button class="btnstyle" id="btnAddRecipientName" width="310px" runat="server" text="Add Recipient Name" tooltip="Corresponding mails will be sent with corresponding names" onclick="btnAddRecipientName_Click1" />
                     <asp:textbox id="tbxMailBody" runat="server" placeholder="enter mail body" validationgroup="mailCredentials" textmode="MultiLine" height="267px" width="100%"></asp:textbox>
