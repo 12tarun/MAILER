@@ -115,10 +115,12 @@
                                     <div class="form-group">
                                         <asp:UpdatePanel ID="UPCaptcha" runat="server">
                                             <ContentTemplate>
-                                                <asp:Image ID="imgCaptcha" Width="100px" Height="50px" runat="server" />
+                                                <div class="form-inline">
+                                                <asp:Image  ID="imgCaptcha" Width="100px" Height="50px" runat="server" />
                                                 <br />
                                                 <br />
-                                                <asp:Button class="btn btn-dark" ID="btnRefresh" runat="server" Text="Refresh" OnClick="btnRefresh_Click" />
+                                                <asp:Button class="btn btn-dark"  ID="btnRefresh" runat="server" Text="refresh"  OnClick="btnRefresh_Click" />
+                                                    </div>
                                             </ContentTemplate>
                                         </asp:UpdatePanel>
                                         <br />
@@ -159,7 +161,7 @@
                             <ContentTemplate>
                                 <div class="container">
                                     <div class="input-group">
-                                        <span for="InputEmail" class="input-group-addon" id="basic-addon1">@</span>
+                                        <span for="InputEmail" class="input-group-addon" id="basic-addon1"><i class="fa fa-envelope-o" aria-hidden="true"></i></span>
                                         <asp:TextBox ID="tbxLoginEmail" spellcheck="false" autocomplete="off" class="form-control" runat="server" ValidationGroup="login" placeholder="Enter Email Id"></asp:TextBox>
                                     </div>
                                     <asp:RequiredFieldValidator Display="Dynamic" ID="RFValidatorLoginEmail" ValidationGroup="login" runat="server" ErrorMessage="Please enter an email id" ControlToValidate="tbxLoginEmail" ForeColor="Red"></asp:RequiredFieldValidator>
