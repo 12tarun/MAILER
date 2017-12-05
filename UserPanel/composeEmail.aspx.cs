@@ -182,13 +182,17 @@ public partial class UserPanel_Default : System.Web.UI.Page
                 else mailSubject = tbxMailSubject.Text;
                 SqlCommand saveEmail = new SqlCommand("spSaveMail", con);
                 saveEmail.CommandType = CommandType.StoredProcedure;
-                if (Convert.ToInt32(rbTemplates.SelectedItem.Value) == 11)
-                    body = hfMailBody.Value;
-                else body = tbxMailBody.Text;
-                saveEmail.Parameters.AddWithValue("@body",body);
+                //if (Convert.ToInt32(rbTemplates.SelectedItem.Value) == 11)
+                //{
+                //    body = hfMailBody.Value;
+                //    body = body.Replace("{body}",tbxMailBody.Text);
+                //}
+                //else body = tbxMailBody.Text;
+                saveEmail.Parameters.AddWithValue("@body",tbxMailBody.Text);
                 saveEmail.Parameters.AddWithValue("@templateId", rbTemplates.SelectedItem.Value);
                 saveEmail.Parameters.AddWithValue("@userId", Convert.ToInt32(Session["LoggedIn"]));
                 saveEmail.Parameters.AddWithValue("@subject", mailSubject);
+                saveEmail.Parameters.AddWithValue("@bodyHtml",hfMailBody.Value);
                 int sentMailId = Convert.ToInt32(saveEmail.ExecuteScalar());
                 Session["sentMailId"] = sentMailId;
                 if (fileAttachment.HasFiles)
@@ -266,6 +270,7 @@ public partial class UserPanel_Default : System.Web.UI.Page
             {
                 body = hfMailBody.Value;
                 body = body.Replace("{body}",tbxMailBody.Text);
+                
             }
             else
             {
@@ -274,10 +279,10 @@ public partial class UserPanel_Default : System.Web.UI.Page
                     //inserting the value of placeholders as per the mail
                     body = reader.ReadToEnd();
                     body = body.Replace("{body}", tbxMailBody.Text);
-                    body = body.Replace("{RecipientName}", recipientName);
+                    
                 }
             }
-
+            body = body.Replace("{RecipientName}", recipientName);
             con.Close();
             con.Open();
             string enteredPassword = tbxPassword.Text;

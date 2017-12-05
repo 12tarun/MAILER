@@ -96,7 +96,7 @@ public partial class UserPanel_Default : System.Web.UI.Page
             string constr2 = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
             using (SqlConnection con = new SqlConnection(constr2))
             {
-                using (SqlCommand cmd = new SqlCommand("SELECT body FROM tblSentMails WHERE sentMailId ='" + Convert.ToInt32(Session["sentMailId"]) + "'"))
+                using (SqlCommand cmd = new SqlCommand("SELECT * FROM tblSentMails WHERE sentMailId ='" + Convert.ToInt32(Session["sentMailId"]) + "'"))
                 {
                     using (SqlDataAdapter sda = new SqlDataAdapter())
                     {
@@ -106,7 +106,8 @@ public partial class UserPanel_Default : System.Web.UI.Page
                         SqlDataReader rdr = cmd.ExecuteReader();
                         while (rdr.Read())
                         {
-                            body = rdr["body"].ToString();
+                            body = rdr["bodyHtml"].ToString();
+                            body = body.Replace("{body}",rdr["body"].ToString());
                             Session["body"] = body;
                         }
                     }
@@ -116,16 +117,15 @@ public partial class UserPanel_Default : System.Web.UI.Page
             using (SqlConnection con = new SqlConnection(constr))
                 {
                     con.Open();
-                    SqlCommand getTemplateFilePath = new SqlCommand("select filePath from tblTemplates where templateId='" + Convert.ToInt32(Session["templateId"]) + "'", con);
-                    string templateFilePath = getTemplateFilePath.ExecuteScalar().ToString();
-                    using (StreamReader reader = new StreamReader(Server.MapPath(templateFilePath)))
-                    {
-                        body = reader.ReadToEnd();
-                     //   body = body.Replace("{RecipientName}", Session["recipientName"].ToString());
-                          body = body.Replace("{body}", Session["body"].ToString());
-                    }
-                    emailPreview.InnerHtml = body;
-
+                //SqlCommand getTemplateFilePath = new SqlCommand("select filePath from tblTemplates where templateId='" + Convert.ToInt32(Session["templateId"]) + "'", con);
+                //string templateFilePath = getTemplateFilePath.ExecuteScalar().ToString();
+                //using (StreamReader reader = new StreamReader(Server.MapPath(templateFilePath)))
+                //{
+                //    body = reader.ReadToEnd();
+                // //   body = body.Replace("{RecipientName}", Session["recipientName"].ToString());
+                //      body = body.Replace("{body}", Session["body"].ToString());
+                //}
+                emailPreview.InnerHtml = body;
                     DataTable table = new DataTable();
                     table.Columns.Add("FileName");
                     table.Columns.Add("FileSize");
