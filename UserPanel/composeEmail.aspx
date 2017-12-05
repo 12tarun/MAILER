@@ -4,7 +4,7 @@
     <style type="text/css">
         #divtemplatePreview {
             width: 100%;
-            max-height: 500px;
+            max-height: 700px;
         }
     </style>
 </asp:Content>
@@ -39,8 +39,8 @@
 
                     <div id="modal-body" class="modal-body">
 
-                        <asp:ScriptManager runat="server"></asp:ScriptManager>
-                        <asp:UpdatePanel ID="updatePanelCheckbox" runat="server">
+                        <asp:scriptmanager runat="server"></asp:scriptmanager>
+                        <asp:updatepanel id="updatePanelCheckbox" runat="server">
                             <ContentTemplate>
                                 <h3>
                                     <asp:CheckBox ID="cbSelectAll" Text="Select All" OnCheckedChanged="cbSelectAll_CheckedChanged" runat="server" AutoPostBack="true" ToolTip="Check this checkbox to select all categories" />
@@ -80,58 +80,49 @@
                                     </asp:Repeater>
                                 </div>
                             </ContentTemplate>
-                        </asp:UpdatePanel>
+                        </asp:updatepanel>
                     </div>
                     <div id="" class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>                        
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
         </div>
-        <%--   <div id="side-menu">
-            <h1>Select Recipients</h1>
-            
-            </>
-        </div>
-        <div id="openside">
-            <i id="open" onclick="open()" class="fa fa-chevron-circle-right" aria-hidden="true">SELECT-RECEPEINT</i>
-            <i id="close" onclick="close()" class="fa fa-chevron-circle-left" aria-hidden="true">SELECT-RECEPEINT</i>
-        </div>--%>
-
+        s
         <div class="row compose">
             <div class="col-4 txt-style left-side">
                 <div class="scroll-area">
-                                        <h3>TEXT FIELD</h3>
+                    <h3>TEXT FIELD</h3>
                     <div class="padding">
-                        <asp:TextBox ID="tbxMailSubject" runat="server" Width="80%" placeholder="subject"></asp:TextBox>
+                        <asp:textbox id="tbxMailSubject" runat="server" width="80%" placeholder="subject"></asp:textbox>
                     </div>
-                    <asp:Button  class="btnstyle" ID="btnAddRecipientName" runat="server" Text="Add Recipient Name" ToolTip="Corresponding mails will be sent with corresponding names" OnClick="btnAddRecipientName_Click1" />
-                    <asp:TextBox ID="tbxMailBody" runat="server" placeholder="enter mail body" ValidationGroup="mailCredentials" TextMode="MultiLine" Height="267px" Width="100%"></asp:TextBox>
+                    <asp:button class="btnstyle" id="btnAddRecipientName" width="310px" runat="server" text="Add Recipient Name" tooltip="Corresponding mails will be sent with corresponding names" onclick="btnAddRecipientName_Click1" />
+                    <asp:textbox id="tbxMailBody" runat="server" placeholder="enter mail body" validationgroup="mailCredentials" textmode="MultiLine" height="267px" width="100%"></asp:textbox>
 
                     <div class="padding">
-                        <asp:RequiredFieldValidator ValidationGroup="mailCredentials" ID="RequiredFieldValidator1" runat="server" ControlToValidate="tbxMailBody" ErrorMessage="This field can't be empty" ForeColor="Red"></asp:RequiredFieldValidator>
+                        <asp:requiredfieldvalidator validationgroup="mailCredentials" id="RequiredFieldValidator1" runat="server" controltovalidate="tbxMailBody" errormessage="This field can't be empty" forecolor="Red"></asp:requiredfieldvalidator>
                     </div>
                     <div class="padding">
-                        <asp:FileUpload ID="fileAttachment" ToolTip="Add Attachments" runat="server" AllowMultiple="true" />
+                        <asp:fileupload id="fileAttachment" tooltip="Add Attachments" runat="server" allowmultiple="true" />
                     </div>
                     <div class="padding">
-                        <asp:TextBox ID="tbxPassword" TextMode="Password" ValidationGroup="mailCredentials" runat="server" placeholder="enter your registered mail's password here" Width="100%"></asp:TextBox>
-                        <asp:RequiredFieldValidator ValidationGroup="mailCredentials" ID="RequiredFieldValidator2" runat="server" ControlToValidate="tbxPassword" ErrorMessage="This field can't be empty" ForeColor="Red"></asp:RequiredFieldValidator>
+                        <asp:textbox id="tbxPassword" textmode="Password" validationgroup="mailCredentials" runat="server" placeholder="enter your registered mail's password here" width="100%"></asp:textbox>
+                        <asp:requiredfieldvalidator validationgroup="mailCredentials" id="RequiredFieldValidator2" runat="server" controltovalidate="tbxPassword" errormessage="This field can't be empty" forecolor="Red"></asp:requiredfieldvalidator>
                     </div>
                     <div>
-                        <asp:Button ID="btnSend" class="btn btn-primary btnstyle" Text="Send" runat="server" OnClick="btnSend_Click" />
+                        <asp:button id="btnSend" class="btn btn-primary btnstyle" text="Send" runat="server" onclick="btnSend_Click" />
                         <button type="button" class="btn btnstyle btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg" style="width: 150px">
                             Select Recipients
                         </button>
                     </div>
-                    <div id="labelStatusAlert" style="padding-top: 20px"></div>
-                    <asp:Label ID="lblMailStatus" ForeColor="Blue" runat="server"></asp:Label>
-                    <asp:HiddenField ID="hfMailBody" runat="server" />
+                    <asp:label id="lblMailStatus" forecolor="Blue" runat="server"></asp:label>
+                    <asp:hiddenfield id="hfMailBody" runat="server" />
                 </div>
             </div>
             <div class="col-4 txt-style">
-                <div class="temp-prev" style="text-align:left">
-                        <h1>Template Preview</h1>
+                <div class="temp-prev" style="text-align: left">
+                    <div id="labelStatusAlert"></div>
+                    <h1>Template Preview</h1>
                     <div class="temp-area">
                         <span id="divTemplatePreview" runat="server"></span>
                     </div>
@@ -141,57 +132,53 @@
 
             <div class="col-4 txt-style right-side">
                 <div class="scroll-area">
-                        <h3>SELECT TEMPELATE</h3>
+                    <h3>SELECT TEMPLATE</h3>
                     <asp:label id="lbltemplate" runat="server"></asp:label>
                     <asp:radiobuttonlist autopostback="true" runat="server" id="rbTemplates" onselectedindexchanged="rbTemplates_SelectedIndexChanged" repeatlayout="Table" repeatdirection="Horizontal" repeatcolumns="1"></asp:radiobuttonlist>
                     <asp:hiddenfield id="hfTemplateCode" runat="server" />
 
                     <div runat="server" id="accordion" role="tablist">
-                        <div class="card">
+                        <div class="card select-des" data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                             <div class="card-header" role="tab" id="headingOne">
                                 <h5>
-                                    <a data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">SELECT HEADER
-                                    </a>
+                                    SELECT HEADER                                  
                                 </h5>
                             </div>
 
                             <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
                                 <div class="card-body">
-                                    <img style="width:100%" onclick="selecth(event)" src="https://imgur.com/g5jMshb.png" />
-                                    <img style="width:100%" onclick="selecth(event)" src="https://imgur.com/paNU89v.png" />
-                                    <img style="width:100%" onclick="selecth(event)" src="" />
+                                    <img style="width: 100%" onclick="selecth(event)" src="https://imgur.com/g5jMshb.png" />
+                                    <img style="width: 100%" onclick="selecth(event)" src="https://imgur.com/paNU89v.png" />
                                 </div>
                             </div>
                         </div>
-                        <div class="card">
+                        <div class="card select-des" data-toggle="collapse" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
                             <div class="card-header" role="tab" id="headingTwo">
                                 <h5 class="mb-0">
-                                    <a class="collapsed" data-toggle="collapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">SELECT FOOTER
-                                    </a>
+                                    SELECT FOOTER                              
                                 </h5>
                             </div>
                             <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion">
                                 <div class="card-body">
-                                    <img style="width:100%" onclick="selectf(event)" src="https://imgur.com/DeXPNzz.png" />
-                                    <img style="width:100%" onclick="selectf(event)" src="https://imgur.com/knGsWV1.png" />
-                                    <img style="width:100%" onclick="selectf(event)" src="https://imgur.com/C9p0Px4.png" />
-                                    <img style="width:100%" onclick="selectf(event)" src="https://imgur.com/Vhc1DV5.png" />
+                                    <img style="width: 100%" onclick="selectf(event)" src="https://imgur.com/DeXPNzz.png" />
+                                    <img style="width: 100%" onclick="selectf(event)" src="https://imgur.com/knGsWV1.png" />
+                                    <img style="width: 100%" onclick="selectf(event)" src="https://imgur.com/C9p0Px4.png" />
+                                    <img style="width: 100%" onclick="selectf(event)" src="https://imgur.com/Vhc1DV5.png" />
                                 </div>
                             </div>
                         </div>
-                        <div class="card">
+                        <div class="card select-des" data-toggle="collapse" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
                             <div class="card-header" role="tab" id="headingThree">
                                 <h5 class="mb-0">
-                                    <a class="collapsed" data-toggle="collapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">SELECT BACKGROUND
-                                    </a>
+                                    SELECT BACKGROUND                                    
                                 </h5>
                             </div>
                             <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion">
                                 <div class="card-body">
-                                    <img style="width:100%" onclick="selectb(event)" src="https://imgur.com/gCmf51d.png" />
+                                    <img style="width: 100%" onclick="selectb(event)" src="https://imgur.com/gCmf51d.png" />
                                     <br />
                                     <br />
-                                    <img style="width:100%" onclick="selectb(event)" src="https://imgur.com/jpRK6bX.png" />
+                                    <img style="width: 100%" onclick="selectb(event)" src="https://imgur.com/jpRK6bX.png" />
                                 </div>
                             </div>
                         </div>
@@ -203,10 +190,6 @@
 
     <script src="../script/jquery-1.11.2.js"></script>
     <script type="text/javascript">
-        //$(document).on('click', '.dropdown-menu', function (e) {
-        //    console.log("hello");
-        //    e.stopPropagation(); // it will not propagate the action to parent for closing
-        //});mceu_51-inp
         var interval;
         tinymce.init({
             selector: 'textarea',

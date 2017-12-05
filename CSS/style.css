@@ -94,7 +94,7 @@
     position: fixed;
     height: 100%;
     width: 100%;
-    margin: 0;
+    margin: -22px 0px 0px 0px;
 }
 
 /*#side-menu {
@@ -275,13 +275,22 @@ ContentPlaceHolder1_divTemplatePreview {
     margin-top: 0px;
     color: #fff;
     text-align: center;
-    max-height: 500px;
+    max-height: 700px;
     margin-bottom: 70px;
     overflow-y: auto;
 }
 
 .temp-area {
     overflow-y: auto;
+}
+
+.select-des{
+color: #000;
+margin: 5px 25px;
+}
+
+.select-des:hover{
+    cursor: pointer;
 }
 
 .rec-container {

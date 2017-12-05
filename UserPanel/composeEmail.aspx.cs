@@ -100,7 +100,7 @@ public partial class UserPanel_Default : System.Web.UI.Page
         if (Convert.ToInt32(rbTemplates.SelectedItem.Value) == 11)
             accordion.Visible = true;
         else accordion.Visible = false;
-        divTemplatePreview.InnerHtml = divTemplatePreview.InnerHtml.Replace("{body}","<h1>Start typing your mail body</h1>");
+        divTemplatePreview.InnerHtml = divTemplatePreview.InnerHtml.Replace("{body}","<h5>Start typing your email message....</h5>");
     }
 
     protected void cbCategory_CheckedChanged(object sender, EventArgs e)
@@ -327,7 +327,7 @@ public partial class UserPanel_Default : System.Web.UI.Page
         }
 
         hfTemplateCode.Value = body;
-        divTemplatePreview.InnerHtml = body.Replace("{body}","<h1>Start typing your mail message</h1>"); ;
+        divTemplatePreview.InnerHtml = body.Replace("{body}","<h5>Start typing your email message...</h5>"); ;
         // lblSum.Text = tbxMailBody.Text;
     }
 
