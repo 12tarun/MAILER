@@ -28,7 +28,7 @@
     <div class="container-fluid child-page">
         <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
-                <a href="Registration.aspx">Registration.aspx</a>
+                <%--<a href="Registration.aspx">Registration.aspx</a>--%>
                 <div class="modal-content">
                     <div id="modal-header" class="modal-header">
                         <h5 class="modal-title" id="exampleModalLongTitle">SELECT RECIPIENTS</h5>
@@ -39,8 +39,8 @@
 
                     <div id="modal-body" class="modal-body">
 
-                        <asp:scriptmanager runat="server"></asp:scriptmanager>
-                        <asp:updatepanel id="updatePanelCheckbox" runat="server">
+                        <asp:ScriptManager runat="server"></asp:ScriptManager>
+                        <asp:UpdatePanel ID="updatePanelCheckbox" runat="server">
                             <ContentTemplate>
                                 <h3>
                                     <asp:CheckBox ID="cbSelectAll" Text="Select All" OnCheckedChanged="cbSelectAll_CheckedChanged" runat="server" AutoPostBack="true" ToolTip="Check this checkbox to select all categories" />
@@ -80,7 +80,7 @@
                                     </asp:Repeater>
                                 </div>
                             </ContentTemplate>
-                        </asp:updatepanel>
+                        </asp:UpdatePanel>
                     </div>
                     <div id="" class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -88,37 +88,42 @@
                 </div>
             </div>
         </div>
-        s
+
         <div class="row compose">
             <div class="col-4 txt-style left-side">
                 <div class="scroll-area">
                     <h3>TEXT FIELD</h3>
                     <div class="padding">
-                        <asp:textbox id="tbxMailSubject" onkeydown = "return (event.keyCode!=13)" runat="server" width="80%" placeholder="subject"></asp:textbox>
+                        <asp:TextBox ID="tbxMailSubject" onkeydown="return (event.keyCode!=13)" runat="server" Width="80%" placeholder="subject"></asp:TextBox>
                     </div>
-                    <asp:button class="btnstyle" id="btnAddRecipientName" width="310px" runat="server" text="Add Recipient Name" tooltip="Corresponding mails will be sent with corresponding names" onclick="btnAddRecipientName_Click1" />
-                    <asp:textbox id="tbxMailBody" runat="server" placeholder="enter mail body" validationgroup="mailCredentials" textmode="MultiLine" height="267px" width="100%"></asp:textbox>
+                   
+                            <asp:Button class="btnstyle" ID="btnAddRecipientName" Width="310px" runat="server" Text="Add Recipient Name" ToolTip="Corresponding mails will be sent with corresponding names" OnClick="btnAddRecipientName_Click1" />
 
+                    <asp:TextBox ID="tbxMailBody" runat="server" placeholder="enter mail body" ValidationGroup="mailCredentials" TextMode="MultiLine" Height="267px" Width="100%"></asp:TextBox>
+                        
                     <div class="padding">
-                        <asp:requiredfieldvalidator validationgroup="mailCredentials" id="RequiredFieldValidator1" runat="server" controltovalidate="tbxMailBody" errormessage="This field can't be empty" forecolor="Red"></asp:requiredfieldvalidator>
+                        <asp:RequiredFieldValidator ValidationGroup="mailCredentials" ID="RequiredFieldValidator1" runat="server" ControlToValidate="tbxMailBody" ErrorMessage="This field can't be empty" ForeColor="Red"></asp:RequiredFieldValidator>
                     </div>
                     <div class="padding">
-                        <asp:fileupload id="fileAttachment" tooltip="Add Attachments" runat="server" allowmultiple="true" />
+                        <asp:FileUpload ID="fileAttachment" ToolTip="Add Attachments" runat="server" AllowMultiple="true" />
                     </div>
                     <div class="padding">
-                        <asp:textbox id="tbxPassword" textmode="Password" validationgroup="mailCredentials" runat="server" placeholder="enter your registered mail's password here" width="100%"></asp:textbox>
-                        <asp:requiredfieldvalidator validationgroup="mailCredentials" id="RequiredFieldValidator2" runat="server" controltovalidate="tbxPassword" errormessage="This field can't be empty" forecolor="Red"></asp:requiredfieldvalidator>
+                        <asp:TextBox ID="tbxPassword" TextMode="Password" ValidationGroup="mailCredentials" runat="server" placeholder="enter your registered mail's password here" Width="100%"></asp:TextBox>
+                        <asp:RequiredFieldValidator ValidationGroup="mailCredentials" ID="RequiredFieldValidator2" runat="server" ControlToValidate="tbxPassword" ErrorMessage="This field can't be empty" ForeColor="Red"></asp:RequiredFieldValidator>
                     </div>
                     <div>
-                        <asp:button id="btnSend" class="btn btn-primary btnstyle" text="Send" runat="server" onclick="btnSend_Click" />
+                        <asp:Button ID="btnSend" class="btn btn-primary btnstyle" Text="Send" runat="server" OnClick="btnSend_Click" />
                         <button type="button" class="btn btnstyle btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg" style="width: 150px">
                             Select Recipients
                         </button>
                     </div>
-                    <asp:label id="lblMailStatus" forecolor="Blue" runat="server"></asp:label>
-                    <asp:hiddenfield id="hfMailBody" runat="server" />
+                    <asp:Label ID="lblMailStatus" ForeColor="Blue" runat="server"></asp:Label>
+                    <asp:HiddenField ID="hfMailBody" runat="server" />
                 </div>
             </div>
+
+
+
             <div class="col-4 txt-style">
                 <div class="temp-prev" style="text-align: left">
                     <div id="labelStatusAlert"></div>
@@ -133,15 +138,14 @@
             <div class="col-4 txt-style right-side">
                 <div class="scroll-area">
                     <h3>SELECT TEMPLATE</h3>
-                    <asp:label id="lbltemplate" runat="server"></asp:label>
-                    <asp:radiobuttonlist autopostback="true" runat="server" id="rbTemplates" onselectedindexchanged="rbTemplates_SelectedIndexChanged" repeatlayout="Table" repeatdirection="Horizontal" repeatcolumns="1"></asp:radiobuttonlist>
-                    <asp:hiddenfield id="hfTemplateCode" runat="server" />
+                    <asp:Label ID="lbltemplate" runat="server"></asp:Label>
+                    <asp:RadioButtonList AutoPostBack="true" runat="server" ID="rbTemplates" OnSelectedIndexChanged="rbTemplates_SelectedIndexChanged" RepeatLayout="Table" RepeatDirection="Horizontal" RepeatColumns="1"></asp:RadioButtonList>
+                    <asp:HiddenField ID="hfTemplateCode" runat="server" />
 
                     <div runat="server" id="accordion" role="tablist">
                         <div class="card select-des" data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                             <div class="card-header" role="tab" id="headingOne">
-                                <h5>
-                                    SELECT HEADER                                  
+                                <h5>SELECT HEADER                                  
                                 </h5>
                             </div>
 
@@ -154,8 +158,7 @@
                         </div>
                         <div class="card select-des" data-toggle="collapse" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
                             <div class="card-header" role="tab" id="headingTwo">
-                                <h5 class="mb-0">
-                                    SELECT FOOTER                              
+                                <h5 class="mb-0">SELECT FOOTER                              
                                 </h5>
                             </div>
                             <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion">
@@ -169,8 +172,7 @@
                         </div>
                         <div class="card select-des" data-toggle="collapse" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
                             <div class="card-header" role="tab" id="headingThree">
-                                <h5 class="mb-0">
-                                    SELECT BACKGROUND                                    
+                                <h5 class="mb-0">SELECT BACKGROUND                                    
                                 </h5>
                             </div>
                             <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion">
@@ -187,7 +189,9 @@
             </div>
         </div>
     </div>
-
+    <asp:HiddenField ID="hfHeader" runat="server" />
+    <asp:HiddenField ID="hfBody" runat="server" />
+    <asp:HiddenField ID="hfFooter" runat="server" />
     <script src="../script/jquery-1.11.2.js"></script>
     <script type="text/javascript">
         var interval;
@@ -223,11 +227,22 @@
         $('.dropdown-menu a.dropdown-item').click(function (e) {
             e.stopPropagation();
         });
+        var header = document.getElementById('<%=hfHeader.ClientID%>');
+        var footer = document.getElementById('<%=hfFooter.ClientID%>');
+        var body = document.getElementById('<%=hfBody.ClientID%>')
         function setHTML() {
             var previousBody = tbxBody;
             var tbxBody = tinyMCE.activeEditor.getContent({ format: 'html' });
             templateCode = templateCode.replace(previousBody, tbxBody);
             var displayCode = templateCode.replace("{body}", tbxBody);
+            if (header.value != null || footer.value != null || body.value != null) {
+                displayCode = displayCode.replace("{footer}", footer.value);
+                displayCode = displayCode.replace("{header}", header.value);
+                displayCode = displayCode.replace("{background}", body.value);
+            }
+            
+            
+            displayCode = displayCode
             document.getElementById('<%= divTemplatePreview.ClientID%>').innerHTML = displayCode;
             document.getElementById('<%= hfMailBody.ClientID%>').value = templateCode;
         }
@@ -239,6 +254,7 @@
             templateCode = templateCode.replace("{header}", selhid);
             templateCode = templateCode.replace(selprevhID, selhid);
             document.getElementById('<%= divTemplatePreview.ClientID%>').innerHTML = templateCode;
+            document.getElementById('<%=hfHeader.ClientID%>').value = selhid;
         }
         function selectf(efooter) {
             selprevfId = selfid;
@@ -247,6 +263,7 @@
             templateCode = templateCode.replace("{footer}", selfid);
             templateCode = templateCode.replace(selprevfId, selfid);
             document.getElementById('<%= divTemplatePreview.ClientID%>').innerHTML = templateCode;
+            document.getElementById('<%=hfFooter.ClientID%>').value = selfid;
         }
         function selectb(ebackground) {
             selprevbID = selbid;
@@ -254,6 +271,7 @@
             templateCode = templateCode.replace("{background}", selbid);
             templateCode = templateCode.replace(selprevbID, selbid);
             document.getElementById('<%= divTemplatePreview.ClientID%>').innerHTML = templateCode;
+            document.getElementById('<%=hfBody.ClientID%>').value = selbid;
         }
 
 

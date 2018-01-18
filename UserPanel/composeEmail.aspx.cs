@@ -100,7 +100,11 @@ public partial class UserPanel_Default : System.Web.UI.Page
         if (Convert.ToInt32(rbTemplates.SelectedItem.Value) == 11)
             accordion.Visible = true;
         else accordion.Visible = false;
+        divTemplatePreview.InnerHtml = divTemplatePreview.InnerHtml.Replace("{background}",hfBody.Value.ToString());
+        divTemplatePreview.InnerHtml = divTemplatePreview.InnerHtml.Replace("{header}",hfHeader.Value.ToString());
+        divTemplatePreview.InnerHtml = divTemplatePreview.InnerHtml.Replace("{footer}",hfFooter.Value.ToString());
         divTemplatePreview.InnerHtml = divTemplatePreview.InnerHtml.Replace("{body}","<h5>Start typing your email message....</h5>");
+        
     }
 
     protected void cbCategory_CheckedChanged(object sender, EventArgs e)
@@ -176,7 +180,7 @@ public partial class UserPanel_Default : System.Web.UI.Page
 
             else
             {
-                string body;
+                //string body;
                 //saving the sent maildata into database
                 if (tbxMailSubject.Text == "") mailSubject = "No subject";
                 else mailSubject = tbxMailSubject.Text;
